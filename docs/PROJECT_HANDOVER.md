@@ -2,7 +2,8 @@
 
 **Last updated:** 26 October 2026
 **Audience:** A new team member, reviewer, or AI assistant picking up the project.
-**Repository:** `C:\Users\Aryaa\Documents\Projects\In Progress\nemo-evaluator`
+**Repository:** `C:\Users\Aryaa\Documents\Projects\In Progress\nemo-eval-new`  
+**Remote:** `https://github.com/aryaa-05/nemo-eval-new.git`
 **Primary source of truth:** the code, then `CONTEXT.md`, then this handover. The older files in `docs/` predate the latest work and contain outdated statements.
 
 This document explains:
@@ -348,7 +349,7 @@ The validator checks format, required fields, answer balance, duplicate IDs/ques
 
 ### 5.7 Source files
 
-The source texts used by the validator are in the untracked `_sources/` folder:
+The source texts used by the validator are in the tracked `_sources/` folder:
 
 | File | Document | Used for |
 |---|---|---|
@@ -360,7 +361,7 @@ The source texts used by the validator are in the untracked `_sources/` folder:
 | `_sources/image_human_check_worksheet.md` | 20-row image review worksheet | Human review |
 | `_sources/answer_plan.json` | Pre-decided answer letters for balance | Dataset construction |
 
-The PDFs and text copies are large. Keep them out of commits unless the team decides otherwise. Never commit `.env`.
+The source PDFs and text copies are tracked so dataset validation can be reproduced. The two `_sources/_backup_*.jsonl` files are older backups and remain local only. Never commit `.env` or API keys.
 
 ---
 
@@ -608,9 +609,9 @@ Pair 2, 2 items each:
 - Added free-tier stand-in model blocks with measured/provisional token and timeout settings.
 - Added NIM/Groq `requests_per_minute` settings to stay within free-tier limits.
 
-### 8.3 Platform work already in the working tree
+### 8.3 Platform work included in this repository
 
-The working tree contains uncommitted changes for:
+The current state was copied to the new repository and committed. It includes:
 
 - Groq and OpenRouter providers.
 - `provider: "auto"` route selection and substitute reporting.
@@ -878,8 +879,8 @@ Notes:
 - `nel list` excludes INCOMPLETE and FAILED runs from the main list; they are in a separate table.
 - `compare` and `gate` refuse INCOMPLETE/FAILED runs.
 - `rescore_run.py` output is not in the leaderboard.
-- Do not commit `.env`, API keys, or large source PDFs.
-- The working tree has uncommitted changes. Do not assume the last commit contains the current state.
+- Do not commit `.env` or API keys. The source PDFs and text copies used for dataset validation are tracked in `_sources/`; do not add unrelated large files.
+- This repository contains the current working state. The older `nemo-evaluator` folder is no longer the source of truth.
 
 ---
 

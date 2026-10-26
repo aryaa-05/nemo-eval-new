@@ -5,4 +5,4 @@ __pycache__/
 .env
 runs/*.json
 runs/*.db
-_sources/
+_sources/_backup_*.jsonl

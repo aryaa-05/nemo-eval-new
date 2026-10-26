@@ -1,143 +1,182 @@
-# ??? NeMo Evaluator: Multi-Model Benchmarking & Comparison Platform
+# NeMo Evaluator
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![NVIDIA NeMo Evaluator](https://img.shields.io/badge/Framework-NVIDIA%20NeMo%20Evaluator-green.svg)](https://github.com/NVIDIA-NeMo/Evaluator)
-[![Industry Partner](https://img.shields.io/badge/Collaboration-Tata%20Consultancy%20Services%20(TCS)-orange.svg)](https://www.tcs.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+A command-line and Streamlit platform for running benchmarks against language models, scoring replies, and comparing two runs statistically.
 
-An enterprise-grade evaluation and benchmarking platform based on **NVIDIA NeMo Evaluator**, developed as a collaborative capstone project between **Vishwakarma Institute of Technology (VIT), Pune** and **Tata Consultancy Services (TCS)**.
+## Contents
 
----
+- Benchmarks: `mmlu_pro`, `gsm8k`, `math_500`, `gpqa`, `humaneval`, `truthfulqa`, `custom_byob`, `kyc_india`, `rbi_regulations`, `image_processing`.
+- Providers: NVIDIA NIM, Groq, OpenRouter, OpenAI, Ollama, and a built-in simulator.
+- Scoring: multiple-choice, math, code execution, reasoning-text stripping, truncation and API-error flags.
+- Statistics: per-model accuracy with 95% Wilson intervals, paired McNemar test, flips, and a PASS/FAIL quality gate.
+- Interfaces: the `nel` CLI and a Streamlit dashboard.
+- Source documents for the India-specific datasets are included in `_sources/`.
 
-## ?? Project Team & Supervision
-- **Students**: 
-  - **Ashish Kumar** (CS-A, Roll: 110, G.R.No: 12311937, `kumar.ashish23@vit.edu`)
-  - **Aryaa Sharma** (CS-A, Roll: 149, G.R.No: 12311983, `aryaa.sharma23@vit.edu`)
-- **Internal Guide**: **Prof. (Dr.) Yogesh Sharma** (`yogesh.sharma@vit.edu`)
-- **Institution**: Vishwakarma Institute of Technology, Pune ? Department of Computer Engineering
-- **Academic Year**: 2026?27 | **Semester**: VII | **Group No.**: 16
+## Requirements
 
----
+- Python 3.10 or newer.
+- Git.
+- API keys only for live providers.
 
-## ?? Key Features
+## Setup
 
-1. **8-Layer Modular Architecture**: Implements Presentation, Control Plane, Core Engine, Benchmark Layer, Model Gateway, Scoring & Judgement, Results Store, and Reporting Engine.
-2. **Standardized Benchmarks**:
-   - **MMLU-Pro**: 10-option multi-discipline reasoning across STEM, Humanities, and Social Sciences.
-   - **GSM8K**: Multi-step grade-school mathematical word problems with step-by-step verification.
-   - **MATH-500**: Advanced high-school and competition-grade mathematics with LaTeX extraction.
-   - **GPQA**: Graduate-level Google-proof scientific reasoning.
-   - **HumanEval**: Isolated Python execution sandbox testing generated code on unit tests.
-   - **TruthfulQA**: Evaluation of factual hallucination and misconception resistance.
-   - **Custom BYOB**: Bring-Your-Own-Benchmark loader with n-gram contamination detection.
-3. **Unified Model Gateway**: Supports NVIDIA NIM, Groq, OpenRouter, OpenAI, local Ollama, and a built-in zero-cost deterministic simulator. `provider: "auto"` picks the first configured route whose API key is present (free tiers before paid) and records the requested ID, the served ID and whether the route is a substitute.
-4. **Rigorous Statistics & Judgement**:
-   - 95% Wilson score confidence intervals.
-   - Paired **McNemar's significance tests** for measuring whether performance improvements are statistically real.
-   - Quality Gate decisions (`nel gate`: PASS / FAIL).
-5. **Interactive Streamlit Web Dashboard**: Real-time leaderboards, 5-domain radar charts, item-level flip inspector, automated report exporter, and background runs that keep the page responsive while polling progress every 2 seconds.
-6. **Command Line Interface (`nel`)**: Fast CLI workflow (`nel list`, `nel eval run`, `nel compare`, `nel gate`, `nel report`).
-7. **Cloud Ready (Google Colab)**: Pre-configured Jupyter Notebook (`notebooks/nemo_evaluator_colab.ipynb`) for GPU execution in compliance with green computing principles (SDG 9 & SDG 12).
+```powershell
+git clone https://github.com/aryaa-05/nemo-eval-new.git
+cd nemo-eval-new
 
----
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pip install pytest
+```
 
-## ?? Installation & Quickstart
+On macOS or Linux, activate the environment with:
 
 ```bash
-# Clone the repository
-git clone https://github.com/ashish-vit/nemo-evaluator-benchmarking.git
-cd nemo-evaluator-benchmarking
-
-# Install dependencies
-pip install -r requirements.txt
+source .venv/bin/activate
 ```
 
-Create a git-ignored `.env` in the repo root with only the keys you need (never commit it):
+Run commands from the repository root. Dataset and config paths are relative to the current directory.
 
-```
+## API keys
+
+Create a `.env` file in the repository root and add only the keys you need:
+
+```text
 NVIDIA_API_KEY=<your key>
 GROQ_API_KEY=<your key>
-OPENROUTER_API_KEY=<needed by the six real pair models' auto routes; paid>
+OPENROUTER_API_KEY=<your key>
+OPENAI_API_KEY=<your key>
 ```
 
-The CLI and dashboard read `.env` automatically. A model with `provider: "mock"` makes no API call and is
-simulated; any network-backed run, including a stand-in or substitute route, is LIVE.
+The CLI and dashboard load `.env` automatically. Never commit `.env` or any API key.
 
-### Run CLI Commands (`nel`)
-```bash
-# 1. List configured models and benchmarks
+| Provider | Key variable | Notes |
+|---|---|---|
+| `mock` | none | Offline simulator; no API call |
+| `nvidia_nim` | `NVIDIA_API_KEY` | Free tier |
+| `groq` | `GROQ_API_KEY` | Free tier |
+| `openrouter` | `OPENROUTER_API_KEY` | Paid; required by the real model routes |
+| `openai` | `OPENAI_API_KEY` | Paid; not used by the real pair routes |
+| `ollama` | none | Local server; no key |
+| `auto` | route key | First configured route whose key is present |
+
+## CLI guide
+
+```powershell
+# List models, benchmarks, and saved runs
 python src/cli/nel.py list
 
-# 2. Run a quick evaluation
+# Quick simulated run
 python src/cli/nel.py eval run --config configs/eval_config_default.yaml --limit 10
 
-# 3. Compare two runs with McNemar test & flip analysis
-python src/cli/nel.py compare --run-a <RUN_A_ID> --run-b <RUN_B_ID> --output-md comparison.md
+# Run a stand-in pair (real API calls; pipeline validation only)
+python src/cli/nel.py eval run --config configs/standin_pair3.yaml --limit 5 --job-name standin_pair3_quick_check
 
-# 4. Check deployment Quality Gate
-python src/cli/nel.py gate --baseline <RUN_A_ID> --candidate <RUN_B_ID>
+# Compare two completed runs
+python src/cli/nel.py compare --run-a <RUN_ID_A> --run-b <RUN_ID_B> --output-md comparison.md
+
+# Apply the quality gate
+python src/cli/nel.py gate --baseline <RUN_ID_A> --candidate <RUN_ID_B>
 ```
 
-### Launch Interactive Web Dashboard
-```bash
+`eval run` options:
+
+```text
+--config <job.yaml>     Job file
+--model <model-id>      Override the job's model list
+--bench <benchmark>     Override the job's benchmarks; can be repeated
+--limit N               First N rows per benchmark; 0 means all rows
+--solver simple|cot|harbor
+--job-name <name>
+```
+
+A model ID that is not in `configs/models_config.yaml` gets a simulated fallback. A mistyped `--config` path may silently fall back to defaults, so check the starting-job panel.
+
+## Dashboard
+
+```powershell
 streamlit run src/dashboard/app.py
 ```
 
----
+Open `http://localhost:8501`. The dashboard provides:
 
-## ??? Model Pairs: Required vs Stand-in
+- **Leaderboard**: accuracy, confidence interval, latency, tokens, cost, mode, job name, and warnings.
+- **Radar & domains**: benchmark-domain comparison.
+- **Model diff & flips**: questions where two runs disagree.
+- **Launch evaluation**: background run with a progress poll every 2 seconds.
+- **Reports**: Markdown/HTML comparison output.
 
-The brief names three model pairs to compare. Those exact models cannot be called on the free providers
-available to this project (NVIDIA NIM and Groq) - some are retired, the rest are not hosted there. To exercise
-the full pipeline on **real API calls**, each required pair is mirrored by a **stand-in pair**: cheaper
-look-alike models that play the same role (small instruct vs Llama; mid-size reasoning vs Llama; reasoning vs
-Qwen).
+Saved runs live in `runs/` and are git-ignored. A fresh clone starts with no saved results; copy the `runs/` folder locally if you need the existing leaderboard and report data.
 
-> **Important:** a stand-in run makes real API calls, so it is a **live** run, not a simulated one. But a
-> stand-in's numbers are results for the **stand-in model only** - they are **not** results for the required
-> models and must not be presented as such (see `CONTEXT.md` sections 0 and 11). Only a run with provider
-> `mock` is simulated.
+## Models
 
-### Required models (as named in the brief)
+The three required model pairs are configured with `provider: "auto"` and OpenRouter routes. Those exact models are not available on the free NIM/Groq tiers, and no real OpenRouter call has been verified yet. Several OpenRouter routes serve a substitute model; the run records both the requested and served IDs.
 
-| Pair | Model A (real) | Model B (real) | Status on free providers |
-|---|---|---|---|
-| 1 | `mistralai/Ministral-3-8B-Instruct-2512` | `meta-llama/Llama-3.1-8B-Instruct` | Not callable (Ministral absent; Llama-3.1-8B retired HTTP 410) |
-| 2 | `mistralai/Ministral-3-14B-Reasoning-2512` | `meta-llama/Llama-4-Scout-17B-16E` | Not callable (both absent from NIM/Groq) |
-| 3 | `mistralai/Ministral-3-8B-Reasoning-2512` | `Qwen3.5` (size not specified) | Not callable (both absent from NIM/Groq) |
+The free-tier stand-in pairs are:
 
-These six models are configured with `provider: "auto"` and an OpenRouter route. Setting `OPENROUTER_API_KEY`
-makes them live; the route is paid and **no real OpenRouter call has been made yet**, so whether each route
-answers is unverified (see `CONTEXT.md` section 3a). Several served models are substitutes, not the exact
-requested variants: the run records both IDs and `model_substituted: true`, and must be reported as a result for
-the served model, never as the exact requested model.
+| Pair | Model A | Model B |
+|---|---|---|
+| 1 | `google/gemma-3-12b-it` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) |
+| 2 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) |
+| 3 | `openai/gpt-oss-20b` (Groq) | `qwen/qwen3.8-27b` (Groq) |
 
-### Stand-in models (used now, free, real API calls)
+Pair 1 cannot run: `google/gemma-3-12b-it` returns HTTP 404. Use pair 2 or pair 3 for pipeline checks.
 
-| Pair | Model A (stand-in) | Provider | Model B (stand-in) | Provider |
-|---|---|---|---|---|
-| 1 | `google/gemma-3-12b-it` | NVIDIA NIM | `meta/llama-3.2-11b-vision-instruct` | NVIDIA NIM |
-| 2 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | NVIDIA NIM | `meta/llama-3.2-11b-vision-instruct` | NVIDIA NIM |
-| 3 | `openai/gpt-oss-20b` | Groq | `qwen/qwen3.8-27b` | Groq |
+A stand-in run makes real API calls and is therefore a **live** run, but its scores are results for the stand-in model only. They are **not** results for the required models. A simulated run uses `provider: "mock"` and makes no API call. A substitute route serves a different model ID than the one requested.
 
-Configs: `configs/standin_pair1.yaml`, `standin_pair2.yaml`, `standin_pair3.yaml`. Pair 1's model A
-(`gemma-3-12b-it`) is currently **not callable** (HTTP 404), so pair 1 cannot run until it is replaced.
+## Datasets
 
----
+| Benchmark | Type | Items |
+|---|---|---|
+| `mmlu_pro` | 10-option MCQ | 15 |
+| `gsm8k` | Free answer | 15 |
+| `math_500` | Free answer | 15 |
+| `gpqa` | 4-option MCQ | 15 |
+| `humaneval` | Code | 15 |
+| `truthfulqa` | 4-option MCQ | 15 |
+| `custom_byob` | 4-option MCQ demo | 2 |
+| `kyc_india` | 4-option MCQ | 100 |
+| `rbi_regulations` | 4-option MCQ | 100 |
+| `image_processing` | 4-option MCQ | 100 |
 
-## ??? System Architecture
+Each benchmark reads `datasets/<benchmark_id>/sample.jsonl`. `kyc_india`, `rbi_regulations`, and `image_processing` include `source` and `source_excerpt` fields. The source PDFs, text copies, and review worksheets are in `_sources/`.
+
+Dataset rules:
+
+- Every regulatory question must be written from source text in front of the author.
+- Exactly one option must be correct.
+- Answer positions must be balanced.
+- Questions and keys must be unique.
+- `review: true` marks a row that a person must check.
+- Never invent a source section or answer key.
+
+Validate a dataset:
+
+```powershell
+python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl
+python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl --source-text _sources/kyc_master_direction.txt
+python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl --final --source-text _sources/kyc_master_direction.txt
 ```
-+-----------------------------------------------------------------------------+
-| Presentation Layer: Streamlit Dashboard / CLI (nel)                         |
-+-----------------------------------------------------------------------------+
-| Orchestration Plane: YAML Config Manager / Job Scheduler / Run Registry     |
-+-----------------------------------------------------------------------------+
-| Core Evaluation Engine: Interceptor Proxy / Solvers (Chat, CoT) / Sandbox   |
-+-----------------------------------------------------------------------------+
-| Data & Model Gateway: Standard Benchmarks <---> Unified NIM / API Gateway   |
-+-----------------------------------------------------------------------------+
-| Scoring & Judgement: Rule Scorers / McNemar & Wilson Statistics            |
-+-----------------------------------------------------------------------------+
-| Storage & Comparison: SQLite Run Store / nel compare / Automated Reports   |
-+-----------------------------------------------------------------------------+
+
+## Tests
+
+```powershell
+python -m pytest -q
 ```
+
+The current suite has 402 tests.
+
+## Documentation
+
+- `CONTEXT.md`: full project context, rules, architecture, and known limitations.
+- `docs/PROJECT_HANDOVER.md`: current status, decisions, blockers, and handover notes.
+- `docs/PROJECT_DOCUMENTATION.md`, `docs/PRACTICAL_OVERVIEW.md`, and the review reports are older and may be out of date.
+- `_sources/SOURCES.md`: source URLs and extraction notes.
+
+## Reporting rules
+
+- Never present simulated or stand-in results as results for the required models.
+- Never present a substitute-model result as a result for the exact requested model.
+- Never hand-write or guess benchmark scores.
+- Never commit `.env`, API keys, or run files containing secrets.
+- If something was not verified, say so.
