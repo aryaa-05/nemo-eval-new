@@ -1,0 +1,2011 @@
+{
+ "_comment": "Real replies from the stand-in runs of pairs 2 and 3 (stand-in models, pipeline validation only). 'expect.correct' is the hand-verified verdict; 'expect.extracted' is what the current scorer extracts.",
+ "replies": [
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_01",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "Natalia sold **48 clips in April**.  \nIn May she sold half as many:\n\n\\[\n\\frac{1}{2}\\times 48 = 24 \\text{ clips}\n\\]\n\nAdding the two months together:\n\n\\[\n48 + 24 = 72\n\\]\n\nSo Natalia sold **72 clips altogether**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_02",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Weng’s rate is \\$12 per hour.  \nFor 50 minutes:\n\n\\[\n\\text{Hours worked} = \\frac{50 \\text{ min}}{60 \\text{ min/hr}} = \\frac{5}{6}\\text{ hr}\n\\]\n\n\\[\n\\text{Earnings} = 12 \\times \\frac{5}{6} = 10\n\\]\n\nSo Weng would earn **\\$10** for 50 minutes of babysitting.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "10"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "10"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_03",
+   "benchmark": "gsm8k",
+   "truth": "5",
+   "text": "Betty already has half of the $100, so she has $50.  \nAdding the money from her parents ($15) and grandparents ($30):\n\n\\[\n50 + 15 + 30 = 95\n\\]\n\nShe still needs:\n\n\\[\n100 - 95 = 5\n\\]\n\n**$5 more**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_04",
+   "benchmark": "gsm8k",
+   "truth": "150",
+   "text": "The submarine’s depth is half the monster’s depth:\n\n- Monster depth = 400 m below sea level  \n- Submarine depth = 400 m ÷ 2 = 200 m below sea level\n\nWhen the submarine rises 50 m, its depth decreases by that amount:\n\n- New depth = 200 m – 50 m = **150 m below sea level**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_05",
+   "benchmark": "gsm8k",
+   "truth": "60",
+   "text": "First, find how many loaves are left after the first sale:\n\n- 120 loaves baked.\n- Sold \\( \\frac34 \\) of them: \\(120 \\times \\frac34 = 90\\) loaves sold.\n- Remaining after noon: \\(120 - 90 = 30\\) loaves.\n\nNext, bake more and sell again:\n\n- Bakes 60 more loaves, so now has \\(30 + 60 = 90\\) loaves.\n- Sells half of these: \\(90 \\times \\frac12 = 45\\) loaves sold.\n- Remaining after the second sale: \\(90 - 45 = 45\\) loaves.\n\n\\[\n\\boxed{45}\n\\]",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "verification": "hand-read: all four models answered 45 and the key says 60; the question's 'sells half' is ambiguous, so the key may be debatable, but the reply's stated answer is 45, so 'wrong' follows the key"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_06",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "Kendra starts with  \n\n- 3 boxes × 24 pencils per box = **72 pencils**.\n\nShe gives away  \n\n- 15 pencils + 12 pencils = **27 pencils**.\n\nSo the pencils remaining are  \n\n\\(72 - 27 = 45\\).\n\n**Answer: 45 pencils left.**",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "45 pencils left"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_07",
+   "benchmark": "gsm8k",
+   "truth": "15",
+   "text": "James runs a total of **15 miles** that week.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_08",
+   "benchmark": "gsm8k",
+   "truth": "180",
+   "text": "The farm has:\n\n- 50 chickens × 2 legs each = **100 legs**  \n- 20 cows × 4 legs each = **80 legs**\n\n**Total legs on the farm: 100 + 80 = 180 legs.**",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_09",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "First, find how many seats were actually sold:\n\n\\[\n\\text{Seats sold} = 250 - 40 = 210\n\\]\n\nThen multiply by the ticket price:\n\n\\[\n\\text{Revenue} = 210 \\times \\$8 = \\$1{,}680\n\\]\n\n**Revenue: $1,680**",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "210"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1,680"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_10",
+   "benchmark": "gsm8k",
+   "truth": "30",
+   "text": "Mark’s total purchase is:\n\n- 4 books × $15 = **$60**  \n- 2 notebooks × $5 = **$10**  \n\nTotal cost = $60 + $10 = **$70**.\n\nHe pays with a $100 bill, so the change is:\n\n$100 – $70 = **$30**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_11",
+   "benchmark": "gsm8k",
+   "truth": "270",
+   "text": "First segment:  \n\\(60 \\text{ mph} \\times 2.5 \\text{ h} = 150 \\text{ miles}\\)\n\nSecond segment:  \n\\(80 \\text{ mph} \\times 1.5 \\text{ h} = 120 \\text{ miles}\\)\n\nTotal distance traveled:  \n\\(150 \\text{ miles} + 120 \\text{ miles} = 270 \\text{ miles}\\)\n\n**Answer: 270 miles**",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "270 miles"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_12",
+   "benchmark": "gsm8k",
+   "truth": "23",
+   "text": "Sarah originally has \\(2 \\times 14 = 28\\) stickers.  \nAfter giving 5 to Tom, she has \\(28 - 5 = 23\\) stickers left.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_13",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "First, calculate the markers from each type of pack:\n\n- **15 packs × 8 markers per pack** = 120 markers  \n- **10 packs × 12 markers per pack** = 120 markers  \n\nAdd them together:\n\n120 + 120 = **240 markers** in total.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_14",
+   "benchmark": "gsm8k",
+   "truth": "100",
+   "text": "Leo spends a total of **100 minutes** on those activities.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "gsm_15",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "First, find how many bags are needed:\n\n\\[\n\\text{Bags} = \\frac{480 \\text{ apples}}{6 \\text{ apples per bag}} = 80 \\text{ bags}\n\\]\n\nEach bag sells for \\$3, so the total revenue is:\n\n\\[\n\\text{Total money} = 80 \\text{ bags} \\times \\$3/\\text{bag} = \\$240\n\\]\n\n**Answer: \\$240**",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "\\"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_01",
+   "benchmark": "math_500",
+   "truth": "23",
+   "text": "Using the identity  \n\n\\[\n\\left(x+\\frac{1}{x}\\right)^2 = x^2 + 2 + \\frac{1}{x^2},\n\\]\n\nwe can solve for \\(x^2 + \\frac{1}{x^2}\\).\n\nGiven \\(x + \\frac{1}{x} = 5\\),\n\n\\[\n\\left(5\\right)^2 = x^2 + 2 + \\frac{1}{x^2}.\n\\]\n\nSo\n\n\\[\n25 = x^2 + \\frac{1}{x^2} + 2 \\quad\\Longrightarrow\\quad x^2 + \\frac{1}{x^2} = 25 - 2 = 23.\n\\]\n\n\\[\n\\boxed{23}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_02",
+   "benchmark": "math_500",
+   "truth": "4",
+   "text": "To find the remainder of \\(3^{100}\\) when divided by 7, we can use modular arithmetic and the fact that powers of 3 repeat modulo 7.\n\n1. **Find the cycle length**  \n   Compute successive powers of 3 modulo 7:\n   \\[\n   \\begin{aligned}\n   3^1 &\\equiv 3 \\pmod{7}\\\\\n   3^2 &\\equiv 9 \\equiv 2 \\pmod{7}\\\\\n   3^3 &\\equiv 3 \\cdot 2 = 6 \\pmod{7}\\\\\n   3^4 &\\equiv 3 \\cdot 6 = 18 \\equiv 4 \\pmod{7}\\\\\n   3^5 &\\equiv 3 \\cdot 4 = 12 \\equiv 5 \\pmod{7}\\\\\n   3^6 &\\equiv 3 \\cdot 5 = 15 \\equiv 1 \\pmod{7}\n   \\end{aligned}\n   \\]\n   After 6 steps we return to 1, so the powers of 3 modulo 7 cycle every 6.\n\n2. **Reduce the exponent**  \n   \\(100 \\mod 6 = 4\\).  \n   Therefore \\(3^{100} \\equiv 3^4 \\pmod{7}\\).\n\n3. **Compute the remainder**  \n   From the table above, \\(3^4 \\equiv 4 \\pmod{7}\\).\n\nHence, the remainder when \\(3^{100}\\) is divided by 7 is **4**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_03",
+   "benchmark": "math_500",
+   "truth": "15",
+   "text": "The hypotenuse is \\(15\\).",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_04",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "For 5 distinct books, each arrangement is a permutation of the 5 items.  \nThe number of permutations of \\(n\\) distinct objects is \\(n!\\).\n\n\\[\n5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120\n\\]\n\nSo there are **120 different ways** to arrange the 5 books on a shelf.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_05",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "The quadratic is \\(x^2-7x+10=0\\).  \nFor a quadratic \\(ax^2+bx+c=0\\), the sum of its roots is \\(-\\frac{b}{a}\\).\n\nHere \\(a=1\\) and \\(b=-7\\), so\n\n\\[\n\\text{Sum of roots} = -\\frac{-7}{1}=7.\n\\]\n\nBoth roots are real (discriminant \\(49-40=9>0\\)), so the sum of the real roots is **7**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_06",
+   "benchmark": "math_500",
+   "truth": "9",
+   "text": "\\[\n\\log_{2}(32)=5 \\quad\\text{and}\\quad \\log_{3}(81)=4,\n\\]\nso\n\n\\[\n\\log_{2}(32)+\\log_{3}(81)=5+4=9.\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_07",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "The sum of 7 can occur in 6 ways:\n\n\\[\n(1,6),\\;(2,5),\\;(3,4),\\;(4,3),\\;(5,2),\\;(6,1)\n\\]\n\nOut of the \\(6 \\times 6 = 36\\) equally likely outcomes when rolling two fair dice, 6 give a sum of 7.\n\n\\[\nP(\\text{sum}=7)=\\frac{6}{36}=\\frac{1}{6}\n\\]\n\nSo the probability is \\(\\displaystyle \\frac{1}{6}\\).",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "6"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_08",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "The area is  \n\n\\[\n\\text{Area} = \\frac{\\sqrt{3}}{4}\\,a^{2} = \\frac{\\sqrt{3}}{4}\\,(6)^{2} = \\frac{\\sqrt{3}}{4}\\,36 = 9\\sqrt{3}\\;\\text{square units.}\n\\]",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_09",
+   "benchmark": "math_500",
+   "truth": "19",
+   "text": "First evaluate \\(g(3)\\):\n\n\\[\ng(3)=3^2-1=9-1=8.\n\\]\n\nNow plug this into \\(f\\):\n\n\\[\nf(g(3))=f(8)=2(8)+3=16+3=19.\n\\]\n\n\\[\n\\boxed{19}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_10",
+   "benchmark": "math_500",
+   "truth": "90",
+   "text": "The greatest common divisor (GCD) of 180 and 270 is **90**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_11",
+   "benchmark": "math_500",
+   "truth": "56",
+   "text": "\\[\n\\binom{8}{3}=\\frac{8!}{3!\\,5!}=\\frac{8\\times7\\times6}{3\\times2\\times1}=56\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_12",
+   "benchmark": "math_500",
+   "truth": "3",
+   "text": "The quadratic  \n\n\\[\nf(x)=2x^{2}-8x+11\n\\]\n\nopens upward because the coefficient of \\(x^{2}\\) is positive (\\(a=2>0\\)).  \nThe vertex of a parabola \\(ax^{2}+bx+c\\) occurs at  \n\n\\[\nx_{\\text{vertex}}=-\\frac{b}{2a}.\n\\]\n\nHere \\(a=2,\\; b=-8\\):\n\n\\[\nx_{\\text{vertex}}=-\\frac{-8}{2\\cdot 2}= \\frac{8}{4}=2.\n\\]\n\nEvaluate \\(f\\) at this \\(x\\):\n\n\\[\nf(2)=2(2)^{2}-8(2)+11\n     =2\\cdot4-16+11\n     =8-16+11\n     =3.\n\\]\n\nSince the parabola opens upward, this value is the minimum of \\(f(x)\\).\n\n\\[\n\\boxed{3}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_13",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "The derivative of  \n\n\\[\nf(x)=x^{3}-5x+4\n\\]\n\nis found by differentiating term by term:\n\n\\[\nf'(x)=\\frac{d}{dx}(x^{3})-\\frac{d}{dx}(5x)+\\frac{d}{dx}(4)\n      =3x^{2}-5+0\n      =3x^{2}-5.\n\\]\n\nNow evaluate at \\(x=2\\):\n\n\\[\nf'(2)=3(2)^{2}-5=3\\cdot4-5=12-5=7.\n\\]\n\n\\[\n\\boxed{7}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_14",
+   "benchmark": "math_500",
+   "truth": "53",
+   "text": "The smallest prime number greater than 50 is **53**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "gpt-oss-20b",
+   "run_id": "run_20261020_122412_973fa5",
+   "question_id": "math_15",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "To solve the equation  \n\n\\[\n2^{\\,x+1}=64\n\\]\n\nwrite \\(64\\) as a power of 2:\n\n\\[\n64 = 2^6.\n\\]\n\nNow the equation becomes\n\n\\[\n2^{\\,x+1}=2^6.\n\\]\n\nSince the bases are equal, the exponents must be equal:\n\n\\[\nx+1 = 6.\n\\]\n\nSubtract 1 from both sides:\n\n\\[\nx = 5.\n\\]\n\n\\[\n\\boxed{5}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_01",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "To find the total number of clips Natalia sold, we need to determine how many she sold in May and then add that to the number sold in April.\n\n**Step 1: Calculate the number of clips sold in May.**\nNatalia sold half as many clips in May as she did in April.\n$$ \\text{Clips in May} = \\frac{48}{2} = 24 $$\n\n**Step 2: Calculate the total number of clips sold.**\nAdd the clips sold in April and May together.\n$$ \\text{Total} = \\text{Clips in April} + \\text{Clips in May} $$\n$$ \\text{Total} = 48 + 24 $$\n$$ \\text{Total} = 72 $$\n\n**Answer:**\nNatalia sold **72** clips altogether.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "Natalia sold **72** clips altogether"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_02",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "To calculate Weng's earnings for 50 minutes, we need to convert the hourly rate into a per-minute rate or convert the time into hours.\n\n**Step 1: Convert the time to hours**\nThere are 60 minutes in 1 hour.\n$$ \\text{Time in hours} = \\frac{50 \\text{ minutes}}{60 \\text{ minutes/hour}} = \\frac{5}{6} \\text{ hours} $$\n\n**Step 2: Calculate the earnings**\nMultiply the hourly rate by the time in hours.\n$$ \\text{Earnings} = \\$12/\\text{hr} \\times \\frac{5}{6} \\text{ hr} $$\n\n$$ \\text{Earnings} = \\frac{12 \\times 5}{6} $$\n\n$$ \\text{Earnings} = \\frac{60}{6} $$\n\n$$ \\text{Earnings} = 10 $$\n\n**Conclusion:**\nWeng earns **$10** for 50 minutes of babysitting.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "50"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "10"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_03",
+   "benchmark": "gsm8k",
+   "truth": "5",
+   "text": "Here is the step-by-step calculation to determine how much more money Betty needs:\n\n1.  **Determine how much money Betty already has:**\n    Betty needs $\\$100$ and has half of that amount.\n    $$100 / 2 = \\$50$$\n\n2.  **Add the money given by her parents:**\n    $$50 + 15 = \\$65$$\n\n3.  **Add the money given by her grandparents:**\n    $$65 + 30 = \\$95$$\n\n4.  **Calculate the remaining amount needed:**\n    Subtract the total money she currently has from the total cost of the wallet.\n    $$100 - 95 = \\$5$$\n\n**Conclusion:**\nBetty needs **$5** more.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_04",
+   "benchmark": "gsm8k",
+   "truth": "150",
+   "text": "Here is the step-by-step logical deduction to solve the problem:\n\n### Step 1: Determine the initial depth of the submarine\nThe problem states that the monster is at 400m below sea level and that this depth is **double** the submarine's depth.\n\nLet $D_{sub}$ be the initial depth of the submarine.\n$$400 \\text{ m} = 2 \\times D_{sub}$$\n\nSolving for $D_{sub}$:\n$$D_{sub} = \\frac{400 \\text{ m}}{2}$$\n$$D_{sub} = 200 \\text{ m}$$\n\nSo, the submarine was initially at a depth of 200 meters.\n\n### Step 2: Calculate the new depth after rising\nThe submarine rises by 50 meters. \"Rising\" means moving closer to the surface, which decreases the depth.\n\n$$\\text{New Depth} = \\text{Initial Depth} - \\text{Distance Risen}$$\n$$\\text{New Depth} = 200 \\text{ m} - 50 \\text{ m}$$\n$$\\text{New Depth} = 150 \\text{ m}$$\n\n### Final Conclusion\nThe submarine is now **150 meters** below sea level.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_05",
+   "benchmark": "gsm8k",
+   "truth": "60",
+   "text": "Here is the step-by-step calculation to determine how many loaves are left:\n\n**Step 1: Calculate the loaves remaining after the first batch.**\n*   Baker starts with 120 loaves.\n*   Sells $3/4$ of them by noon.\n*   Loaves sold: $120 \\times \\frac{3}{4} = 90$ loaves.\n*   Loaves remaining: $120 - 90 = 30$ loaves.\n\n**Step 2: Add the second batch.**\n*   Baker bakes 60 more loaves.\n*   Total loaves now: $30 \\text{ (remaining)} + 60 \\text{ (new)} = 90$ loaves.\n\n**Step 3: Calculate the loaves remaining after selling half of the current total.**\n*   Baker sells half of the current total (90 loaves).\n*   Loaves sold: $90 \\times \\frac{1}{2} = 45$ loaves.\n*   Loaves remaining: $90 - 45 = 45$ loaves.\n\n**Conclusion:**\nThere are **45** loaves left.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "verification": "hand-read: all four models answered 45 and the key says 60; the question's 'sells half' is ambiguous, so the key may be debatable, but the reply's stated answer is 45, so 'wrong' follows the key"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_06",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "Here is the step-by-step calculation to determine how many pencils Kendra has left:\n\n**Step 1: Calculate the total number of pencils initially.**\nKendra has 3 boxes, and each box contains 24 pencils.\n$$3 \\times 24 = 72 \\text{ pencils}$$\n\n**Step 2: Calculate the total number of pencils given away.**\nShe gives away 15 pencils and 12 pencils.\n$$15 + 12 = 27 \\text{ pencils}$$\n\n**Step 3: Subtract the pencils given away from the total.**\n$$72 - 27 = 45 \\text{ pencils}$$\n\n**Answer:**\nKendra has **45** pencils left.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "Kendra has **45** pencils left"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_07",
+   "benchmark": "gsm8k",
+   "truth": "15",
+   "text": "To find the total number of miles James runs, we need to sum the distances for each day he runs.\n\n**Step 1: Calculate the miles run on Mon, Wed, and Fri.**\nJames runs 3 miles on each of these three days.\n$$3 \\text{ miles} \\times 3 \\text{ days} = 9 \\text{ miles}$$\n\n**Step 2: Add the miles run on Saturday.**\nJames runs 6 miles on Saturday.\n$$9 \\text{ miles} + 6 \\text{ miles} = 15 \\text{ miles}$$\n\n**Conclusion:**\nJames runs a total of **15** miles.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_08",
+   "benchmark": "gsm8k",
+   "truth": "180",
+   "text": "To find the total number of legs, we calculate the legs for each type of animal and then sum them up.\n\n**1. Calculate legs from chickens:**\n*   Number of chickens: 50\n*   Legs per chicken: 2\n*   Total chicken legs: $50 \\times 2 = 100$\n\n**2. Calculate legs from cows:**\n*   Number of cows: 20\n*   Legs per cow: 4\n*   Total cow legs: $20 \\times 4 = 80$\n\n**3. Calculate total legs:**\n*   Total legs = Total chicken legs + Total cow legs\n*   Total legs = $100 + 80 = 180$\n\n**Answer:**\nThe total number of legs is **180**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "The total number of legs is **180"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_09",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "To calculate the revenue, we need to determine the number of tickets sold and multiply that by the price per ticket.\n\n**Step 1: Calculate the number of seats sold.**\nTotal seats = 250\nEmpty seats = 40\nSeats sold = Total seats - Empty seats\n$$250 - 40 = 210 \\text{ seats sold}$$\n\n**Step 2: Calculate the total revenue.**\nPrice per ticket = $8\nRevenue = Seats sold $\\times$ Price per ticket\n$$210 \\times 8 = 1,680$$\n\n**Conclusion:**\nThe total revenue is **$1,680**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "8"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1,680"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_10",
+   "benchmark": "gsm8k",
+   "truth": "30",
+   "text": "Here is the step-by-step calculation to find the change:\n\n**1. Calculate the cost of the books:**\n$$4 \\text{ books} \\times \\$15/\\text{book} = \\$60$$\n\n**2. Calculate the cost of the notebooks:**\n$$2 \\text{ notebooks} \\times \\$5/\\text{notebook} = \\$10$$\n\n**3. Calculate the total cost:**\n$$\\$60 + \\$10 = \\$70$$\n\n**4. Calculate the change from the $100 bill:**\n$$\\$100 - \\$70 = \\$30$$\n\n**Answer:**\nThe change is **$30**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "The change is"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_11",
+   "benchmark": "gsm8k",
+   "truth": "270",
+   "text": "To find the total distance, we calculate the distance traveled during each segment of the trip and then sum them up. The formula for distance is:\n\n$$ \\text{Distance} = \\text{Speed} \\times \\text{Time} $$\n\n**Step 1: Calculate the distance for the first segment**\n*   Speed: $60 \\text{ mph}$\n*   Time: $2.5 \\text{ hours}$\n\n$$ D_1 = 60 \\times 2.5 = 150 \\text{ miles} $$\n\n**Step 2: Calculate the distance for the second segment**\n*   Speed: $80 \\text{ mph}$\n*   Time: $1.5 \\text{ hours}$\n\n$$ D_2 = 80 \\times 1.5 = 120 \\text{ miles} $$\n\n**Step 3: Calculate the total distance**\n$$ \\text{Total Distance} = D_1 + D_2 $$\n$$ \\text{Total Distance} = 150 + 120 = 270 \\text{ miles} $$\n\n**Conclusion:**\nThe total distance traveled is **270 miles**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_12",
+   "benchmark": "gsm8k",
+   "truth": "23",
+   "text": "Here is the step-by-step calculation to determine how many stickers Sarah has left:\n\n1.  **Determine Sarah's initial number of stickers:**\n    We know Tom has 14 stickers and Sarah has twice as many as Tom.\n    $$14 \\times 2 = 28$$\n    So, Sarah starts with 28 stickers.\n\n2.  **Subtract the stickers Sarah gives to Tom:**\n    Sarah gives 5 stickers to Tom.\n    $$28 - 5 = 23$$\n\n**Conclusion:**\nSarah has **23** stickers left.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_13",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "To find the total number of markers, we need to calculate the number of markers in each type of pack and then add them together.\n\n**Step 1: Calculate the markers from the first type of pack.**\n*   Number of packs: 15\n*   Markers per pack: 8\n*   Calculation: $15 \\times 8 = 120$ markers\n\n**Step 2: Calculate the markers from the second type of pack.**\n*   Number of packs: 10\n*   Markers per pack: 12\n*   Calculation: $10 \\times 12 = 120$ markers\n\n**Step 3: Add the totals together.**\n*   $120 + 120 = 240$\n\n**Conclusion:**\nThe total number of markers is **240**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_14",
+   "benchmark": "gsm8k",
+   "truth": "100",
+   "text": "To find the total number of minutes Leo spends on these activities, we add the time spent on each task:\n\n1.  **Homework:** 45 minutes\n2.  **Reading:** 30 minutes\n3.  **Guitar:** 25 minutes\n\n**Calculation:**\n$$45 + 30 + 25$$\n\nFirst, add 45 and 30:\n$$45 + 30 = 75$$\n\nNext, add 25 to that result:\n$$75 + 25 = 100$$\n\n**Answer:**\nLeo spends a total of **100** minutes.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "Leo spends a total of **100** minutes"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "gsm_15",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "To find the total money, we need to determine the total number of bags and then multiply by the price per bag.\n\n**Step 1: Calculate the number of bags.**\nThere are 480 apples, and each bag holds 6 apples.\n$$ \\text{Number of bags} = \\frac{480}{6} = 80 \\text{ bags} $$\n\n**Step 2: Calculate the total revenue.**\nEach bag costs $\\$3$.\n$$ \\text{Total money} = 80 \\text{ bags} \\times \\$3/\\text{bag} = \\$240 $$\n\n**Answer:**\nThe total money is **$240**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "The total money is"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_01",
+   "benchmark": "math_500",
+   "truth": "23",
+   "text": "To find the value of $x^2 + \\frac{1}{x^2}$ given that $x + \\frac{1}{x} = 5$, we can use algebraic identities.\n\n### Step 1: Recall the relevant algebraic identity\nThe square of a sum is given by:\n$$ \\left(a + b\\right)^2 = a^2 + 2ab + b^2 $$\n\nLet $a = x$ and $b = \\frac{1}{x}$. Substituting these into the identity gives:\n$$ \\left(x + \\frac{1}{x}\\right)^2 = x^2 + 2(x)\\left(\\frac{1}{x}\\right) + \\left(\\frac{1}{x}\\right)^2 $$\n\n### Step 2: Simplify the middle term\nNotice that $2(x)\\left(\\frac{1}{x}\\right) = 2$. Therefore, the equation simplifies to:\n$$ \\left(x + \\frac{1}{x}\\right)^2 = x^2 + 2 + \\frac{1}{x^2} $$\n\n### Step 3: Substitute the given value\nWe are given that $x + \\frac{1}{x} = 5$. Substitute this value into the left side of the equation:\n$$ (5)^2 = x^2 + 2 + \\frac{1}{x^2} $$\n\n### Step 4: Solve for $x^2 + \\frac{1}{x^2}$\nCalculate the square of 5:\n$$ 25 = x^2 + \\frac{1}{x^2} + 2 $$\n\nSubtract 2 from both sides to isolate the target expression:\n$$ x^2 + \\frac{1}{x^2} = 25 - 2 $$\n$$ x^2 + \\frac{1}{x^2} = 23 $$\n\n### Final Conclusion\nThe value of $x^2 + \\frac{1}{x^2}$ is **23**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_02",
+   "benchmark": "math_500",
+   "truth": "4",
+   "text": "To find the remainder when $3^{100}$ is divided by $7$, we can use modular arithmetic and look for a pattern in the powers of 3 modulo 7.\n\n### Step 1: Calculate the first few powers of 3 modulo 7\n\nLet's compute $3^n \\pmod 7$ for small values of $n$:\n\n1.  $3^1 = 3 \\equiv 3 \\pmod 7$\n2.  $3^2 = 9 \\equiv 2 \\pmod 7$\n3.  $3^3 = 27 = 3 \\times 7 + 6 \\equiv 6 \\equiv -1 \\pmod 7$\n4.  $3^4 = 3^3 \\cdot 3 \\equiv (-1) \\cdot 3 = -3 \\equiv 4 \\pmod 7$\n5.  $3^5 = 3^4 \\cdot 3 \\equiv 4 \\cdot 3 = 12 \\equiv 5 \\pmod 7$\n6.  $3^6 = 3^5 \\cdot 3 \\equiv 5 \\cdot 3 = 15 \\equiv 1 \\pmod 7$\n\nWe observe that $3^6 \\equiv 1 \\pmod 7$. This means the powers of 3 modulo 7 repeat in a cycle of length 6. This is also consistent with **Fermat's Little Theorem**, which states that if $p$ is a prime number, then for any integer $a$ not divisible by $p$, $a^{p-1} \\equiv 1 \\pmod p$. Here, $p=7$, so $3^{7-1} = 3^6 \\equiv 1 \\pmod 7$.\n\n### Step 2: Reduce the exponent\n\nWe need to calculate $3^{100} \\pmod 7$. Since the cycle length is 6, we can divide the exponent 100 by 6 to find the remainder.\n\n$$ 100 \\div 6 = 16 \\text{ with a remainder of } 4 $$\n\nMathematically, this can be written as:\n$$ 100 = 6 \\times 16 + 4 $$\n\nTherefore:\n$$ 3^{100} = 3^{(6 \\times 16 + 4)} = (3^6)^{16} \\cdot 3^4 $$\n\n### Step 3: Apply the modular equivalence\n\nSubstitute $3^6 \\equiv 1 \\pmod 7$ into the equation:\n\n$$ 3^{100} \\equiv (1)^{16} \\cdot 3^4 \\pmod 7 $$\n$$ 3^{100} \\equiv 1 \\cdot 3^4 \\pmod 7 $$\n$$ 3^{100} \\equiv 3^4 \\pmod 7 $$\n\n### Step 4: Calculate the final remainder\n\nFrom Step 1, we already calculated $3^4 \\pmod 7$:\n$$ 3^4 = 81 $$\n$$ 81 = 11 \\times 7 + 4 $$\n$$ 81 \\equiv 4 \\pmod 7 $$\n\nAlternatively, using the previous step's result:\n$$ 3^4 \\equiv 4 \\pmod 7 $$\n\n### Conclusion\n\nThe remainder when $3^{100}$ is divided by $7$ is **4**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_03",
+   "benchmark": "math_500",
+   "truth": "15",
+   "text": "To find the hypotenuse of a right triangle with legs of length 9 and 12, we use the **Pythagorean theorem**:\n\n$$\nc = \\sqrt{a^2 + b^2}\n$$\n\nwhere $a = 9$ and $b = 12$.\n\n### Step-by-step calculation:\n\n1. Square each leg:\n   $$\n   9^2 = 81\n   $$\n   $$\n   12^2 = 144\n   $$\n\n2. Add the squares:\n   $$\n   81 + 144 = 225\n   $$\n\n3. Take the square root:\n   $$\n   \\sqrt{225} = 15\n   $$\n\n### Final Answer:\n$$\n\\boxed{15}\n$$",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_04",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "To determine the number of ways 5 distinct books can be arranged on a shelf, we use the concept of **permutations**.\n\n### Step-by-Step Deduction\n\n1.  **Identify the number of items**: There are $n = 5$ distinct books.\n2.  **Identify the number of positions**: There are 5 spots on the shelf.\n3.  **Apply the Fundamental Counting Principle**:\n    *   For the **1st** position on the shelf, there are **5** possible books to choose from.\n    *   For the **2nd** position, there are **4** remaining books to choose from.\n    *   For the **3rd** position, there are **3** remaining books to choose from.\n    *   For the **4th** position, there are **2** remaining books to choose from.\n    *   For the **5th** position, there is only **1** book left.\n\n4.  **Calculate the total arrangements**:\n    Multiply the number of choices for each position:\n    $$ 5 \\times 4 \\times 3 \\times 2 \\times 1 $$\n\n    This is equivalent to calculating the factorial of 5, denoted as $5!$.\n\n    $$ 5! = 120 $$\n\n### Final Conclusion\n\nThere are **120** distinct ways to arrange 5 distinct books on a shelf.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_05",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "To find the sum of the real roots of the quadratic equation $x^2 - 7x + 10 = 0$, we can use either Vieta's formulas or by solving the equation directly.\n\n### Method 1: Using Vieta's Formulas\n\nFor a general quadratic equation of the form $ax^2 + bx + c = 0$, the sum of the roots ($x_1 + x_2$) is given by:\n$$ x_1 + x_2 = -\\frac{b}{a} $$\n\nIn the given equation $x^2 - 7x + 10 = 0$:\n*   $a = 1$\n*   $b = -7$\n*   $c = 10$\n\nFirst, we verify that the roots are real by checking the discriminant ($\\Delta$):\n$$ \\Delta = b^2 - 4ac = (-7)^2 - 4(1)(10) = 49 - 40 = 9 $$\nSince $\\Delta > 0$, the roots are real and distinct.\n\nNow, calculate the sum:\n$$ \\text{Sum} = -\\frac{-7}{1} = 7 $$\n\n### Method 2: Solving for the Roots\n\nWe can factor the quadratic equation:\n$$ x^2 - 7x + 10 = 0 $$\n\nWe look for two numbers that multiply to $10$ and add up to $-7$. These numbers are $-2$ and $-5$.\n$$ (x - 2)(x - 5) = 0 $$\n\nSetting each factor to zero gives the roots:\n$$ x - 2 = 0 \\implies x_1 = 2 $$\n$$ x - 5 = 0 \\implies x_2 = 5 $$\n\nBoth roots are real numbers. The sum of the roots is:\n$$ x_1 + x_2 = 2 + 5 = 7 $$\n\n### Conclusion\n\nThe sum of the real roots is **7**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "10"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_06",
+   "benchmark": "math_500",
+   "truth": "9",
+   "text": "To evaluate the expression $\\log_2(32) + \\log_3(81)$, we will calculate each logarithmic term separately and then sum the results.\n\n### Step 1: Evaluate $\\log_2(32)$\n\nThe expression $\\log_2(32)$ asks the question: \"To what power must the base $2$ be raised to equal $32$?\"\n\nLet $x = \\log_2(32)$. This can be rewritten in exponential form as:\n$$2^x = 32$$\n\nWe know the powers of 2:\n$$2^1 = 2$$\n$$2^2 = 4$$\n$$2^3 = 8$$\n$$2^4 = 16$$\n$$2^5 = 32$$\n\nSince $2^5 = 32$, it follows that:\n$$\\log_2(32) = 5$$\n\n### Step 2: Evaluate $\\log_3(81)$\n\nThe expression $\\log_3(81)$ asks the question: \"To what power must the base $3$ be raised to equal $81$?\"\n\nLet $y = \\log_3(81)$. This can be rewritten in exponential form as:\n$$3^y = 81$$\n\nWe know the powers of 3:\n$$3^1 = 3$$\n$$3^2 = 9$$\n$$3^3 = 27$$\n$$3^4 = 81$$\n\nSince $3^4 = 81$, it follows that:\n$$\\log_3(81) = 4$$\n\n### Step 3: Add the results\n\nNow, substitute the values back into the original expression:\n$$\\log_2(32) + \\log_3(81) = 5 + 4$$\n\n$$5 + 4 = 9$$\n\n### Final Conclusion\n\nThe value of the expression is **9**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_07",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "To find the probability that the sum of two dice is 7, we follow these steps:\n\n### Step 1: Determine the total number of possible outcomes\nWhen rolling two standard six-sided dice, each die has 6 faces. The total number of possible outcomes is the product of the possibilities for each die:\n$$ 6 \\times 6 = 36 $$\n\n### Step 2: Determine the number of favorable outcomes\nWe need to find the pairs $(d_1, d_2)$ such that $d_1 + d_2 = 7$, where $d_1$ and $d_2$ are integers between 1 and 6.\n\nThe possible pairs are:\n1. $(1, 6)$\n2. $(2, 5)$\n3. $(3, 4)$\n4. $(4, 3)$\n5. $(5, 2)$\n6. $(6, 1)$\n\nThere are **6** favorable outcomes.\n\n### Step 3: Calculate the probability\nThe probability $P$ is the ratio of favorable outcomes to total outcomes:\n$$ P = \\frac{\\text{Number of favorable outcomes}}{\\text{Total number of outcomes}} = \\frac{6}{36} $$\n\n### Step 4: Simplify the fraction\nDivide the numerator and the denominator by their greatest common divisor, which is 6:\n$$ \\frac{6 \\div 6}{36 \\div 6} = \\frac{1}{6} $$\n\n### Final Answer\nThe probability is **1/6**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_08",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "To find the area of an equilateral triangle with side length $s = 6$, we can use the standard formula for the area of an equilateral triangle:\n\n$$ A = \\frac{\\sqrt{3}}{4} s^2 $$\n\n**Step 1: Substitute the side length into the formula.**\nGiven $s = 6$:\n$$ A = \\frac{\\sqrt{3}}{4} (6)^2 $$\n\n**Step 2: Calculate the square of the side length.**\n$$ 6^2 = 36 $$\nSo,\n$$ A = \\frac{\\sqrt{3}}{4} \\cdot 36 $$\n\n**Step 3: Simplify the expression.**\nDivide 36 by 4:\n$$ \\frac{36}{4} = 9 $$\nThus,\n$$ A = 9\\sqrt{3} $$\n\n**Conclusion:**\nThe area of the equilateral triangle is **9*sqrt(3)**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_09",
+   "benchmark": "math_500",
+   "truth": "19",
+   "text": "To compute $f(g(3))$, we need to evaluate the functions from the inside out.\n\n**Step 1: Evaluate $g(3)$**\n\nGiven $g(x) = x^2 - 1$, substitute $x = 3$:\n$$ g(3) = 3^2 - 1 $$\n$$ g(3) = 9 - 1 $$\n$$ g(3) = 8 $$\n\n**Step 2: Evaluate $f(g(3))$**\n\nNow substitute the result from Step 1 into $f(x)$. Since $g(3) = 8$, we need to find $f(8)$.\n\nGiven $f(x) = 2x + 3$, substitute $x = 8$:\n$$ f(8) = 2(8) + 3 $$\n$$ f(8) = 16 + 3 $$\n$$ f(8) = 19 $$\n\n**Conclusion**\n\n$$ f(g(3)) = 19 $$",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_10",
+   "benchmark": "math_500",
+   "truth": "90",
+   "text": "To find the Greatest Common Divisor (GCD) of 180 and 270, we can use the **Euclidean Algorithm** or **Prime Factorization**. Here is the step-by-step deduction using both methods.\n\n### Method 1: Prime Factorization\n\nFirst, we break down each number into its prime factors.\n\n**1. Factorize 180:**\n$$180 = 18 \\times 10$$\n$$18 = 2 \\times 9 = 2 \\times 3^2$$\n$$10 = 2 \\times 5$$\nSo,\n$$180 = 2 \\times 3^2 \\times 2 \\times 5 = 2^2 \\times 3^2 \\times 5^1$$\n\n**2. Factorize 270:**\n$$270 = 27 \\times 10$$\n$$27 = 3^3$$\n$$10 = 2 \\times 5$$\nSo,\n$$270 = 3^3 \\times 2 \\times 5 = 2^1 \\times 3^3 \\times 5^1$$\n\n**3. Identify Common Factors:**\nTo find the GCD, we take the lowest power of each common prime factor:\n*   **Prime 2**: Present in $180$ as $2^2$ and in $270$ as $2^1$. The lowest is $2^1$.\n*   **Prime 3**: Present in $180$ as $3^2$ and in $270$ as $3^3$. The lowest is $3^2$.\n*   **Prime 5**: Present in $180$ as $5^1$ and in $270$ as $5^1$. The lowest is $5^1$.\n\n**4. Calculate the GCD:**\n$$\\text{GCD} = 2^1 \\times 3^2 \\times 5^1$$\n$$\\text{GCD} = 2 \\times 9 \\times 5$$\n$$\\text{GCD} = 18 \\times 5$$\n$$\\text{GCD} = 90$$\n\n---\n\n### Method 2: Euclidean Algorithm\n\nThis method involves repeated division.\n\n1.  Divide the larger number (270) by the smaller number (180):\n    $$270 = 180 \\times 1 + 90$$\n    The remainder is 90.\n\n2.  Now, divide the previous divisor (180) by the remainder (90):\n    $$180 = 90 \\times 2 + 0$$\n    The remainder is 0.\n\nWhen the remainder becomes 0, the last non-zero remainder is the GCD.\nTherefore, the GCD is **90**.\n\n### Conclusion\n\nThe GCD of 180 and 270 is **90**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_11",
+   "benchmark": "math_500",
+   "truth": "56",
+   "text": "To compute $\\binom{8}{3}$ (read as \"8 choose 3\"), we use the combination formula:\n\n$$\n\\binom{n}{k} = \\frac{n!}{k!(n-k)!}\n$$\n\nHere, $n = 8$ and $k = 3$.\n\n### Step 1: Substitute the values into the formula\n\n$$\n\\binom{8}{3} = \\frac{8!}{3!(8-3)!} = \\frac{8!}{3! \\cdot 5!}\n$$\n\n### Step 2: Expand the factorials\n\nRecall that $8! = 8 \\times 7 \\times 6 \\times 5!$. We can cancel out the $5!$ from the numerator and the denominator:\n\n$$\n\\binom{8}{3} = \\frac{8 \\times 7 \\times 6 \\times 5!}{3! \\times 5!} = \\frac{8 \\times 7 \\times 6}{3!}\n$$\n\n### Step 3: Calculate the denominator\n\n$$\n3! = 3 \\times 2 \\times 1 = 6\n$$\n\nSo the expression becomes:\n\n$$\n\\binom{8}{3} = \\frac{8 \\times 7 \\times 6}{6}\n$$\n\n### Step 4: Simplify and solve\n\nCancel the $6$ in the numerator and the denominator:\n\n$$\n\\binom{8}{3} = 8 \\times 7\n$$\n\n$$\n8 \\times 7 = 56\n$$\n\n### Final Answer\n\n$$\n\\binom{8}{3} = 56\n$$",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_12",
+   "benchmark": "math_500",
+   "truth": "3",
+   "text": "To find the minimum value of the quadratic function $f(x) = 2x^2 - 8x + 11$, we can use the vertex formula or complete the square. Since the coefficient of $x^2$ is positive ($a = 2 > 0$), the parabola opens upwards, meaning the vertex represents the minimum point.\n\n### Method 1: Using the Vertex Formula\n\nFor a quadratic function in the form $f(x) = ax^2 + bx + c$, the x-coordinate of the vertex is given by:\n$$ x = -\\frac{b}{2a} $$\n\nHere, $a = 2$, $b = -8$, and $c = 11$.\n\n1.  **Find the x-coordinate of the vertex:**\n    $$ x = -\\frac{-8}{2(2)} = \\frac{8}{4} = 2 $$\n\n2.  **Find the y-coordinate (minimum value) by substituting $x = 2$ back into the function:**\n    $$ f(2) = 2(2)^2 - 8(2) + 11 $$\n    $$ f(2) = 2(4) - 16 + 11 $$\n    $$ f(2) = 8 - 16 + 11 $$\n    $$ f(2) = -8 + 11 $$\n    $$ f(2) = 3 $$\n\n### Method 2: Completing the Square\n\n1.  Factor out the coefficient of $x^2$ from the first two terms:\n    $$ f(x) = 2(x^2 - 4x) + 11 $$\n\n2.  Complete the square inside the parentheses. Take half of the coefficient of $x$ (which is $-4$), square it, and add/subtract it inside:\n    $$ \\left(\\frac{-4}{2}\\right)^2 = (-2)^2 = 4 $$\n    $$ f(x) = 2(x^2 - 4x + 4 - 4) + 11 $$\n\n3.  Rewrite the perfect square trinomial and simplify:\n    $$ f(x) = 2((x - 2)^2 - 4) + 11 $$\n    $$ f(x) = 2(x - 2)^2 - 8 + 11 $$\n    $$ f(x) = 2(x - 2)^2 + 3 $$\n\nSince $2(x - 2)^2 \\geq 0$ for all real numbers $x$, the minimum value occurs when $(x - 2)^2 = 0$, which gives:\n$$ f(x)_{min} = 0 + 3 = 3 $$\n\n### Conclusion\n\nThe minimum value of the function is **3**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_13",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "To find the derivative of the function $f(x) = x^3 - 5x + 4$ at $x = 2$, we will follow these steps:\n\n### Step 1: Find the derivative function $f'(x)$\n\nWe apply the power rule for differentiation, which states that $\\frac{d}{dx}(x^n) = nx^{n-1}$, and the constant rule, which states that the derivative of a constant is 0.\n\nGiven:\n$$ f(x) = x^3 - 5x + 4 $$\n\nDifferentiate term by term:\n1.  The derivative of $x^3$ is $3x^{3-1} = 3x^2$.\n2.  The derivative of $-5x$ is $-5(1)x^{1-1} = -5$.\n3.  The derivative of the constant $4$ is $0$.\n\nSo, the derivative function is:\n$$ f'(x) = 3x^2 - 5 $$\n\n### Step 2: Evaluate the derivative at $x = 2$\n\nSubstitute $x = 2$ into the expression for $f'(x)$:\n\n$$ f'(2) = 3(2)^2 - 5 $$\n\nCalculate the value:\n$$ f'(2) = 3(4) - 5 $$\n$$ f'(2) = 12 - 5 $$\n$$ f'(2) = 7 $$\n\n### Final Conclusion\n\nThe derivative of $f(x) = x^3 - 5x + 4$ at $x = 2$ is **7**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "2"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_14",
+   "benchmark": "math_500",
+   "truth": "53",
+   "text": "To find the smallest prime number greater than 50, we will test the integers immediately following 50 for primality.\n\n**Definition of a Prime Number:**\nA prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\n\n**Step-by-Step Verification:**\n\n1.  **Check 51:**\n    *   The sum of the digits is $5 + 1 = 6$.\n    *   Since 6 is divisible by 3, 51 is divisible by 3 ($51 = 3 \\times 17$).\n    *   Therefore, 51 is **not** prime.\n\n2.  **Check 52:**\n    *   52 is an even number (divisible by 2).\n    *   Therefore, 52 is **not** prime.\n\n3.  **Check 53:**\n    *   It is not even, so it is not divisible by 2.\n    *   The sum of the digits is $5 + 3 = 8$, which is not divisible by 3.\n    *   It does not end in 0 or 5, so it is not divisible by 5.\n    *   We check divisibility by the next prime, 7. The square root of 53 is approximately $7.28$. We only need to check prime factors up to $\\sqrt{53}$.\n    *   $53 \\div 7 \\approx 7.57$ (not an integer).\n    *   Since 53 is not divisible by any prime number less than or equal to its square root, it is prime.\n\n**Conclusion:**\n\nThe smallest prime number greater than 50 is **53**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "qwen3.8-27b",
+   "run_id": "run_20261020_123607_bab028",
+   "question_id": "math_15",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "To solve the equation $2^{x+1} = 64$, we will express both sides of the equation with the same base.\n\n**Step 1: Express 64 as a power of 2.**\nWe know that:\n$$2^1 = 2$$\n$$2^2 = 4$$\n$$2^3 = 8$$\n$$2^4 = 16$$\n$$2^5 = 32$$\n$$2^6 = 64$$\n\nSo, we can rewrite the equation as:\n$$2^{x+1} = 2^6$$\n\n**Step 2: Equate the exponents.**\nSince the bases are the same (both are 2), their exponents must be equal. Therefore:\n$$x + 1 = 6$$\n\n**Step 3: Solve for x.**\nSubtract 1 from both sides of the equation:\n$$x = 6 - 1$$\n$$x = 5$$\n\n**Verification:**\nSubstitute $x = 5$ back into the original equation:\n$$2^{5+1} = 2^6 = 64$$\nThe solution is correct.\n\n**Final Answer:**\n$$x = 5$$",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_01",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "She sold 48 clips in April and half that amount in May:\n\n- May sales = 48 ÷ 2 = 24 clips  \n- Total clips = 48 + 24 = **72 clips**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_02",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Weng earns $12 for 60 minutes, which is $0.20 per minute.  \n\n\\(50 \\text{ minutes} \\times \\$0.20/\\text{minute} = \\$10\\).\n\n**Answer: \\$10**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "\\"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "10"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_03",
+   "benchmark": "gsm8k",
+   "truth": "5",
+   "text": "Betty already has $50 (half of $100). After receiving $15 from her parents and $30 from her grandparents, she has:\n\n\\(50 + 15 + 30 = 95\\) dollars.\n\nShe needs $100, so the additional amount required is:\n\n\\(100 - 95 = \\boxed{5}\\) dollars.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_04",
+   "benchmark": "gsm8k",
+   "truth": "150",
+   "text": "The monster is 400 m below sea level, which is twice the submarine’s depth.  \nSo the submarine’s initial depth is  \n\n\\[\n\\frac{400\\text{ m}}{2}=200\\text{ m}.\n\\]\n\nWhen the submarine rises 50 m, its depth decreases by 50 m:\n\n\\[\n200\\text{ m} - 50\\text{ m}=150\\text{ m}.\n\\]\n\n**The submarine is now 150 m below sea level.**",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "150"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_05",
+   "benchmark": "gsm8k",
+   "truth": "60",
+   "text": "45 loaves are left.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "verification": "hand-read: all four models answered 45 and the key says 60; the question's 'sells half' is ambiguous, so the key may be debatable, but the reply's stated answer is 45, so 'wrong' follows the key"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_06",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "Kendra starts with \\(3 \\times 24 = 72\\) pencils.  \nShe gives away \\(15 + 12 = 27\\) pencils.  \n\n\\(72 - 27 = 45\\).\n\n**She has 45 pencils left.**",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_07",
+   "benchmark": "gsm8k",
+   "truth": "15",
+   "text": "James runs a total of **15 miles**. (3 mi × 3 days = 9 mi, plus 6 mi on Saturday = 15 mi.)",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_08",
+   "benchmark": "gsm8k",
+   "truth": "180",
+   "text": "The total number of legs is:\n\n- Chickens: 50 × 2 = 100 legs  \n- Cows: 20 × 4 = 80 legs  \n\n**Total legs = 100 + 80 = 180**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_09",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "The theater has \\(250 - 40 = 210\\) seats sold.  \nRevenue = \\(210 \\times \\$8 = \\$1{,}680\\).",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "680"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1,680"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_10",
+   "benchmark": "gsm8k",
+   "truth": "30",
+   "text": "The total cost is  \n\n- Books: 4 × $15 = $60  \n- Notebooks: 2 × $5 = $10  \n\nTotal = $60 + $10 = $70  \n\nPaid with a $100 bill, so the change is  \n\n$100 − $70 = **$30**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_11",
+   "benchmark": "gsm8k",
+   "truth": "270",
+   "text": "The distance for each part is speed × time.\n\n- 60 mph × 2.5 h = **150 miles**\n- 80 mph × 1.5 h = **120 miles**\n\nTotal distance = 150 miles + 120 miles = **270 miles**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_12",
+   "benchmark": "gsm8k",
+   "truth": "23",
+   "text": "Sarah originally has \\(2 \\times 14 = 28\\) stickers. After giving 5 to Tom, she has \\(28 - 5 = 23\\) stickers left.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_13",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "15 × 8 = 120  \n10 × 12 = 120  \n\n120 + 120 = 240  \n\n**Total markers: 240**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_14",
+   "benchmark": "gsm8k",
+   "truth": "100",
+   "text": "Leo spends a total of **100 minutes** on those activities.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "gsm_15",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "The orchard has  \n\n- 480 apples  \n- 6 apples per bag → \\(480 ÷ 6 = 80\\) bags  \n- $3 per bag  \n\nTotal money = \\(80 \\times \\$3 = \\$240\\).  \n\n**Answer: \\$240**.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "\\"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_01",
+   "benchmark": "math_500",
+   "truth": "23",
+   "text": "We can square the given expression:\n\n\\[\n\\left(x+\\frac{1}{x}\\right)^2 = x^2 + 2 + \\frac{1}{x^2}.\n\\]\n\nSince \\(x+\\frac{1}{x}=5\\),\n\n\\[\n5^2 = x^2 + 2 + \\frac{1}{x^2} \\quad\\Longrightarrow\\quad 25 = x^2 + \\frac{1}{x^2} + 2.\n\\]\n\nSubtract 2 from both sides:\n\n\\[\nx^2 + \\frac{1}{x^2} = 25 - 2 = 23.\n\\]\n\n\\[\n\\boxed{23}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_02",
+   "benchmark": "math_500",
+   "truth": "4",
+   "text": "The powers of 3 modulo 7 repeat every 6:\n\n\\[\n\\begin{aligned}\n3^1 &\\equiv 3 \\pmod{7}\\\\\n3^2 &\\equiv 2 \\pmod{7}\\\\\n3^3 &\\equiv 6 \\pmod{7}\\\\\n3^4 &\\equiv 4 \\pmod{7}\\\\\n3^5 &\\equiv 5 \\pmod{7}\\\\\n3^6 &\\equiv 1 \\pmod{7}\n\\end{aligned}\n\\]\n\nSince \\(3^6 \\equiv 1 \\pmod{7}\\), we can reduce the exponent:\n\n\\[\n100 \\equiv 100 \\bmod 6 = 4.\n\\]\n\nThus\n\n\\[\n3^{100} \\equiv 3^{4} \\equiv 4 \\pmod{7}.\n\\]\n\n\\[\n\\boxed{4}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_03",
+   "benchmark": "math_500",
+   "truth": "15",
+   "text": "The hypotenuse is  \n\n\\[\nc = \\sqrt{9^{2}+12^{2}} = \\sqrt{81+144} = \\sqrt{225} = 15.\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_04",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "The number of possible arrangements of 5 distinct books on a shelf is the number of permutations of 5 items:\n\n\\[\n5! = 5 \\times 4 \\times 3 \\times 2 \\times 1 = 120.\n\\]\n\nSo there are **120 different ways** to arrange the books.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_05",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "The quadratic factors as \\((x-5)(x-2)=0\\), giving real roots \\(x=5\\) and \\(x=2\\).  \nTheir sum is \\(5+2 = \\boxed{7}\\).",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_06",
+   "benchmark": "math_500",
+   "truth": "9",
+   "text": "9",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_07",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "\\( \\frac{1}{6} \\)",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "6"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_08",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "\\(9\\sqrt{3}\\)",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_09",
+   "benchmark": "math_500",
+   "truth": "19",
+   "text": "First find \\(g(3)\\):\n\\[\ng(3)=3^{2}-1=9-1=8.\n\\]\n\nNow apply \\(f\\) to this result:\n\\[\nf(g(3)) = f(8)=2\\cdot 8 + 3 = 16 + 3 = 19.\n\\]\n\n\\[\n\\boxed{19}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_11",
+   "benchmark": "math_500",
+   "truth": "56",
+   "text": "56",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_12",
+   "benchmark": "math_500",
+   "truth": "3",
+   "text": "The quadratic \\(f(x)=2x^{2}-8x+11\\) opens upward (the coefficient of \\(x^{2}\\) is positive), so its minimum occurs at the vertex.\n\nThe vertex’s \\(x\\)-coordinate is  \n\n\\[\nx_{\\text{min}} = -\\frac{b}{2a}= -\\frac{-8}{2\\cdot 2}= \\frac{8}{4}=2.\n\\]\n\nEvaluating \\(f\\) at \\(x=2\\):\n\n\\[\nf(2)=2(2)^{2}-8(2)+11 = 2\\cdot4-16+11 = 8-16+11 = 3.\n\\]\n\n\\[\n\\boxed{3}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_13",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "The derivative is  \n\n\\[\nf'(x)=\\frac{d}{dx}(x^3-5x+4)=3x^{2}-5.\n\\]\n\nEvaluating at \\(x=2\\):\n\n\\[\nf'(2)=3(2)^2-5=3\\cdot4-5=12-5=7.\n\\]\n\n\\[\n\\boxed{7}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_14",
+   "benchmark": "math_500",
+   "truth": "53",
+   "text": "The smallest prime number greater than 50 is **53**.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "53"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "nemotron",
+   "run_id": "run_20261020_123549_8031cb",
+   "question_id": "math_15",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "We have  \n\n\\[\n2^{x+1}=64.\n\\]\n\nSince \\(64 = 2^6\\),\n\n\\[\n2^{x+1}=2^6 \\quad\\Longrightarrow\\quad x+1 = 6.\n\\]\n\nThus  \n\n\\[\nx = 6-1 = 5.\n\\]\n\n\\[\n\\boxed{5}\n\\]",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_01",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "To find the total number of clips sold, we need to add the number of clips sold in April and May.\n\nIn April, Natalia sold 48 clips.\nIn May, she sold half as many clips as in April, which is 48 / 2 = 24 clips.\n\nTotal clips sold = 48 (April) + 24 (May) = 72 clips.\n\nSo, Natalia sold 72 clips altogether.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "72"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_02",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "To find out how much Weng earns for 50 minutes of babysitting, we need to convert the time to hours. \n\nThere are 60 minutes in an hour, so:\n\n50 minutes / 60 minutes per hour = 0.8333 hours\n\nNow, we multiply the time in hours by the hourly wage:\n\n0.8333 hours * $12 per hour = $10.00\n\nSo, Weng earns $10.00 for 50 minutes of babysitting.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "10.00"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "10.00"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_03",
+   "benchmark": "gsm8k",
+   "truth": "5",
+   "text": "To find out how much more Betty needs, we need to calculate how much money she currently has. \n\nBetty has half of $100, which is $100 / 2 = $50.\nHer parents gave her $15, so now she has $50 + $15 = $65.\nHer grandparents gave her $30, so now she has $65 + $30 = $95.\n\nSince Betty needs $100 for the wallet, she still needs $100 - $95 = $5 more.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_04",
+   "benchmark": "gsm8k",
+   "truth": "150",
+   "text": "The submarine was initially at 400m below sea level. \n\nThe monster is at double the submarine's depth, so it's at 2 * 400m = 800m below sea level.\n\nThe submarine rises 50m, so it's now at 400m - 50m = 350m below sea level.\n\nThe monster is still at 800m below sea level.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "800"
+   },
+   "expect": {
+    "correct": false,
+    "extracted": "800"
+   },
+   "verification": "hand-read: the reply's final stated answer (800 m) is not the key (150); a genuinely wrong model answer"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_05",
+   "benchmark": "gsm8k",
+   "truth": "60",
+   "text": "To find out how many loaves are left, let's break down the problem step by step.\n\n1. The baker initially bakes 120 loaves and sells 3/4 by noon. \n   3/4 of 120 is (3/4) * 120 = 90 loaves sold.\n   So, the baker has 120 - 90 = 30 loaves left.\n\n2. The baker then bakes 60 more loaves.\n   Now, the total number of loaves is 30 (remaining from the first batch) + 60 (new batch) = 90 loaves.\n\n3. The baker sells half of the new total.\n   Half of 90 is (1/2) * 90 = 45 loaves sold.\n   So, the baker has 90 - 45 = 45 loaves left.\n\nTherefore, the baker has 45 loaves left.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": false,
+    "extracted": "45"
+   },
+   "verification": "hand-read: all four models answered 45 and the key says 60; the question's 'sells half' is ambiguous, so the key may be debatable, but the reply's stated answer is 45, so 'wrong' follows the key"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_06",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "To find out how many pencils Kendra has left, we need to calculate the total number of pencils she started with and then subtract the number of pencils she gave away.\n\nKendra has 3 boxes of 24 pencils, so she started with:\n3 boxes * 24 pencils/box = 72 pencils\n\nShe gave away 15 and 12 pencils, so the total number of pencils she gave away is:\n15 + 12 = 27 pencils\n\nNow, let's subtract the number of pencils she gave away from the total number of pencils she started with:\n72 pencils - 27 pencils = 45 pencils\n\nKendra has 45 pencils left.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "45"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_07",
+   "benchmark": "gsm8k",
+   "truth": "15",
+   "text": "To find the total miles James runs, we need to calculate the miles he runs on the days he runs 3 miles and add the miles he runs on Saturday.\n\nJames runs 3 miles on Mon, Wed, and Fri. \n3 miles * 3 days = 9 miles\n\nHe runs 6 miles on Sat.\n\nTotal miles = 9 miles + 6 miles = 15 miles\n\nJames runs a total of 15 miles.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_08",
+   "benchmark": "gsm8k",
+   "truth": "180",
+   "text": "To find the total number of legs, we need to calculate the legs of chickens and cows separately and then add them together.\n\nChickens: 50 chickens * 2 legs/chicken = 100 legs\nCows: 20 cows * 4 legs/cow = 80 legs\n\nTotal legs: 100 legs (chickens) + 80 legs (cows) = 180 legs",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "180"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_09",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "To find the revenue, we need to calculate the number of seats that were occupied and multiply it by the price per seat.\n\nNumber of occupied seats = Total seats - Empty seats\n= 250 - 40\n= 210\n\nRevenue = Number of occupied seats * Price per seat\n= 210 * $8\n= $1,680\n\nSo, the revenue from the theater is $1,680.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "210"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1,680"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_10",
+   "benchmark": "gsm8k",
+   "truth": "30",
+   "text": "To find the total cost of the items, we need to calculate the cost of the books and the notebooks separately, then add them together.\n\nCost of 4 books: 4 x $15 = $60\nCost of 2 notebooks: 2 x $5 = $10\nTotal cost: $60 + $10 = $70\n\nSince Mark paid a $100 bill, we need to find the change.\n\nChange: $100 - $70 = $30\n\nSo, Mark gets $30 as change.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "30"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_11",
+   "benchmark": "gsm8k",
+   "truth": "270",
+   "text": "To find the total distance, we need to calculate the distance traveled at each speed and then add them together.\n\nDistance = Speed x Time\n\nFor the first part:\nSpeed = 60 mph\nTime = 2.5 hours\nDistance = 60 x 2.5 = 150 miles\n\nFor the second part:\nSpeed = 80 mph\nTime = 1.5 hours\nDistance = 80 x 1.5 = 120 miles\n\nTotal distance = 150 miles + 120 miles = 270 miles\n\nThe total distance traveled is 270 miles.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "270"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_12",
+   "benchmark": "gsm8k",
+   "truth": "23",
+   "text": "To find out how many stickers Sarah has, we first need to know how many stickers she had initially. Since Tom has 14 stickers and Sarah has twice as many, Sarah initially had 2 * 14 = 28 stickers.\n\nAfter giving 5 stickers to Tom, Sarah is left with 28 - 5 = 23 stickers.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_13",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "To find the total number of markers, we need to calculate the total number of markers in each pack and then add them together.\n\n15 packs of 8 markers: 15 x 8 = 120 markers\n10 packs of 12 markers: 10 x 12 = 120 markers\n\nNow, let's add the total number of markers: \n120 + 120 = 240 markers\n\nThere are 240 markers in total.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_14",
+   "benchmark": "gsm8k",
+   "truth": "100",
+   "text": "To find the total minutes, add the time spent on homework, reading, and guitar. \n\n45 (homework) + 30 (reading) + 25 (guitar) = 100 minutes.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "100"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "gsm_15",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "To find the total money, we need to find the total number of bags and multiply it by the price per bag.\n\nTotal apples = 480\nApples per bag = 6\n\nTotal bags = Total apples / Apples per bag\nTotal bags = 480 / 6\nTotal bags = 80\n\nPrice per bag = $3\n\nTotal money = Total bags * Price per bag\nTotal money = 80 * $3\nTotal money = $240\n\nThe total money is $240.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "240"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_01",
+   "benchmark": "math_500",
+   "truth": "23",
+   "text": "To find x^2 + 1/x^2, we can start with the given equation: \n\nx + 1/x = 5\n\nWe can square both sides of the equation to get:\n\n(x + 1/x)^2 = 5^2\n\nExpanding the left side, we get:\n\nx^2 + 2(x)(1/x) + 1/x^2 = 25\n\nSince (x)(1/x) = 1, we can simplify the equation to:\n\nx^2 + 2 + 1/x^2 = 25\n\nNow, we can subtract 2 from both sides to isolate x^2 + 1/x^2:\n\nx^2 + 1/x^2 = 25 - 2\nx^2 + 1/x^2 = 23\n\nTherefore, x^2 + 1/x^2 = 23.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "23"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_02",
+   "benchmark": "math_500",
+   "truth": "4",
+   "text": "To find the remainder when 3^100 is divided by 7, we can use the concept of modular arithmetic.\n\nFirst, let's find the remainder when 3 is divided by 7:\n3 ≡ 3 (mod 7)\n\nNow, let's find the remainder when 3^2 is divided by 7:\n3^2 = 9 ≡ 2 (mod 7)\n\nNext, let's find the remainder when 3^3 is divided by 7:\n3^3 = 27 ≡ 6 (mod 7)\n\nNow, let's find the remainder when 3^4 is divided by 7:\n3^4 = 81 ≡ 4 (mod 7)\n\nNext, let's find the remainder when 3^5 is divided by 7:\n3^5 = 243 ≡ 5 (mod 7)\n\nNow, let's find the remainder when 3^6 is divided by 7:\n3^6 = 729 ≡ 1 (mod 7)\n\nWe can see that 3^6 ≡ 1 (mod 7). This means that any power of 3 that is a multiple of 6 will also be congruent to 1 modulo 7.\n\nSince 100 = 16 × 6 + 4, we can write:\n3^100 = (3^6)^16 × 3^4\n≡ 1^16 × 4 (mod 7)\n≡ 4 (mod 7)\n\nTherefore, the remainder when 3^100 is divided by 7 is 4.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "4"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_03",
+   "benchmark": "math_500",
+   "truth": "15",
+   "text": "To find the hypotenuse of a right triangle, we can use the Pythagorean theorem, which states that the square of the hypotenuse (c) is equal to the sum of the squares of the legs (a and b):\n\nc² = a² + b²\n\nIn this case, the legs are 9 and 12, so we can plug those values into the equation:\n\nc² = 9² + 12²\nc² = 81 + 144\nc² = 225\n\nNow, we take the square root of both sides to find the value of c:\n\nc = √225\nc = 15\n\nSo, the hypotenuse of the right triangle with legs 9 and 12 is 15.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "15"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_04",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "To find the number of ways 5 distinct books can be arranged on a shelf, we use the concept of permutations. Since the books are distinct, the order matters.\n\nThe formula for permutations of n distinct items is n! (n factorial), where n! = n × (n-1) × (n-2) × ... × 2 × 1.\n\nFor 5 distinct books, the number of ways to arrange them is 5! = 5 × 4 × 3 × 2 × 1 = 120.\n\nSo, there are 120 ways to arrange 5 distinct books on a shelf.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "120"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_05",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "To find the sum of the real roots of the quadratic equation x^2 - 7x + 10 = 0, we can use the formula for the sum of the roots of a quadratic equation:\n\nSum of roots = -b/a\n\nIn this case, a = 1 and b = -7.\n\nSum of roots = -(-7)/1\nSum of roots = 7\n\nSo, the sum of the real roots of the equation x^2 - 7x + 10 = 0 is 7.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_06",
+   "benchmark": "math_500",
+   "truth": "9",
+   "text": "To evaluate the expression log_2(32) + log_3(81), we can use the properties of logarithms.\n\nFirst, let's simplify each logarithm:\n\nlog_2(32) = log_2(2^5) = 5 (since 2^5 = 32)\nlog_3(81) = log_3(3^4) = 4 (since 3^4 = 81)\n\nNow, we can add the two simplified logarithms:\n\n5 + 4 = 9\n\nSo, log_2(32) + log_3(81) = 9.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_07",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "To find the probability of two dice summing to 7, we need to count the number of favorable outcomes and divide it by the total number of possible outcomes.\n\nThe total number of possible outcomes when rolling two dice is 6 x 6 = 36.\n\nThe favorable outcomes that sum to 7 are:\n\n- (1, 6)\n- (2, 5)\n- (3, 4)\n- (4, 3)\n- (5, 2)\n- (6, 1)\n\nThere are 6 favorable outcomes.\n\nSo, the probability of two dice summing to 7 is 6/36, which can be simplified to 1/6.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "1/6"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_08",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "The formula for the area of an equilateral triangle is:\n\nArea = (√3 / 4) * side^2\n\nGiven the side length is 6, we can plug it into the formula:\n\nArea = (√3 / 4) * 6^2\nArea = (√3 / 4) * 36\nArea = 9 * √3\n\nSo, the area of the equilateral triangle with a side length of 6 is 9√3.",
+   "original_scorer": {
+    "correct": false,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)"
+   },
+   "verification": "hand-read: the reply's final stated answer equals the key; the original scorer misread it"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_09",
+   "benchmark": "math_500",
+   "truth": "19",
+   "text": "To compute f(g(3)), we need to follow the order of operations:\n\n1. Evaluate g(3):\n   g(3) = 3^2 - 1\n   g(3) = 9 - 1\n   g(3) = 8\n\n2. Now, substitute g(3) into f(x):\n   f(g(3)) = f(8)\n   f(8) = 2(8) + 3\n   f(8) = 16 + 3\n   f(8) = 19\n\nTherefore, f(g(3)) = 19.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "19"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_10",
+   "benchmark": "math_500",
+   "truth": "90",
+   "text": "To find the GCD (Greatest Common Divisor) of 180 and 270, we can use the Euclidean algorithm or factorization method.\n\nMethod 1: Euclidean Algorithm\n\n1. Divide 270 by 180: 270 = 1 * 180 + 90\n2. Divide 180 by 90: 180 = 2 * 90 + 0\n\nSince the remainder is 0, the GCD is 90.\n\nMethod 2: Factorization Method\n\n1. Factorize 180: 180 = 2^2 * 3^2 * 5\n2. Factorize 270: 270 = 2 * 3^3 * 5\n\nThe common factors are 2 and 5. Multiply these common factors: 2 * 5 = 10\n\nHowever, we can see that 10 is not the greatest common divisor. We need to find the highest power of each common prime factor.\n\nThe highest power of 2 is 2^1 (not 2^2, since 270 does not have 2^2).\nThe highest power of 5 is 5^1 (not 5^2, since 180 does not have 5^2).\nThe highest power of 3 is 3^2 (not 3^3, since 180 does not have 3^3).\n\nMultiply these highest powers: 2^1 * 3^2 * 5^1 = 2 * 9 * 5 = 90\n\nSo, the GCD of 180 and 270 is 90.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "90"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_11",
+   "benchmark": "math_500",
+   "truth": "56",
+   "text": "To compute (8 choose 3), we use the formula for combinations:\n\nn choose k = n! / (k!(n-k)!)\n\nwhere n is the total number of items, k is the number of items to choose, and ! denotes the factorial function.\n\nIn this case, n = 8 and k = 3.\n\n8! = 8 × 7 × 6 × 5 × 4 × 3 × 2 × 1 = 40320\n3! = 3 × 2 × 1 = 6\n(8-3)! = 5! = 5 × 4 × 3 × 2 × 1 = 120\n\nNow, we plug these values into the formula:\n\n(8 choose 3) = 8! / (3!(8-3)!)\n= 40320 / (6 × 120)\n= 40320 / 720\n= 56\n\nSo, (8 choose 3) = 56.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "56"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_12",
+   "benchmark": "math_500",
+   "truth": "3",
+   "text": "To find the minimum value of the quadratic function f(x) = 2x^2 - 8x + 11, we need to find the vertex of the parabola.\n\nThe x-coordinate of the vertex can be found using the formula:\n\nx = -b / 2a\n\nIn this case, a = 2 and b = -8.\n\nx = -(-8) / (2*2)\nx = 8 / 4\nx = 2\n\nNow, we can find the y-coordinate of the vertex by plugging x = 2 into the function:\n\nf(2) = 2(2)^2 - 8(2) + 11\nf(2) = 2(4) - 16 + 11\nf(2) = 8 - 16 + 11\nf(2) = 3\n\nTherefore, the minimum value of f(x) = 2x^2 - 8x + 11 is 3, which occurs at x = 2.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "3"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_13",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "To find the derivative of f(x) = x^3 - 5x + 4, we'll use the power rule of differentiation.\n\nThe power rule states that if f(x) = x^n, then f'(x) = nx^(n-1).\n\nApplying this rule to each term in the function:\n\n- The derivative of x^3 is 3x^(3-1) = 3x^2\n- The derivative of -5x is -5(1)x^(1-1) = -5\n- The derivative of 4 is 0, since the derivative of a constant is always 0\n\nSo, the derivative of f(x) = x^3 - 5x + 4 is f'(x) = 3x^2 - 5.\n\nNow, we need to find the value of the derivative at x = 2:\n\nf'(2) = 3(2)^2 - 5\n= 3(4) - 5\n= 12 - 5\n= 7\n\nTherefore, the derivative of f(x) = x^3 - 5x + 4 at x = 2 is 7.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "7"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  },
+  {
+   "model": "llama-3.2-11b",
+   "run_id": "run_20261020_125654_871845",
+   "question_id": "math_15",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "To solve for x, we need to isolate x on one side of the equation.\n\nGiven equation: 2^(x+1) = 64\n\nWe know that 64 is equal to 2^6. So, we can rewrite the equation as:\n\n2^(x+1) = 2^6\n\nSince the bases are the same (2), we can equate the exponents:\n\nx + 1 = 6\n\nNow, we can solve for x by subtracting 1 from both sides:\n\nx = 6 - 1\nx = 5\n\nTherefore, the value of x is 5.",
+   "original_scorer": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "expect": {
+    "correct": true,
+    "extracted": "5"
+   },
+   "verification": "right under the original and the new scorer, which extracted the same value; a random sample of 14 was hand-read, the rest were not"
+  }
+ ]
+}

@@ -1,0 +1,87 @@
+# Benchmarks Configuration
+benchmarks:
+  mmlu_pro:
+    id: "mmlu_pro"
+    name: "MMLU-Pro"
+    domain: "General Knowledge"
+    description: "Challenging multi-discipline reasoning with 10 answer options (A-J)"
+    scorer: "mcq_pro"
+    sample_file: "datasets/mmlu_pro/sample.jsonl"
+    num_options: 10
+
+  gsm8k:
+    id: "gsm8k"
+    name: "GSM8K"
+    domain: "Mathematical Reasoning"
+    description: "Grade school multi-step math word problems"
+    scorer: "math_cot"
+    sample_file: "datasets/gsm8k/sample.jsonl"
+
+  math_500:
+    id: "math_500"
+    name: "MATH-500"
+    domain: "Mathematical Reasoning"
+    description: "High school and competition level mathematical problem solving"
+    scorer: "math_exact"
+    sample_file: "datasets/math_500/sample.jsonl"
+
+  gpqa:
+    id: "gpqa"
+    name: "GPQA"
+    domain: "Logical Reasoning"
+    description: "Graduate-level Google-proof science and reasoning multiple-choice"
+    scorer: "mcq"
+    sample_file: "datasets/gpqa/sample.jsonl"
+    num_options: 4
+
+  humaneval:
+    id: "humaneval"
+    name: "HumanEval"
+    domain: "Code Generation"
+    description: "Python programming synthesis evaluated against functional unit tests"
+    scorer: "code_execution"
+    sample_file: "datasets/humaneval/sample.jsonl"
+
+  truthfulqa:
+    id: "truthfulqa"
+    name: "TruthfulQA"
+    domain: "Question Answering"
+    description: "Measures truthfulness and susceptibility to common misconceptions"
+    scorer: "mcq_truthful"
+    sample_file: "datasets/truthfulqa/sample.jsonl"
+    num_options: 4
+
+  custom_byob:
+    id: "custom_byob"
+    name: "Custom BYOB"
+    domain: "Custom Evaluation"
+    description: "Bring-Your-Own-Benchmark suite with contamination checking"
+    scorer: "rule_or_judge"
+    sample_file: "datasets/custom_byob/sample.jsonl"
+
+  kyc_india:
+    id: "kyc_india"
+    name: "KYC India"
+    domain: "Compliance & Regulation"
+    description: "Indian KYC norms: PAN/Aadhaar, eKYC, V-CIP, PMLA, CKYC (text MCQ, vision-ready)"
+    scorer: "mcq"
+    sample_file: "datasets/kyc_india/sample.jsonl"
+    num_options: 4
+
+  rbi_regulations:
+    id: "rbi_regulations"
+    name: "Bank Regulation (RBI)"
+    domain: "Banking & Regulation"
+    description: "RBI master directions: BASEL-III, CRR/SLR, priority sector lending, digital lending, payment banks"
+    scorer: "mcq"
+    sample_file: "datasets/rbi_regulations/sample.jsonl"
+    num_options: 4
+
+  image_processing:
+    id: "image_processing"
+    name: "Image Processing"
+    domain: "Computer Vision"
+    description: "Core image processing theory: filters, transforms, sampling theorem, morphology, compression"
+    scorer: "mcq"
+    sample_file: "datasets/image_processing/sample.jsonl"
+    num_options: 4

@@ -1,0 +1,15 @@
+{"question_id": "gpqa_01", "question": "Expectation value <S_z> for state 1/sqrt(5)|+z> + 2/sqrt(5)|-z> in units of hbar/2?", "options": ["-3/5", "3/5", "1/5", "-1/5"], "answer": "A"}
+{"question_id": "gpqa_02", "question": "Compound exhibiting optical isomerism without asymmetric carbon?", "options": ["Glyceraldehyde", "2-chlorobutane", "Lactic acid", "Substituted allenes"], "answer": "D"}
+{"question_id": "gpqa_03", "question": "Chemical potential of ideal photon gas in thermal equilibrium?", "options": ["Proportional to T^4", "k_B T ln(V)", "-k_B T", "Exactly zero"], "answer": "D"}
+{"question_id": "gpqa_04", "question": "In protein crystallography, what causes the phase problem?", "options": ["Detectors measure intensities and lose phase", "Direct electron density", "Real space coordinates", "Anomalous scattering"], "answer": "A"}
+{"question_id": "gpqa_05", "question": "Energy level degeneracy for principal quantum number n in hydrogen (no spin)?", "options": ["n(n+1)/2", "n", "2n^2", "n^2"], "answer": "D"}
+{"question_id": "gpqa_06", "question": "Reaction converting carbonyl to alkene using phosphonium ylide?", "options": ["Aldol", "Diels-Alder", "Wittig", "Grignard"], "answer": "C"}
+{"question_id": "gpqa_07", "question": "Ensemble with fixed T, V, and chemical potential mu?", "options": ["Canonical", "Microcanonical", "Isobaric", "Grand canonical"], "answer": "D"}
+{"question_id": "gpqa_08", "question": "F2 phenotypic ratio in Mendelian dihybrid cross?", "options": ["3:1", "1:2:1", "9:3:3:1", "9:7"], "answer": "C"}
+{"question_id": "gpqa_09", "question": "Fermi surface shape of 3D isotropic free electron gas?", "options": ["Sphere", "Cylinder", "Ellipsoid", "Hyperboloid"], "answer": "A"}
+{"question_id": "gpqa_10", "question": "Directly reverses UV pyrimidine dimers using blue light?", "options": ["Mismatch repair", "Photolyase", "NER", "BER"], "answer": "B"}
+{"question_id": "gpqa_11", "question": "2D square lattice Ising model critical point behavior?", "options": ["BKT topological only", "First-order at T=0", "Onsager exact continuous transition", "No phase transition"], "answer": "C"}
+{"question_id": "gpqa_12", "question": "Effect of uncompetitive inhibitor on V_max and K_m?", "options": ["Increases K_m only", "Decreases V_max only", "Decreases both V_max and K_m", "Increases both"], "answer": "C"}
+{"question_id": "gpqa_13", "question": "Ricci scalar R in vacuum spacetime with zero cosmological constant?", "options": ["R = 0", "R = 8 pi G", "R = -1/r^2", "Mass dependent"], "answer": "A"}
+{"question_id": "gpqa_14", "question": "Rotational dipole selection rule for rigid diatomic rotor?", "options": ["Delta J = +-2", "Delta J = +-1", "Any integer", "Delta J = 0"], "answer": "B"}
+{"question_id": "gpqa_15", "question": "Anatomical site of somatic hypermutation in B cells?", "options": ["Thymic cortex", "Germinal centers", "Peripheral blood", "Bone marrow niche"], "answer": "B"}

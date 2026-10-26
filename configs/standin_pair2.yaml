@@ -1,0 +1,25 @@
+# STAND-IN pair 2. Mirrors the ROLE of real pair 2 (mid-size reasoning model vs the nearest Llama to Llama 4 Scout).
+# Not the real models.
+# Status of the models: Nemotron-3-Nano reasoning is VERIFIED (a real call worked). Llama-3.2-11B is VERIFIED.
+# The role is only loosely mirrored: Llama 4 Scout is not on the free providers, the 90B Llama (meta/llama-3.2-90b-vision-instruct)
+# timed out once at 120 s (inconclusive, not a 404) and the 70B Nemotron fallback returned 404, so the nearest
+# callable Llama is the same 11B model as in pair 1.
+job_name: "standin_pair2_pipeline_validation"
+description: "PIPELINE VALIDATION ONLY. Stand-in models (free NVIDIA NIM), not the models under study. Not results for Ministral-3-14B-Reasoning or Llama-4-Scout."
+seed: 42
+limit_per_benchmark: 15
+
+models:
+  - "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+  - "meta/llama-3.2-11b-vision-instruct"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"

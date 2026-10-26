@@ -1,0 +1,2 @@
+{"question_id": "byob_01", "domain": "Enterprise Architecture", "question": "Pattern for zero-RTO active-active disaster recovery?", "options": ["Multi-region active-active with global tables", "Single AZ EC2 with weekly backup", "Single region RDS read replica", "VPC peering only"], "answer": "A"}
+{"question_id": "byob_02", "domain": "Data Governance", "question": "Core GDPR Article 17 right?", "options": ["Right to erasure", "Public email disclosure", "Indefinite data holding", "Sale of telemetry"], "answer": "A"}

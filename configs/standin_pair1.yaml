@@ -1,0 +1,25 @@
+# STAND-IN pair 1. Mirrors the ROLE of real pair 1 (small instruct model vs a Llama of about 8B). Not the real models.
+# Status of the models: Llama-3.2-11B is VERIFIED (a real call worked). Gemma-3-12B is NOT CALLABLE: it returned
+# HTTP 404 on a real call, as did every other small instruct model tried on NIM (see models_config.yaml). THIS PAIR
+# CANNOT RUN YET; running it would stop after 5 items. A replacement for model A is waiting for approval.
+# No Mistral-family small instruct model was callable (three listed ones returned 404), and no ~8B Llama exists on
+# the free providers, so this pair only mirrors the role loosely.
+job_name: "standin_pair1_pipeline_validation"
+description: "PIPELINE VALIDATION ONLY. Stand-in models (free NVIDIA NIM), not the models under study. Not results for Ministral-3-8B-Instruct or Llama-3.1-8B-Instruct."
+seed: 42
+limit_per_benchmark: 15
+
+models:
+  - "google/gemma-3-12b-it"
+  - "meta/llama-3.2-11b-vision-instruct"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"

@@ -1,0 +1,35 @@
+# Pair 1: Ministral-3-8B-Instruct vs Llama-3.1-8B-Instruct
+job_name: "pair1_ministral3_8b_vs_llama31_8b"
+description: "Head-to-head: Ministral-3-8B-Instruct-2512 vs Llama-3.1-8B-Instruct across all benchmarks"
+seed: 42
+limit_per_benchmark: 100
+
+models:
+  - "mistralai/ministral-3-8b-instruct-2512"
+  - "meta/llama-3.1-8b-instruct"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"
+
+execution:
+  concurrency: 4
+  timeout_seconds: 30
+  retry_attempts: 3
+  cache_responses: true
+  temperature: 0.1
+  max_tokens: 1024
+
+quality_gate:
+  baseline_model: "meta/llama-3.1-8b-instruct"
+  candidate_model: "mistralai/ministral-3-8b-instruct-2512"
+  min_overall_accuracy: 0.65
+  max_regression_delta: 0.03
+  significance_alpha: 0.05

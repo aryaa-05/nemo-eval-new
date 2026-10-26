@@ -1,0 +1,300 @@
+# Models Configuration for NeMo Evaluator Benchmarking Platform
+# Per-model optional keys: params.max_tokens, timeout_seconds (default 120), api_key_env.
+# api_key_env names the environment variable holding the key. Each provider only accepts its own
+# variable and its own host (nvidia_nim -> integrate.api.nvidia.com, openai -> api.openai.com).
+#
+# provider: "auto" picks the first route (nvidia_nim, groq, openrouter, openai) whose key is present in
+# the environment. The requested model id stays in the run; the served id and any substitute note are
+# recorded in the run artifact and shown by the CLI, dashboard and report. Add OPENROUTER_API_KEY to .env
+# to make the six real pair models below live. OpenRouter is paid per use; the costs shown are its
+# listed per-1M-token prices in October 2026. A route marked substitute: true is NOT the exact requested
+# model variant and must be described as a substitute wherever its results are reported.
+models:
+  meta/llama-3.1-70b-instruct:
+    id: "meta/llama-3.1-70b-instruct"
+    name: "Llama-3.1-70B-Instruct"
+    provider: "mock"  # Switch to 'nvidia_nim', 'openai', 'ollama', 'huggingface' for live calls
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.88
+    cost_per_1m_output: 0.88
+    strengths: ["General Knowledge", "Math", "Reasoning", "Code"]
+
+  meta/llama-3.1-8b-instruct:
+    id: "meta/llama-3.1-8b-instruct"
+    name: "Llama-3.1-8B-Instruct"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "meta-llama/llama-3.1-8b-instruct"
+        substitute: false
+        note: "Exact model on OpenRouter."
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.05
+    cost_per_1m_output: 0.08
+    strengths: ["High Throughput", "Low Latency", "Cost-Efficiency"]
+
+  qwen/qwen-2.5-72b-instruct:
+    id: "qwen/qwen-2.5-72b-instruct"
+    name: "Qwen-2.5-72B-Instruct"
+    provider: "mock"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.90
+    cost_per_1m_output: 0.90
+    strengths: ["Coding Performance", "Mathematical Reasoning", "Multilingual"]
+
+  mistralai/mixtral-8x7b-instruct:
+    id: "mistralai/mixtral-8x7b-instruct"
+    name: "Mixtral-8x7B-Instruct-v0.1"
+    provider: "mock"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    context_window: 32768
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.60
+    cost_per_1m_output: 0.60
+    strengths: ["Fast MoE Inference", "General Knowledge"]
+
+  deepseek/deepseek-r1-distill-llama-70b:
+    id: "deepseek/deepseek-r1-distill-llama-70b"
+    name: "DeepSeek-R1-Distill-Llama-70B"
+    provider: "mock"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    context_window: 65536
+    params:
+      temperature: 0.6
+      max_tokens: 2048
+      top_p: 0.95
+    cost_per_1m_input: 0.80
+    cost_per_1m_output: 0.80
+    strengths: ["Deep Chain-of-Thought", "MATH-500", "Competitive Reasoning"]
+
+  openai/gpt-4o-mini:
+    id: "openai/gpt-4o-mini"
+    name: "GPT-4o-Mini"
+    provider: "mock"
+    api_base: "https://api.openai.com/v1"
+    api_key_env: "OPENAI_API_KEY"
+    context_window: 128000
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.15
+    cost_per_1m_output: 0.60
+    strengths: ["Reliable Instruction Following", "Cost-Efficiency"]
+
+  # ---- Ministral 3 Series (Pair Comparison Models) ----
+  mistralai/ministral-3-8b-instruct-2512:
+    id: "mistralai/ministral-3-8b-instruct-2512"
+    name: "Ministral-3-8B-Instruct-2512"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "mistralai/ministral-8b-2512"
+        substitute: true
+        note: "OpenRouter lists Ministral 3 8B 2512 but does not state whether it is the Instruct or Reasoning variant."
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.15
+    cost_per_1m_output: 0.15
+    strengths: ["Compact Instruction Following", "Low Latency", "Cost-Efficiency"]
+
+  mistralai/ministral-3-8b-reasoning-2512:
+    id: "mistralai/ministral-3-8b-reasoning-2512"
+    name: "Ministral-3-8B-Reasoning-2512"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "mistralai/ministral-8b-2512"
+        substitute: true
+        note: "OpenRouter lists one Ministral 3 8B 2512 model; the Reasoning variant is not distinguished. This is the same served model as pair 1 model A."
+    context_window: 131072
+    timeout_seconds: 240
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.15
+    cost_per_1m_output: 0.15
+    strengths: ["Chain-of-Thought Reasoning", "Math", "Structured Analysis"]
+
+  mistralai/ministral-3-14b-reasoning-2512:
+    id: "mistralai/ministral-3-14b-reasoning-2512"
+    name: "Ministral-3-14B-Reasoning-2512"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "mistralai/ministral-14b-2512"
+        substitute: true
+        note: "OpenRouter lists Ministral 3 14B 2512 but does not state that it is the Reasoning variant."
+    context_window: 131072
+    timeout_seconds: 240
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.20
+    cost_per_1m_output: 0.20
+    strengths: ["Deep Reasoning", "Scientific QA", "Multi-Step Math"]
+
+  meta/llama-4-scout-17b-16e-instruct:
+    id: "meta/llama-4-scout-17b-16e-instruct"
+    name: "Llama-4-Scout-17B-16E-Instruct"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "meta-llama/llama-4-scout"
+        substitute: false
+        note: "Exact model family and size on OpenRouter."
+    context_window: 1000000
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.10
+    cost_per_1m_output: 0.30
+    strengths: ["MoE Efficiency", "Long Context", "General Reasoning"]
+
+  qwen/qwen3.5-8b:
+    id: "qwen/qwen3.5-8b"
+    name: "Qwen3.5-8B"
+    provider: "auto"
+    routes:
+      openrouter:
+        id: "qwen/qwen3.5-9b"
+        substitute: true
+        note: "OpenRouter lists Qwen3.5-9B, not 8B. The brief did not specify a Qwen3.5 size; 8B came from the old config."
+    context_window: 131072
+    timeout_seconds: 240
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.17
+    cost_per_1m_output: 0.25
+    strengths: ["Reasoning", "Multilingual", "Math"]
+
+  # ====================================================================================================
+  # STAND-IN ONLY. Free-tier models used to validate the pipeline (configs/standin_*.yaml).
+  # They are NOT the models under study. Never present their results as results for the real models.
+  # "Verified" below means one real call worked (October 2026). Listed on a provider does NOT mean callable:
+  # several models in the NIM list returned HTTP 404 for this account.
+  # ====================================================================================================
+
+  # STAND-IN ONLY. NOT CALLABLE: in the NIM list, but one real call returned HTTP 404 "Function ... Not found for
+  # account ..." (October 2026). Two more 7B instruct models from the same list (zyphra/zamba2-7b-instruct and
+  # aisingapore/sea-lion-7b-instruct) returned the same 404. A run with this model stops after 5 items (early stop).
+  # Kept only until a replacement for pair 1 is approved.
+  google/gemma-3-12b-it:
+    id: "google/gemma-3-12b-it"
+    name: "Stand-in Gemma-3-12B-it"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+    strengths: ["Stand-in: small instruct model"]
+
+  # STAND-IN ONLY. VERIFIED: a 10-item mmlu_pro run completed. Some NIM calls were slow (up to 73 s, one over 120 s).
+  meta/llama-3.2-11b-vision-instruct:
+    id: "meta/llama-3.2-11b-vision-instruct"
+    name: "Stand-in Llama-3.2-11B-Vision-Instruct"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    requests_per_minute: 15   # NVIDIA allows 40/min; two NIM models at 15 each stay at or below 30 even if run together
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+    strengths: ["Stand-in: nearest callable Llama (11B, vision-language model used text-only)"]
+
+  # STAND-IN ONLY. VERIFIED: one call worked (371 tokens, 8.6 s); thinking comes back in message.reasoning_content.
+  # max_tokens 4096 = 4x the largest reply measured across the three reasoning stand-ins (790), rounded up to a
+  # multiple of 1024. timeout 240 s = 2.5x the time 4096 tokens would take at the measured ~43 tokens/s (95 s), because
+  # NIM's free tier showed slow outliers. Both are provisional: the sample is one easy math question.
+  nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:
+    id: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+    name: "Stand-in Nemotron-3-Nano-Omni-30B-A3B-Reasoning"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15   # NVIDIA allows 40/min; two NIM models at 15 each stay at or below 30 even if run together
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+    strengths: ["Stand-in: reasoning model"]
+
+  # STAND-IN ONLY. VERIFIED: 10-item mmlu_pro run, no errors; thinking comes back in message.reasoning and its tokens
+  # are inside completion_tokens (measured 42-472 per item, mean 132). Groq limit seen in headers: 8000 tokens per minute.
+  # requests_per_minute 10: even at 600 tokens per request (about 2x the measured total) that is 6000 tokens a minute.
+  openai/gpt-oss-20b:
+    id: "openai/gpt-oss-20b"
+    name: "Stand-in gpt-oss-20b"
+    provider: "groq"
+    api_base: "https://api.groq.com/openai/v1"
+    api_key_env: "GROQ_API_KEY"
+    timeout_seconds: 60
+    requests_per_minute: 10
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+    strengths: ["Stand-in: reasoning model (Groq lists it with supported_features: reasoning)"]
+
+  # STAND-IN ONLY. VERIFIED: one call worked (790 tokens, 1.9 s, finish_reason stop, answer scored correctly).
+  # No separate thinking field came back for this model. A request with max_tokens 4096 did not use up the
+  # 8000-tokens-per-minute budget (remaining-tokens header read 7878 afterwards), so max_tokens is not reserved.
+  # requests_per_minute 6: at about 1000 tokens per request (measured 818 on an easy question) that is 6000 a minute.
+  qwen/qwen3.8-27b:
+    id: "qwen/qwen3.8-27b"
+    name: "Stand-in Qwen3.8-27B"
+    provider: "groq"
+    api_base: "https://api.groq.com/openai/v1"
+    api_key_env: "GROQ_API_KEY"
+    timeout_seconds: 60
+    requests_per_minute: 6
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+    strengths: ["Stand-in: Qwen-family model (a different version and size from the Qwen3.5 in the brief)"]

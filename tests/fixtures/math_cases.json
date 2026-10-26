@@ -1,0 +1,707 @@
+{
+ "_comment": "Curated math reply fixtures. Group right-format: formats that must now be read correctly. Group must-stay-wrong: wrong answers that must stay wrong (false-positive guards). 'expect' is the correct behaviour, written by hand.",
+ "cases": [
+  {
+   "id": "R01",
+   "group": "right-format",
+   "name": "unit after the number, bold label",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "72 - 27 = 45.\n\n**Answer: 45 pencils left.**",
+   "expect": {
+    "correct": true,
+    "extracted": "45",
+    "error": null
+   }
+  },
+  {
+   "id": "R02",
+   "group": "right-format",
+   "name": "label, then a sentence with the value in bold",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "48 + 24 = 72.\n\n**Answer:**\nNatalia sold **72** clips altogether.",
+   "expect": {
+    "correct": true,
+    "extracted": "72",
+    "error": null
+   }
+  },
+  {
+   "id": "R03",
+   "group": "right-format",
+   "name": "conclusion label, bold currency value, a second number later in the sentence",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "$12 per hour for 50 minutes.\n\n**Conclusion:**\nWeng earns **$10** for 50 minutes of babysitting.",
+   "expect": {
+    "correct": true,
+    "extracted": "10",
+    "error": null
+   }
+  },
+  {
+   "id": "R04",
+   "group": "right-format",
+   "name": "markdown heading 'Final Conclusion' then a sentence with a bold value",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "5! = 5 x 4 x 3 x 2 x 1.\n\n### Final Conclusion\nThere are **120** distinct ways to arrange 5 distinct books on a shelf.",
+   "expect": {
+    "correct": true,
+    "extracted": "120",
+    "error": null
+   }
+  },
+  {
+   "id": "R05",
+   "group": "right-format",
+   "name": "bold 'Revenue: $1,680' with no 'Answer' label",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "Revenue = 210 x 8 = 1,680\n\n**Revenue: $1,680**",
+   "expect": {
+    "correct": true,
+    "extracted": "1,680",
+    "error": null
+   }
+  },
+  {
+   "id": "R06",
+   "group": "right-format",
+   "name": "LaTeX display line with escaped dollar and {,} thousands",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "\\[\n\\text{Revenue} = 210 \\times \\$8 = \\$1{,}680\n\\]",
+   "expect": {
+    "correct": true,
+    "extracted": "1,680",
+    "error": null
+   }
+  },
+  {
+   "id": "R07",
+   "group": "right-format",
+   "name": "final working line, value after the last '='",
+   "benchmark": "gsm8k",
+   "truth": "240",
+   "text": "Each bag sells for $3.\n\nTotal money = 80 bags × $3/bag = $240",
+   "expect": {
+    "correct": true,
+    "extracted": "240",
+    "error": null
+   }
+  },
+  {
+   "id": "R08",
+   "group": "right-format",
+   "name": "no label; 'there are 120 ways to arrange 5 books' (answer before another number)",
+   "benchmark": "math_500",
+   "truth": "120",
+   "text": "5! = 5 × 4 × 3 × 2 × 1 = 120.\n\nSo, there are 120 ways to arrange 5 distinct books on a shelf.",
+   "expect": {
+    "correct": true,
+    "extracted": "120",
+    "error": null
+   }
+  },
+  {
+   "id": "R09",
+   "group": "right-format",
+   "name": "no label; 'the baker has 45 loaves left'",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "Half of 90 is 45 loaves sold.\n\nTherefore, the baker has 45 loaves left.",
+   "expect": {
+    "correct": true,
+    "extracted": "45",
+    "error": null
+   }
+  },
+  {
+   "id": "R10",
+   "group": "right-format",
+   "name": "LaTeX \\frac in a closing sentence",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "\\[\nP = \\frac{6}{36}\n\\]\n\nSo the probability is \\(\\displaystyle \\frac{1}{6}\\).",
+   "expect": {
+    "correct": true,
+    "extracted": "1/6",
+    "error": null
+   }
+  },
+  {
+   "id": "R11",
+   "group": "right-format",
+   "name": "LaTeX radical after the last '=' (key written as 9*sqrt(3))",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "\\[\n\\text{Area} = \\frac{\\sqrt{3}}{4}\\,(6)^{2} = \\frac{\\sqrt{3}}{4}\\,36 = 9\\sqrt{3}\\;\\text{square units.}\n\\]",
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)",
+    "error": null
+   }
+  },
+  {
+   "id": "R12",
+   "group": "right-format",
+   "name": "unicode radical in a closing sentence",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "So the area of the equilateral triangle is 9√3.",
+   "expect": {
+    "correct": true,
+    "extracted": "9*sqrt(3)",
+    "error": null
+   }
+  },
+  {
+   "id": "R13",
+   "group": "right-format",
+   "name": "boxed LaTeX fraction against key 1/6",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "Therefore \\boxed{\\frac{1}{6}}",
+   "expect": {
+    "correct": true,
+    "extracted": "\\frac{1}{6}",
+    "error": null
+   }
+  },
+  {
+   "id": "R14",
+   "group": "right-format",
+   "name": "decimal at the end of a labelled sentence",
+   "benchmark": "gsm8k",
+   "truth": "3.5",
+   "text": "Dividing gives the result. The answer is 3.5.",
+   "expect": {
+    "correct": true,
+    "extracted": "3.5",
+    "error": null
+   }
+  },
+  {
+   "id": "R15",
+   "group": "right-format",
+   "name": "negative answer",
+   "benchmark": "math_500",
+   "truth": "-3",
+   "text": "Answer: -3",
+   "expect": {
+    "correct": true,
+    "extracted": "-3",
+    "error": null
+   }
+  },
+  {
+   "id": "R16",
+   "group": "right-format",
+   "name": "percent sign written, key is the bare number",
+   "benchmark": "gsm8k",
+   "truth": "25",
+   "text": "Answer: 25%",
+   "expect": {
+    "correct": true,
+    "extracted": "25",
+    "error": null
+   }
+  },
+  {
+   "id": "R17",
+   "group": "right-format",
+   "name": "$10.00 against key 10",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Answer: $10.00",
+   "expect": {
+    "correct": true,
+    "extracted": "10.00",
+    "error": null
+   }
+  },
+  {
+   "id": "R18",
+   "group": "right-format",
+   "name": "solving for x: value after the last '='",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "Subtract 3 from both sides, then divide by 2.\n\nSolving gives x = 5",
+   "expect": {
+    "correct": true,
+    "extracted": "5",
+    "error": null
+   }
+  },
+  {
+   "id": "R19",
+   "group": "right-format",
+   "name": "label then equation: take the value after '='",
+   "benchmark": "gsm8k",
+   "truth": "7",
+   "text": "Answer: the sum of the roots 2 + 5 = 7",
+   "expect": {
+    "correct": true,
+    "extracted": "7",
+    "error": null
+   }
+  },
+  {
+   "id": "R20",
+   "group": "right-format",
+   "name": "closing chatter after the answer is ignored",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "**Answer: 45**\n\nHope this helps with the other 10 problems!",
+   "expect": {
+    "correct": true,
+    "extracted": "45",
+    "error": null
+   }
+  },
+  {
+   "id": "R21",
+   "group": "right-format",
+   "name": "unsimplified fraction, then 'which can be simplified to' the key",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "There are 6 favorable outcomes out of 36.\n\nSo, the probability of two dice summing to 7 is 6/36, which can be simplified to 1/6.",
+   "expect": {
+    "correct": true,
+    "extracted": "1/6",
+    "error": null
+   }
+  },
+  {
+   "id": "R22",
+   "group": "right-format",
+   "name": "'reduces to' restates the value; the later one is the answer",
+   "benchmark": "math_500",
+   "truth": "3/2",
+   "text": "The result is 12/8, which reduces to 3/2.",
+   "expect": {
+    "correct": true,
+    "extracted": "3/2",
+    "error": null
+   }
+  },
+  {
+   "id": "W01",
+   "group": "must-stay-wrong",
+   "name": "correct intermediate (40) then a wrong final answer (41)",
+   "benchmark": "gsm8k",
+   "truth": "40",
+   "text": "12 + 8 = 20, then 20 x 2 = 40.\n\n**Answer: 41**",
+   "expect": {
+    "correct": false,
+    "extracted": "41",
+    "error": null
+   }
+  },
+  {
+   "id": "W02",
+   "group": "must-stay-wrong",
+   "name": "the key (5) appears only in the working; final total is wrong",
+   "benchmark": "gsm8k",
+   "truth": "5",
+   "text": "Each item costs $5. 7 items cost 7 x 5 = 35.\n\nThe total is 36.",
+   "expect": {
+    "correct": false,
+    "extracted": "36",
+    "error": null
+   }
+  },
+  {
+   "id": "W03",
+   "group": "must-stay-wrong",
+   "name": "12 is not 120 (digit prefix)",
+   "benchmark": "gsm8k",
+   "truth": "120",
+   "text": "Answer: 12",
+   "expect": {
+    "correct": false,
+    "extracted": "12",
+    "error": null
+   }
+  },
+  {
+   "id": "W04",
+   "group": "must-stay-wrong",
+   "name": "1,200 is not 120",
+   "benchmark": "gsm8k",
+   "truth": "120",
+   "text": "Answer: 1,200",
+   "expect": {
+    "correct": false,
+    "extracted": "1,200",
+    "error": null
+   }
+  },
+  {
+   "id": "W05",
+   "group": "must-stay-wrong",
+   "name": "a unit that changes the value: 0.5 hours is not 30 minutes",
+   "benchmark": "gsm8k",
+   "truth": "30",
+   "text": "Answer: 0.5 hours",
+   "expect": {
+    "correct": false,
+    "extracted": "0.5",
+    "error": null
+   }
+  },
+  {
+   "id": "W06",
+   "group": "must-stay-wrong",
+   "name": "25% is not 0.25",
+   "benchmark": "gsm8k",
+   "truth": "0.25",
+   "text": "Answer: 25%",
+   "expect": {
+    "correct": false,
+    "extracted": "25",
+    "error": null
+   }
+  },
+  {
+   "id": "W07",
+   "group": "must-stay-wrong",
+   "name": "a hedge between two values ('3 or 4', key is the first value) is no answer, not a right answer",
+   "benchmark": "gsm8k",
+   "truth": "3",
+   "text": "Answer: 3 or 4",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W08",
+   "group": "must-stay-wrong",
+   "name": "'not 12; it is 13' must not score 12 as right",
+   "benchmark": "gsm8k",
+   "truth": "12",
+   "text": "The answer is not 12; it is 13.",
+   "expect": {
+    "correct": false,
+    "extracted": "13",
+    "error": null
+   }
+  },
+  {
+   "id": "W09",
+   "group": "must-stay-wrong",
+   "name": "sign dropped: 5 is not -5",
+   "benchmark": "math_500",
+   "truth": "-5",
+   "text": "Answer: 5",
+   "expect": {
+    "correct": false,
+    "extracted": "5",
+    "error": null
+   }
+  },
+  {
+   "id": "W10",
+   "group": "must-stay-wrong",
+   "name": "sign added: -5 is not 5",
+   "benchmark": "math_500",
+   "truth": "5",
+   "text": "Answer: -5",
+   "expect": {
+    "correct": false,
+    "extracted": "-5",
+    "error": null
+   }
+  },
+  {
+   "id": "W11",
+   "group": "must-stay-wrong",
+   "name": "truncated decimal: 3 is not 3.5",
+   "benchmark": "gsm8k",
+   "truth": "3.5",
+   "text": "Answer: 3",
+   "expect": {
+    "correct": false,
+    "extracted": "3",
+    "error": null
+   }
+  },
+  {
+   "id": "W12",
+   "group": "must-stay-wrong",
+   "name": "extra decimal: 3.5 is not 3",
+   "benchmark": "gsm8k",
+   "truth": "3",
+   "text": "Answer: 3.5",
+   "expect": {
+    "correct": false,
+    "extracted": "3.5",
+    "error": null
+   }
+  },
+  {
+   "id": "W13",
+   "group": "must-stay-wrong",
+   "name": "wrong boxed fraction",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "\\boxed{\\frac{1}{3}}",
+   "expect": {
+    "correct": false,
+    "extracted": "\\frac{1}{3}",
+    "error": null
+   }
+  },
+  {
+   "id": "W14",
+   "group": "must-stay-wrong",
+   "name": "wrong radicand: 9*sqrt(2) is not 9*sqrt(3)",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "Answer: 9\\sqrt{2}",
+   "expect": {
+    "correct": false,
+    "extracted": "9*sqrt(2)",
+    "error": null
+   }
+  },
+  {
+   "id": "W15",
+   "group": "must-stay-wrong",
+   "name": "wrong coefficient: 18*sqrt(3) is not 9*sqrt(3)",
+   "benchmark": "math_500",
+   "truth": "9*sqrt(3)",
+   "text": "Answer: 18\\sqrt{3}",
+   "expect": {
+    "correct": false,
+    "extracted": "18*sqrt(3)",
+    "error": null
+   }
+  },
+  {
+   "id": "W16",
+   "group": "must-stay-wrong",
+   "name": "the key (48) is only restated from the question",
+   "benchmark": "gsm8k",
+   "truth": "48",
+   "text": "We are told 48 clips were sold in April. Half of that is 24 in May.\n\nAnswer: 36",
+   "expect": {
+    "correct": false,
+    "extracted": "36",
+    "error": null
+   }
+  },
+  {
+   "id": "W17",
+   "group": "must-stay-wrong",
+   "name": "bold working value equals the key, but the stated answer differs",
+   "benchmark": "gsm8k",
+   "truth": "72",
+   "text": "**Step 1: total = 72**\n\nThus the answer is 70.",
+   "expect": {
+    "correct": false,
+    "extracted": "70",
+    "error": null
+   }
+  },
+  {
+   "id": "W18",
+   "group": "must-stay-wrong",
+   "name": "last equation has a wrong right-hand side",
+   "benchmark": "gsm8k",
+   "truth": "40",
+   "text": "Total = 8 x 5 = 41",
+   "expect": {
+    "correct": false,
+    "extracted": "41",
+    "error": null
+   }
+  },
+  {
+   "id": "W19",
+   "group": "must-stay-wrong",
+   "name": "ambiguous: 'Answer: 40 minus 1, which is 39' states two values",
+   "benchmark": "gsm8k",
+   "truth": "40",
+   "text": "The answer is 40 minus 1, which is 39.",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W20",
+   "group": "must-stay-wrong",
+   "name": "no number in the reply",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "I cannot determine the answer from the information given.",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W21",
+   "group": "must-stay-wrong",
+   "name": "number written as a word is not read",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Answer: ten",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W22",
+   "group": "must-stay-wrong",
+   "name": "the key (10) appears only in closing chatter",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Weng earns more than expected.\n\nHope this helps with the 10 other problems!",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W23",
+   "group": "must-stay-wrong",
+   "name": "a correct side calculation (5 + 5 = 10) before a wrong labelled answer",
+   "benchmark": "gsm8k",
+   "truth": "10",
+   "text": "Let me double check: 5 + 5 = 10.\n\nAnswer: 12",
+   "expect": {
+    "correct": false,
+    "extracted": "12",
+    "error": null
+   }
+  },
+  {
+   "id": "W24",
+   "group": "must-stay-wrong",
+   "name": "16.80 is not 1680",
+   "benchmark": "gsm8k",
+   "truth": "1680",
+   "text": "Answer: 16.80",
+   "expect": {
+    "correct": false,
+    "extracted": "16.80",
+    "error": null
+   }
+  },
+  {
+   "id": "W25",
+   "group": "must-stay-wrong",
+   "name": "1,000 is not 1",
+   "benchmark": "gsm8k",
+   "truth": "1",
+   "text": "Answer: 1,000",
+   "expect": {
+    "correct": false,
+    "extracted": "1,000",
+    "error": null
+   }
+  },
+  {
+   "id": "W26",
+   "group": "must-stay-wrong",
+   "name": "450 is not 45",
+   "benchmark": "gsm8k",
+   "truth": "45",
+   "text": "The answer is 450.",
+   "expect": {
+    "correct": false,
+    "extracted": "450",
+    "error": null
+   }
+  },
+  {
+   "id": "W27",
+   "group": "must-stay-wrong",
+   "name": "wrong sum after '=' although both roots are mentioned",
+   "benchmark": "math_500",
+   "truth": "7",
+   "text": "The roots are 2 and 5, so the sum is 2 + 5 = 8",
+   "expect": {
+    "correct": false,
+    "extracted": "8",
+    "error": null
+   }
+  },
+  {
+   "id": "W28",
+   "group": "must-stay-wrong",
+   "name": "a km value does not equal the metres key",
+   "benchmark": "gsm8k",
+   "truth": "150",
+   "text": "Answer: 0.15 km",
+   "expect": {
+    "correct": false,
+    "extracted": "0.15",
+    "error": null
+   }
+  },
+  {
+   "id": "W29",
+   "group": "must-stay-wrong",
+   "name": "unsimplified value equals the key, but the reply simplifies it to a different (wrong) value",
+   "benchmark": "math_500",
+   "truth": "1/6",
+   "text": "There are 6 favorable outcomes out of 36.\n\nSo, the probability of two dice summing to 7 is 6/36, which can be simplified to 1/5.",
+   "expect": {
+    "correct": false,
+    "extracted": "1/5",
+    "error": null
+   }
+  },
+  {
+   "id": "W30",
+   "group": "must-stay-wrong",
+   "name": "'reduces to' a wrong fraction although the first fraction equals the key",
+   "benchmark": "math_500",
+   "truth": "3/2",
+   "text": "The result is 12/8, which reduces to 4/3.",
+   "expect": {
+    "correct": false,
+    "extracted": "4/3",
+    "error": null
+   }
+  },
+  {
+   "id": "W31",
+   "group": "must-stay-wrong",
+   "name": "hedge in a sentence ('6 or 7'), key is the first value",
+   "benchmark": "gsm8k",
+   "truth": "6",
+   "text": "Counting the pencils again, the answer is 6 or 7.",
+   "expect": {
+    "correct": false,
+    "extracted": null,
+    "error": "no_answer_found"
+   }
+  },
+  {
+   "id": "W32",
+   "group": "must-stay-wrong",
+   "name": "a restating phrase that is not the answer: 'equivalent to' a wrong value",
+   "benchmark": "math_500",
+   "truth": "9",
+   "text": "The side is 9 cm, which is equivalent to 90 mm.\n\nThe area is 100.",
+   "expect": {
+    "correct": false,
+    "extracted": "100",
+    "error": null
+   }
+  }
+ ]
+}

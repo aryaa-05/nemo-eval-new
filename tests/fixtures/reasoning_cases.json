@@ -1,0 +1,148 @@
+{
+  "_comment": "Cases 1-12 are the failure table from the Phase 2 analysis. Cases 13+ are extra edge cases. 'expect' is the CORRECT behaviour. finish_reason 'length' means the provider reported the output was cut off by max_tokens.",
+  "cases": [
+    {"id": 1, "name": "clean final line", "benchmark": "gpqa", "truth": "C",
+     "text": "Answer: C", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 2, "name": "'The answer is C' without the word 'correct'", "benchmark": "gpqa", "truth": "C",
+     "text": "The answer is C", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 3, "name": "thinking mentions (B), final answer is C", "benchmark": "gpqa", "truth": "C",
+     "text": "<think>\nOption (B) looks tempting but fails on the second premise.\n</think>\n\nThe answer is C", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 4, "name": "draft 'Answer: B' inside thinking, final 'Answer: D'", "benchmark": "gpqa", "truth": "D",
+     "text": "<think>\nDraft -> Answer: B? No, recheck.\n</think>\nAnswer: D", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "D", "error": null}},
+
+    {"id": 5, "name": "thinking then 'The correct answer is D'", "benchmark": "gpqa", "truth": "D",
+     "text": "<think>\nA quick look at A and B rules them out.\n</think>\nThe correct answer is D", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "D", "error": null}},
+
+    {"id": 6, "name": "output cut off mid-thinking (MCQ)", "benchmark": "gpqa", "truth": "C",
+     "text": "<think>\nLet me check each option. Option A says X, which is wrong. Option B says Y, which seems", "finish_reason": "length",
+     "expect": {"correct": false, "extracted": null, "error": "truncated"}},
+
+    {"id": 7, "name": "final answer then trailing prose containing the article 'a'", "benchmark": "gpqa", "truth": "C",
+     "text": "Answer is C. Hope this is a help", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 8, "name": "lowercase prose after the answer containing 'I' and 'a'", "benchmark": "gpqa", "truth": "C",
+     "text": "So the answer is C. I hope that is a good explanation", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 9, "name": "10 options: thinking line starts with 'I think', final 'Answer: F'", "benchmark": "mmlu_pro", "truth": "F",
+     "text": "<think>\nI think the first premise holds.\n</think>\nAnswer: F", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "F", "error": null}},
+
+    {"id": 10, "name": "math: intermediate '= 7' in thinking, final boxed 12", "benchmark": "gsm8k", "truth": "12",
+     "text": "<think>\nSo 3+4 = 7, then x = 12\n</think>\n\\boxed{12}", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "12", "error": null}},
+
+    {"id": 11, "name": "math: output cut off, last number in thinking is a draft", "benchmark": "gsm8k", "truth": "30",
+     "text": "<think>\nTry 5 apples then 5*3 = 15, but also 15 - 4 = 11, hmm so", "finish_reason": "length",
+     "expect": {"correct": false, "extracted": null, "error": "truncated"}},
+
+    {"id": 12, "name": "math: draft boxed{9} in thinking, final boxed{12}", "benchmark": "gsm8k", "truth": "12",
+     "text": "<think>\nMaybe \\boxed{9}? recompute.\n</think>\nThe answer is \\boxed{12}", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "12", "error": null}},
+
+    {"id": 13, "name": "closing tag only (opener pre-filled by the chat template)", "benchmark": "gpqa", "truth": "C",
+     "text": "Reasoning about (B) and (A) at length...\n</think>\nAnswer: C", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 14, "name": "thinking never closed but the model stopped (not a length cut-off)", "benchmark": "gpqa", "truth": "C",
+     "text": "<think>\nOption A is wrong. Option C is right, answer is C", "finish_reason": "stop",
+     "expect": {"correct": false, "extracted": null, "error": "no_answer_found"}},
+
+    {"id": 15, "name": "null content with finish_reason length (all tokens spent reasoning)", "benchmark": "gpqa", "truth": "C",
+     "text": "", "finish_reason": "length",
+     "expect": {"correct": false, "extracted": null, "error": "truncated"}},
+
+    {"id": 16, "name": "complete answer but the provider reports length: counted truncated by policy", "benchmark": "gpqa", "truth": "C",
+     "text": "Answer: C\nHere is a very long explanation that keeps going and going", "finish_reason": "length",
+     "expect": {"correct": false, "extracted": null, "error": "truncated"}},
+
+    {"id": 17, "name": "letter outside the valid options (J on a 4-option question)", "benchmark": "gpqa", "truth": "C",
+     "text": "Answer: J", "finish_reason": "stop",
+     "expect": {"correct": false, "extracted": null, "error": "no_answer_found"}},
+
+    {"id": 18, "name": "API error envelope whose text contains a letter", "benchmark": "gpqa", "truth": "C",
+     "text": "API Error: 429 rate limited, retry. Answer: C", "finish_reason": null, "error": "429 rate limited",
+     "expect": {"correct": false, "extracted": null, "error": "api_error: 429 rate limited"}},
+
+    {"id": 19, "name": "prose with article 'a' and pronoun 'I', no answer at all", "benchmark": "gpqa", "truth": "C",
+     "text": "I think a careful reading is needed before choosing anything.", "finish_reason": "stop",
+     "expect": {"correct": false, "extracted": null, "error": "no_answer_found"}},
+
+    {"id": 20, "name": "two answers, the later one wins", "benchmark": "gpqa", "truth": "D",
+     "text": "Answer: B\nOn reflection that ignores the second premise.\nAnswer: D", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "D", "error": null}},
+
+    {"id": 21, "name": "bold final letter", "benchmark": "gpqa", "truth": "C",
+     "text": "Therefore the answer is **C**", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "C", "error": null}},
+
+    {"id": 22, "name": "<thinking> tag variant", "benchmark": "gpqa", "truth": "A",
+     "text": "<thinking>maybe (D)</thinking>\nAnswer: A", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "A", "error": null}},
+
+    {"id": 23, "name": "10 options: boxed letter", "benchmark": "mmlu_pro", "truth": "F",
+     "text": "<think>\nhmm (B)\n</think>\n\\boxed{F}", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "F", "error": null}},
+
+    {"id": 24, "name": "math: nested braces inside boxed", "benchmark": "gsm8k", "truth": "\\frac{1}{2}",
+     "text": "<think>\nso 1/2\n</think>\nThe answer is \\boxed{\\frac{1}{2}}", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "\\frac{1}{2}", "error": null}},
+
+    {"id": 25, "name": "math: wrong final answer after a right draft is still wrong", "benchmark": "gsm8k", "truth": "12",
+     "text": "<think>\n12 is it\n</think>\n#### 13", "finish_reason": "stop",
+     "expect": {"correct": false, "extracted": "13", "error": null}},
+
+    {"id": 26, "name": "answer-only first line followed by explanation", "benchmark": "gpqa", "truth": "B",
+     "text": "B. Newton's second law\n\nBecause force equals mass times acceleration.", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "B", "error": null}},
+
+    {"id": 27, "name": "math: markdown-bold answer line (seen from a live reasoning model)", "benchmark": "math_500", "truth": "4",
+     "text": "So 3^100 = 3^(6*16+4) = 3^4 = 81 = 4 mod 7.\n\n**Answer: 4**", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "4", "error": null}},
+
+    {"id": 28, "name": "math: bold label then the value", "benchmark": "math_500", "truth": "4",
+     "text": "**Answer:** 4", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "4", "error": null}},
+
+    {"id": 29, "name": "math: whole sentence in bold", "benchmark": "math_500", "truth": "23",
+     "text": "**The answer is 23**", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "23", "error": null}},
+
+    {"id": 30, "name": "math: decimal answer at the end of a sentence", "benchmark": "gsm8k", "truth": "3.5",
+     "text": "Dividing gives the result. The answer is 3.5.", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "3.5", "error": null}},
+
+    {"id": 31, "name": "math: answer in code ticks", "benchmark": "gsm8k", "truth": "4",
+     "text": "Thus the final answer is `4`.", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "4", "error": null}},
+
+    {"id": 32, "name": "math: thousands separator", "benchmark": "gsm8k", "truth": "1000",
+     "text": "The answer is 1,000.", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "1,000", "error": null}},
+
+    {"id": 33, "name": "math: a * inside the answer is kept", "benchmark": "math_500", "truth": "9*sqrt(3)",
+     "text": "**Answer: 9*sqrt(3)**", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "9*sqrt(3)", "error": null}},
+
+    {"id": 34, "name": "math: GSM8K marker with bold value", "benchmark": "gsm8k", "truth": "72",
+     "text": "#### **72**", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "72", "error": null}},
+
+    {"id": 35, "name": "math: a comma ends the answer phrase", "benchmark": "gsm8k", "truth": "23",
+     "text": "The answer is 23, since 5^2 - 2 = 23", "finish_reason": "stop",
+     "expect": {"correct": true, "extracted": "23", "error": null}},
+
+    {"id": 36, "name": "math: still wrong when the final value is wrong", "benchmark": "gsm8k", "truth": "4",
+     "text": "**Answer: 5**", "finish_reason": "stop",
+     "expect": {"correct": false, "extracted": "5", "error": null}}
+  ]
+}

@@ -1,0 +1,35 @@
+# Pair 3: Ministral-3-8B-Reasoning vs Qwen3.5-8B
+job_name: "pair3_ministral3_8b_reasoning_vs_qwen35_8b"
+description: "Head-to-head: Ministral-3-8B-Reasoning-2512 vs Qwen3.5-8B across all benchmarks"
+seed: 42
+limit_per_benchmark: 100
+
+models:
+  - "mistralai/ministral-3-8b-reasoning-2512"
+  - "qwen/qwen3.5-8b"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"
+
+execution:
+  concurrency: 4
+  timeout_seconds: 60
+  retry_attempts: 3
+  cache_responses: true
+  temperature: 0.1
+  max_tokens: 2048
+
+quality_gate:
+  baseline_model: "qwen/qwen3.5-8b"
+  candidate_model: "mistralai/ministral-3-8b-reasoning-2512"
+  min_overall_accuracy: 0.65
+  max_regression_delta: 0.03
+  significance_alpha: 0.05

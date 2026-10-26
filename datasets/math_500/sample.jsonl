@@ -1,0 +1,15 @@
+{"question_id": "math_01", "subject": "Algebra", "question": "If x + 1/x = 5, find x^2 + 1/x^2.", "answer": "23"}
+{"question_id": "math_02", "subject": "Number Theory", "question": "Remainder when 3^100 is divided by 7?", "answer": "4"}
+{"question_id": "math_03", "subject": "Geometry", "question": "Hypotenuse of right triangle with legs 9 and 12?", "answer": "15"}
+{"question_id": "math_04", "subject": "Combinatorics", "question": "Ways 5 distinct books can be arranged on a shelf?", "answer": "120"}
+{"question_id": "math_05", "subject": "Algebra", "question": "Sum of real roots of x^2 - 7x + 10 = 0?", "answer": "7"}
+{"question_id": "math_06", "subject": "Precalculus", "question": "Evaluate log_2(32) + log_3(81).", "answer": "9"}
+{"question_id": "math_07", "subject": "Probability", "question": "Probability two dice sum to 7? (fraction a/b)", "answer": "1/6"}
+{"question_id": "math_08", "subject": "Geometry", "question": "Area of equilateral triangle with side length 6? (e.g. 9*sqrt(3))", "answer": "9*sqrt(3)"}
+{"question_id": "math_09", "subject": "Algebra", "question": "If f(x)=2x+3 and g(x)=x^2-1, compute f(g(3)).", "answer": "19"}
+{"question_id": "math_10", "subject": "Number Theory", "question": "GCD of 180 and 270?", "answer": "90"}
+{"question_id": "math_11", "subject": "Combinatorics", "question": "Compute (8 choose 3).", "answer": "56"}
+{"question_id": "math_12", "subject": "Algebra", "question": "Minimum value of f(x) = 2x^2 - 8x + 11.", "answer": "3"}
+{"question_id": "math_13", "subject": "Calculus", "question": "Derivative of f(x) = x^3 - 5x + 4 at x = 2.", "answer": "7"}
+{"question_id": "math_14", "subject": "Number Theory", "question": "Smallest prime number greater than 50?", "answer": "53"}
+{"question_id": "math_15", "subject": "Algebra", "question": "Solve for x: 2^(x+1) = 64.", "answer": "5"}
