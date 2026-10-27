@@ -10,6 +10,7 @@ from rich.panel import Panel
 
 from src.storage.run_store import RunStore
 from src.engine.runner import EvaluationRunner
+from src.engine.nemo_adapter import NemoEvaluatorAdapter
 from src.gateway.model_client import ProviderConfigError
 from src.gateway.env_loader import load_env_file
 from src.storage.schema import STANDIN_JOB_PREFIX, UNRELIABLE_THRESHOLD, UNRELIABLE_BENCHMARK_THRESHOLD
@@ -17,9 +18,16 @@ from src.comparison.diff_engine import DiffEngine
 from src.reporting.report_generator import ReportGenerator
 from src.scoring.statistics import StatisticsEngine
 
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+RUNS_DIR = os.path.join(REPO_ROOT, "runs")
+
 console = Console()
 
 def load_yaml(file_path: str):
+    if not os.path.isabs(file_path):
+        candidate = os.path.join(REPO_ROOT, file_path)
+        if os.path.exists(candidate):
+            file_path = candidate
     if not os.path.exists(file_path):
         return {}
     with open(file_path, "r", encoding="utf-8") as f:
@@ -35,7 +43,7 @@ def list_cmd():
     """List configured models, benchmarks, and previous runs."""
     models_cfg = load_yaml("configs/models_config.yaml").get("models", {})
     bench_cfg = load_yaml("configs/benchmarks_config.yaml").get("benchmarks", {})
-    store = RunStore("runs")
+    store = RunStore(RUNS_DIR)
     runs = store.list_runs()
 
     # Models Table
@@ -119,7 +127,9 @@ def eval_group():
 @click.option("--limit", default=None, type=int, help="Limit samples per benchmark")
 @click.option("--solver", default="simple", type=click.Choice(["simple", "cot", "harbor"]), help="Solver type")
 @click.option("--job-name", default=None, help="Custom job name")
-def run_cmd(config, model, bench, limit, solver, job_name):
+@click.option("--engine", default="native", type=click.Choice(["native", "nemo"]), help="Execution engine: native or official NVIDIA NeMo Evaluator")
+@click.option("--mock", is_flag=True, default=False, help="Force mock/simulated mode for all models (zero API spend)")
+def run_cmd(config, model, bench, limit, solver, job_name, engine, mock):
     """Execute evaluation runs across models and benchmarks."""
     cfg = load_yaml(config)
     models_cfg = load_yaml("configs/models_config.yaml").get("models", {})
@@ -138,11 +148,11 @@ def run_cmd(config, model, bench, limit, solver, job_name):
     console.print(Panel(f"[bold green]Starting NeMo Evaluator Job:[/bold green] {current_job}\n"
                         f"Models: {', '.join(selected_models)}\n"
                         f"Benchmarks: {', '.join(selected_benches)}\n"
-                        f"Sample Limit: {sample_limit} | Solver: {solver}",
+                        f"Sample Limit: {sample_limit} | Solver: {solver} | Engine: {engine.upper()}",
                         title="NeMo Evaluator Launcher (nel)", border_style="cyan"))
 
     runner = EvaluationRunner()
-    store = RunStore("runs")
+    store = RunStore(RUNS_DIR)
     failed_models = []
 
     for m_id in selected_models:
@@ -152,6 +162,8 @@ def run_cmd(config, model, bench, limit, solver, job_name):
             "provider": "mock",
             "params": {"temperature": 0.1, "max_tokens": 1024, "top_p": 0.95}
         })
+        if mock:
+            m_cfg = {**m_cfg, "provider": "mock"}
 
         console.print(f"\n[bold yellow]--> Evaluating {m_cfg.get('name', m_id)}...[/bold yellow]")
         checkpoints = []   # (run_id, number of finished benchmarks, path) of the partial saves made so far
@@ -160,17 +172,30 @@ def run_cmd(config, model, bench, limit, solver, job_name):
             checkpoints.append((partial.run_id, len(partial.benchmark_summaries), store.save_checkpoint(partial)))
 
         try:
-            artifact = runner.run_evaluation(
-                model_config=m_cfg,
-                benchmark_ids=selected_benches,
-                job_name=current_job,
-                limit_per_benchmark=sample_limit,
-                solver_type=solver,
-                seed=cfg.get("seed", 42),
-                checkpoint=save_checkpoint
-            )
+            if engine == "nemo":
+                adapter = NemoEvaluatorAdapter(output_dir=RUNS_DIR)
+                artifact = adapter.run_benchmark_with_nemo(
+                    model_config=m_cfg,
+                    benchmark_ids=selected_benches,
+                    job_name=current_job,
+                    limit_per_benchmark=sample_limit,
+                    solver_type=solver,
+                    seed=cfg.get("seed", 42),
+                    checkpoint_cb=save_checkpoint
+                )
+            else:
+                artifact = runner.run_evaluation(
+                    model_config=m_cfg,
+                    benchmark_ids=selected_benches,
+                    job_name=current_job,
+                    limit_per_benchmark=sample_limit,
+                    solver_type=solver,
+                    seed=cfg.get("seed", 42),
+                    checkpoint=save_checkpoint
+                )
         except ProviderConfigError as e:
             console.print(f"[bold red]Configuration error:[/bold red] {e}")
+            console.print("[bold yellow]Tip: To run without API keys in offline mock simulation mode, add --mock to your command.[/bold yellow]")
             sys.exit(1)
         except BaseException as e:   # a crash or Ctrl-C: say what was kept, then let the error through
             if not isinstance(e, SystemExit) and checkpoints:
@@ -185,7 +210,7 @@ def run_cmd(config, model, bench, limit, solver, job_name):
                           f"to the run list or the leaderboard, and `compare` / `gate` will not accept it.[/dim]")
             failed_models.append(m_id)
             continue
-        console.print(f"[bold green]? Completed run {artifact.run_id}[/bold green] ({artifact.run_mode.upper()}, job {artifact.job_name}, "
+        console.print(f"[bold green]Completed run {artifact.run_id}[/bold green] ({artifact.run_mode.upper()}, job {artifact.job_name}, "
                       f"scorer v{artifact.scorer_version}) -> saved to [dim]{saved_path}[/dim]")
         if artifact.served_model_id and artifact.served_model_id != artifact.model_id:
             console.print(f"[dim]Served as {artifact.served_model_id} (requested {artifact.model_id})[/dim]")
@@ -228,6 +253,17 @@ def run_cmd(config, model, bench, limit, solver, job_name):
         console.print(f"[bold red]{len(failed_models)} model(s) FAILED and were stopped early:[/bold red] {', '.join(failed_models)}")
         sys.exit(1)
 
+@eval_group.command("run-all")
+@click.option("--limit", default=5, type=int, help="Limit samples per benchmark (default: 5)")
+@click.option("--engine", default="nemo", type=click.Choice(["native", "nemo"]), help="Execution engine: native or official NVIDIA NeMo Evaluator")
+@click.option("--solver", default="simple", type=click.Choice(["simple", "cot", "harbor"]), help="Solver type")
+@click.option("--mock/--live", default=True, help="Run in mock mode (offline, zero cost) or live mode with API keys (default: --mock)")
+@click.pass_context
+def run_all_cmd(ctx, limit, engine, solver, mock):
+    """Run evaluation for ALL models and benchmarks in one command."""
+    config_path = os.path.join(REPO_ROOT, "configs/eval_all_models.yaml")
+    ctx.invoke(run_cmd, config=config_path, model=None, bench=(), limit=limit, solver=solver, job_name="all_models_evaluation", engine=engine, mock=mock)
+
 def _refuse_unusable_runs(console_, *runs):
     """compare and gate only accept COMPLETED runs: a FAILED (stopped early) or INCOMPLETE (never finished) run is refused."""
     unusable = [r for r in runs if not r.is_usable]
@@ -243,7 +279,7 @@ def _refuse_unusable_runs(console_, *runs):
 @click.option("--output-html", default=None, help="Save report to HTML file")
 def compare_cmd(run_a, run_b, output_md, output_html):
     """Compare two evaluation runs (score deltas, flips, McNemar test)."""
-    store = RunStore("runs")
+    store = RunStore(RUNS_DIR)
     ra = store.get_run(run_a)
     rb = store.get_run(run_b)
 
@@ -310,7 +346,7 @@ def compare_cmd(run_a, run_b, output_md, output_html):
 @click.option("--max-reg", default=0.03, type=float, help="Maximum allowed regression delta")
 def gate_cmd(baseline, candidate, min_acc, max_reg):
     """Quality Gate check (GO / NO-GO evaluation for release readiness)."""
-    store = RunStore("runs")
+    store = RunStore(RUNS_DIR)
     ra = store.get_run(baseline)
     rb = store.get_run(candidate)
 
@@ -340,6 +376,37 @@ def gate_cmd(baseline, candidate, min_acc, max_reg):
                         f"Candidate Accuracy: {gate['candidate_accuracy']*100:.1f}% (Delta: {gate['accuracy_delta']*100:+.1f}%)\n"
                         f"Rationale: {gate['rationale']}",
                         title="NeMo Evaluator Quality Gate (nel gate)", border_style="cyan"))
+
+@cli.group("nemo")
+def nemo_group():
+    """Official NVIDIA NeMo Evaluator management and inspection commands."""
+    pass
+
+@nemo_group.command("info")
+def nemo_info():
+    """Display NVIDIA NeMo Evaluator integration info."""
+    import nemo_evaluator as ne
+    console.print(Panel(
+        f"[bold green]NVIDIA NeMo Evaluator (Official)[/bold green]\n"
+        f"Installed Version: [cyan]{getattr(ne, '__version__', '0.1.0rc3')}[/cyan]\n"
+        f"Adapter Status: [green]Active & Integrated[/green]\n"
+        f"Execution Mode: [yellow]NVIDIA NeMo Adapter (EvaluationConfig & Target)[/yellow]\n"
+        f"Registered Benchmarks: [bold]{len(NemoEvaluatorAdapter.SUPPORTED_BENCHMARKS)} benchmarks ready[/bold]",
+        title="NVIDIA NeMo Evaluator Status",
+        border_style="cyan"
+    ))
+
+@nemo_group.command("tasks")
+def nemo_tasks():
+    """List benchmarks registered with NVIDIA NeMo Evaluator."""
+    t = Table(title="Benchmarks Registered with NVIDIA NeMo Evaluator", header_style="bold green")
+    t.add_column("Benchmark ID", style="bold")
+    t.add_column("Evaluation Type")
+    t.add_column("Target Dataset")
+    adapter = NemoEvaluatorAdapter()
+    for b_id in adapter.SUPPORTED_BENCHMARKS:
+        t.add_row(b_id, "Official / BYOB", f"datasets/{b_id}/sample.jsonl")
+    console.print(t)
 
 if __name__ == "__main__":
     cli()

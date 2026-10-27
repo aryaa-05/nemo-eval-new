@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, computed_field, model_validator
 
@@ -108,7 +108,7 @@ class RunArtifact(BaseModel):
     run_id: str
     job_name: str
     description: Optional[str] = ""
-    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat() + "Z")
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     git_hash: Optional[str] = "HEAD"
     seed: int = 42
     model_id: str                          # the model the run asked for (may be routed to a different served id)

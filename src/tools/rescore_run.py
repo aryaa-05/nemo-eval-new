@@ -14,7 +14,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Tuple
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -106,7 +106,7 @@ def rescore_artifact(run: RunArtifact, base_dir: str = REPO) -> Tuple[RunArtifac
     total_correct = sum(s.correct_samples for s in summaries.values())
     total = sum(s.total_samples for s in summaries.values())
     lo, hi = StatisticsEngine.wilson_confidence_interval(total_correct, total)
-    now = datetime.utcnow().isoformat() + "Z"
+    now = datetime.now(timezone.utc).isoformat()
     note = f"RESCORED offline with scorer v{SCORER_VERSION} from run {run.rescored_from or run.run_id}; no model was called."
     new_run = run.model_copy(update={
         "run_id": rescored_run_id(run.run_id), "scorer_version": SCORER_VERSION, "rescored_from": run.rescored_from or run.run_id,

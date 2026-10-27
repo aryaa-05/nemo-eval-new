@@ -39,6 +39,60 @@ class MockModelEngine:
             "mean_latency": 0.35,
             "cost_in": 0.15,
             "cost_out": 0.60,
+        },
+        "mistralai/ministral-3-8b-instruct-2512": {
+            "accuracy_bias": {"mmlu_pro": 0.68, "gsm8k": 0.78, "math_500": 0.48, "gpqa": 0.45, "humaneval": 0.65, "truthfulqa": 0.75, "kyc_india": 0.82, "rbi_regulations": 0.80, "image_processing": 0.78, "custom_byob": 0.75},
+            "mean_latency": 0.30,
+            "cost_in": 0.15,
+            "cost_out": 0.15,
+        },
+        "mistralai/ministral-3-8b-reasoning-2512": {
+            "accuracy_bias": {"mmlu_pro": 0.72, "gsm8k": 0.84, "math_500": 0.60, "gpqa": 0.52, "humaneval": 0.70, "truthfulqa": 0.78, "kyc_india": 0.85, "rbi_regulations": 0.83, "image_processing": 0.80, "custom_byob": 0.80},
+            "mean_latency": 0.55,
+            "cost_in": 0.15,
+            "cost_out": 0.15,
+        },
+        "mistralai/ministral-3-14b-reasoning-2512": {
+            "accuracy_bias": {"mmlu_pro": 0.78, "gsm8k": 0.88, "math_500": 0.68, "gpqa": 0.58, "humaneval": 0.76, "truthfulqa": 0.82, "kyc_india": 0.88, "rbi_regulations": 0.86, "image_processing": 0.84, "custom_byob": 0.85},
+            "mean_latency": 0.65,
+            "cost_in": 0.20,
+            "cost_out": 0.20,
+        },
+        "meta/llama-4-scout-17b-16e-instruct": {
+            "accuracy_bias": {"mmlu_pro": 0.80, "gsm8k": 0.86, "math_500": 0.64, "gpqa": 0.56, "humaneval": 0.78, "truthfulqa": 0.84, "kyc_india": 0.86, "rbi_regulations": 0.84, "image_processing": 0.85, "custom_byob": 0.86},
+            "mean_latency": 0.42,
+            "cost_in": 0.10,
+            "cost_out": 0.30,
+        },
+        "qwen/qwen3.5-8b": {
+            "accuracy_bias": {"mmlu_pro": 0.74, "gsm8k": 0.85, "math_500": 0.62, "gpqa": 0.54, "humaneval": 0.72, "truthfulqa": 0.80, "kyc_india": 0.84, "rbi_regulations": 0.82, "image_processing": 0.81, "custom_byob": 0.82},
+            "mean_latency": 0.38,
+            "cost_in": 0.17,
+            "cost_out": 0.25,
+        },
+        "meta/llama-3.2-11b-vision-instruct": {
+            "accuracy_bias": {"mmlu_pro": 0.70, "gsm8k": 0.76, "math_500": 0.46, "gpqa": 0.44, "humaneval": 0.64, "truthfulqa": 0.76, "kyc_india": 0.80, "rbi_regulations": 0.78, "image_processing": 0.82, "custom_byob": 0.78},
+            "mean_latency": 0.34,
+            "cost_in": 0.0,
+            "cost_out": 0.0,
+        },
+        "openai/gpt-oss-20b": {
+            "accuracy_bias": {"mmlu_pro": 0.75, "gsm8k": 0.86, "math_500": 0.65, "gpqa": 0.55, "humaneval": 0.75, "truthfulqa": 0.81, "kyc_india": 0.85, "rbi_regulations": 0.83, "image_processing": 0.82, "custom_byob": 0.82},
+            "mean_latency": 0.45,
+            "cost_in": 0.0,
+            "cost_out": 0.0,
+        },
+        "qwen/qwen3.8-27b": {
+            "accuracy_bias": {"mmlu_pro": 0.79, "gsm8k": 0.89, "math_500": 0.70, "gpqa": 0.60, "humaneval": 0.80, "truthfulqa": 0.83, "kyc_india": 0.87, "rbi_regulations": 0.85, "image_processing": 0.84, "custom_byob": 0.85},
+            "mean_latency": 0.50,
+            "cost_in": 0.0,
+            "cost_out": 0.0,
+        },
+        "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning": {
+            "accuracy_bias": {"mmlu_pro": 0.76, "gsm8k": 0.87, "math_500": 0.66, "gpqa": 0.57, "humaneval": 0.74, "truthfulqa": 0.80, "kyc_india": 0.86, "rbi_regulations": 0.84, "image_processing": 0.83, "custom_byob": 0.84},
+            "mean_latency": 0.52,
+            "cost_in": 0.0,
+            "cost_out": 0.0,
         }
     }
 

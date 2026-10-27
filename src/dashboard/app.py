@@ -792,8 +792,8 @@ with tab_run:
             if bench_id in BENCH_WARNINGS:
                 st.warning(BENCH_WARNINGS[bench_id])
 
-        st.markdown("#### Run size")
-        cap_col, solver_col = st.columns(2)
+        st.markdown("#### Run size & Execution Engine")
+        cap_col, solver_col, engine_col = st.columns(3)
         with cap_col:
             use_all = st.checkbox("Use every row in each selected dataset", value=False)
             if use_all:
@@ -810,6 +810,9 @@ with tab_run:
                 )
         with solver_col:
             solver = st.selectbox("Prompting strategy", ["simple", "cot", "harbor"], help="harbor is an agentic prompt style, not a separate agent.")
+        with engine_col:
+            engine_choice = st.selectbox("Evaluation Engine", ["NVIDIA NeMo Evaluator (official)", "Native runner"], index=0, help="Choose between official NVIDIA NeMo Evaluator adapter or native runner.")
+            engine = "nemo" if "NeMo" in engine_choice else "native"
 
         estimated_items = 0
         for bench_id in selected_benches:
@@ -828,6 +831,12 @@ with tab_run:
         if standin and not job_is_standin(job_name):
             job_name = STANDIN_JOB_PREFIX + job_name
         st.caption(f"Job name: `{job_name}` - this is what labels the run as a stand-in when applicable.")
+
+        force_mock = st.checkbox("Run in Mock / Simulation mode (Offline, zero API spend)", value=(provider == "auto" and route is None), help="Simulates the model evaluation locally without making live API calls.")
+        if force_mock:
+            model_cfg = {**model_cfg, "provider": "mock"}
+            provider = "mock"
+            standin = False
 
         start = st.button("Start evaluation", type="primary", width="content", disabled=running)
         if start:
@@ -868,6 +877,7 @@ with tab_run:
                     seed=42,
                     standin=standin,
                     base_dir=BASE_DIR,
+                    engine=engine,
                 )
                 st.session_state.active_job = new_key
                 st.rerun(scope="app")

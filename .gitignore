@@ -5,4 +5,6 @@ __pycache__/
 .env
 runs/*.json
 runs/*.db
+runs/*.md
+comparison*.md
 _sources/_backup_*.jsonl

@@ -10,10 +10,11 @@ from __future__ import annotations
 import threading
 import time
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from src.engine.runner import EvaluationRunner
+from src.engine.nemo_adapter import NemoEvaluatorAdapter
 from src.storage.run_store import RunStore
 
 _LOCK = threading.Lock()
@@ -21,7 +22,7 @@ _JOBS: Dict[str, Dict[str, Any]] = {}
 
 
 def _utc_iso() -> str:
-    return datetime.utcnow().isoformat() + "Z"
+    return datetime.now(timezone.utc).isoformat()
 
 
 def start_job(
@@ -36,6 +37,7 @@ def start_job(
     seed: int = 42,
     standin: bool = False,
     base_dir: str = "",
+    engine: str = "native",
 ) -> str:
     """Start a run in a daemon thread and return its job key."""
     key = uuid.uuid4().hex
@@ -53,6 +55,7 @@ def start_job(
             "limit_per_benchmark": limit_per_benchmark,
             "solver_type": solver_type,
             "standin": bool(standin),
+            "engine": engine,
             "started_at": time.time(),
             "started_at_iso": _utc_iso(),
             "finished_at": None,
@@ -77,6 +80,7 @@ def start_job(
             "solver_type": solver_type,
             "seed": seed,
             "base_dir": base_dir,
+            "engine": engine,
         },
         daemon=True,
         name=f"nemo-eval-{key[:8]}",
@@ -104,6 +108,7 @@ def _execute(
     solver_type: str,
     seed: int,
     base_dir: str,
+    engine: str = "native",
 ) -> None:
     _update(key, status="running")
 
@@ -126,18 +131,31 @@ def _execute(
             )
 
     try:
-        runner = EvaluationRunner(base_dir=base_dir)
-        artifact = runner.run_evaluation(
-            model_config=model_config,
-            benchmark_ids=benchmark_ids,
-            job_name=job_name,
-            description=description,
-            limit_per_benchmark=limit_per_benchmark,
-            solver_type=solver_type,
-            seed=seed,
-            show_progress=False,
-            checkpoint=save_checkpoint,
-        )
+        if engine == "nemo":
+            adapter = NemoEvaluatorAdapter(output_dir="runs", base_dir=base_dir)
+            artifact = adapter.run_benchmark_with_nemo(
+                model_config=model_config,
+                benchmark_ids=benchmark_ids,
+                job_name=job_name,
+                limit_per_benchmark=limit_per_benchmark,
+                solver_type=solver_type,
+                seed=seed,
+                show_progress=False,
+                checkpoint_cb=save_checkpoint,
+            )
+        else:
+            runner = EvaluationRunner(base_dir=base_dir)
+            artifact = runner.run_evaluation(
+                model_config=model_config,
+                benchmark_ids=benchmark_ids,
+                job_name=job_name,
+                description=description,
+                limit_per_benchmark=limit_per_benchmark,
+                solver_type=solver_type,
+                seed=seed,
+                show_progress=False,
+                checkpoint=save_checkpoint,
+            )
         saved_path = store.save_run(artifact)
         status = "completed" if artifact.is_usable else ("failed" if artifact.is_failed else "incomplete")
         _update(
