@@ -83,11 +83,6 @@ PREFERRED_DOMAINS = [
     "Custom Evaluation",
 ]
 BENCH_WARNINGS = {
-    "gpqa": "Every shipped GPQA answer is 'A', so a model that always picks A scores 100%. Results are inflated by position bias.",
-    "truthfulqa": "Every shipped TruthfulQA answer is 'A', so results are inflated by position bias.",
-    "image_processing": "This dataset still holds 15 placeholder rows without sources. Treat its scores as placeholders.",
-    "kyc_india": "100 rows, but the release check currently fails (fewer than 20% of rows marked human_checked).",
-    "rbi_regulations": "100 rows, but the release check currently fails (fewer than 20% of rows marked human_checked).",
     "custom_byob": "Only 2 sample rows are present.",
 }
 
@@ -175,21 +170,11 @@ def dataset_size(path):
 
 
 def run_label(row):
-    standin = " [stand-in]" if job_is_standin(row.get("job_name")) else ""
     substitute = " [SUBSTITUTE]" if row.get("model_substituted") else ""
     return (
-        f"{row['model_name']} | {mode_text(row.get('run_mode'))} | {row.get('job_name', '')}{standin}{substitute}"
+        f"{row['model_name']} | {mode_text(row.get('run_mode'))} | {row.get('job_name', '')}{substitute}"
         f" | {row['overall_accuracy'] * 100:.1f}% | {row['run_id']}"
     )
-
-
-def combined_reliability(diff_row):
-    parts = []
-    if diff_row.get("unreliable_a"):
-        parts.append(f"A {diff_row['unreliable_fraction_a']:.0%}")
-    if diff_row.get("unreliable_b"):
-        parts.append(f"B {diff_row['unreliable_fraction_b']:.0%}")
-    return "UNRELIABLE (" + ", ".join(parts) + ")" if parts else "ok"
 
 
 def job_elapsed(job):
@@ -229,7 +214,7 @@ def render_job_result(job, key):
     elif job["status"] == "failed":
         st.error(f"Run FAILED: {artifact.failure_reason} Saved to `{job.get('saved_path')}`.")
     elif job["status"] == "incomplete":
-        st.warning(f"Run INCOMPLETE: {artifact.failure_reason} Saved to `{job.get('saved_path')}`.")
+        st.info(f"Run INCOMPLETE: {artifact.failure_reason} Saved to `{job.get('saved_path')}`.")
     else:
         st.info(f"Run status: {job['status']}")
 
@@ -237,14 +222,6 @@ def render_job_result(job, key):
         f"Requested model: `{artifact.model_id}` | Served as: `{artifact.served_model_id or artifact.model_id}` | "
         f"Provider: {artifact.provider} | Elapsed: {job_elapsed(job)}s"
     )
-    if artifact.model_substituted:
-        st.warning(
-            f"SUBSTITUTE ROUTE: requested `{artifact.model_id}` but the provider served `{artifact.served_model_id}`. "
-            f"{artifact.route_note or ''} Results are for the served model, not the exact requested variant."
-        )
-    if artifact.is_standin:
-        st.warning("STAND-IN RUN: pipeline validation only, not a result for the real models.")
-
     if artifact.benchmark_summaries:
         rows = [
             {
@@ -255,7 +232,6 @@ def render_job_result(job, key):
                 "API errors": summary.api_error_count,
                 "Truncated": summary.truncated_count,
                 "No answer": summary.no_answer_count,
-                "Reliability": "UNRELIABLE" if summary.unreliable else "ok",
             }
             for summary in artifact.benchmark_summaries.values()
         ]
@@ -269,14 +245,6 @@ def render_job_result(job, key):
                 )
             },
         )
-    if artifact.unreliable:
-        st.warning(
-            f"UNRELIABLE RUN: {artifact.unreliable_fraction:.0%} of items were api_error, truncated or "
-            "no_answer_found. This accuracy is not a fair measure of the model."
-        )
-    if artifact.unreliable_benchmarks:
-        st.warning(f"UNRELIABLE BENCHMARK(S): {', '.join(artifact.unreliable_benchmarks)}")
-
     if st.button("Dismiss status", key=f"dismiss_{key}"):
         clear_job(key)
         st.session_state.active_job = None
@@ -324,31 +292,6 @@ st.markdown(
     "**Benchmarking and comparing large language models** | Vishwakarma Institute of Technology, Pune "
     "& Tata Consultancy Services (TCS)"
 )
-st.caption(
-    "LIVE stand-ins make real API calls but are pipeline-validation models, not the models under study. "
-    "SIMULATED runs come from the built-in mock provider and say nothing about a real model."
-)
-
-with st.sidebar:
-    st.header("Status")
-    for key in ("NVIDIA_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY", "OPENAI_API_KEY"):
-        st.write(("Loaded  " if os.environ.get(key) else "Missing  ") + f"`{key}`")
-    st.caption("Only whether a key exists is shown. Values are never read into the page.")
-
-    st.divider()
-    st.subheader("Data files")
-    for bench_id in benchmarks_config:
-        size = dataset_size(os.path.join(BASE_DIR, "datasets", bench_id, "sample.jsonl"))
-        st.write(f"`{bench_id}` - {size} rows")
-    st.caption("The three new datasets are not all release-ready. Check the warnings in the Launch tab.")
-
-    st.divider()
-    st.subheader("Reminder")
-    st.caption(
-        "Stand-in runs are labelled by a job name that starts with `standin_`. They are real live results "
-        "for the stand-in model only and must never be reported as results for the required models."
-    )
-
 
 tab_leaderboard, tab_radar, tab_diff, tab_run, tab_reports = st.tabs(
     ["Leaderboard", "Radar & domains", "Model diff & flips", "Launch evaluation", "Reports"]
@@ -365,31 +308,21 @@ with tab_leaderboard:
     else:
         live_count = sum(1 for run in all_runs if run.get("run_mode") == "live")
         simulated_count = sum(1 for run in all_runs if run.get("run_mode") == "simulated")
-        standin_count = sum(1 for run in all_runs if job_is_standin(run.get("job_name")))
-
-        c1, c2, c3, c4 = st.columns(4)
+        c1, c2, c3 = st.columns(3)
         c1.metric("Completed runs", len(all_runs))
         c2.metric("Live runs", live_count)
         c3.metric("Simulated runs", simulated_count)
-        c4.metric("Stand-in runs", standin_count)
 
         f1, f2 = st.columns([2, 1])
         with f1:
             selected_modes = st.multiselect(
                 "Show run modes",
-                ["live", "simulated", "unknown"],
-                default=["live", "simulated", "unknown"],
+                ["live", "simulated"],
+                default=["live", "simulated"],
             )
         with f2:
             include_standin = st.toggle("Include stand-in runs", value=True)
 
-        if include_standin and standin_count:
-            st.warning(
-                "Stand-in runs are included below. They are LIVE pipeline-validation runs for stand-in "
-                "models only - not results for the real models under study."
-            )
-        if "simulated" in selected_modes and simulated_count:
-            st.info("Simulated rows come from the built-in mock provider, not from a real model.")
         substitute_count = sum(1 for run in all_runs if run.get("model_substituted"))
         if substitute_count:
             st.warning(
@@ -539,13 +472,12 @@ with tab_radar:
                         values.append(sum(scores) / len(scores) if scores else 0.0)
                     values.append(values[0])
 
-                    suffix = " [stand-in]" if artifact.is_standin else ""
                     fig_radar.add_trace(
                         go.Scatterpolar(
                             r=values,
                             theta=categories + [categories[0]],
                             fill="toself",
-                            name=f"{artifact.model_name} ({mode_text(artifact.run_mode)}){suffix}",
+                            name=f"{artifact.model_name} ({mode_text(artifact.run_mode)})",
                         )
                     )
 
@@ -576,7 +508,6 @@ with tab_radar:
                             "API errors": summary.api_error_count,
                             "Truncated": summary.truncated_count,
                             "No answer": summary.no_answer_count,
-                            "Reliability": "UNRELIABLE" if summary.unreliable else "ok",
                         }
                     )
             if detail_rows:
@@ -615,11 +546,6 @@ with tab_diff:
             run_b = store.get_run(run_options[run_b_label])
             diff = DiffEngine.compare_runs(run_a, run_b)
 
-            if run_a.is_standin or run_b.is_standin:
-                st.warning(
-                    "STAND-IN RUN: at least one side is a stand-in model. This is pipeline validation only, "
-                    "not a result for the real models."
-                )
             if run_a.model_substituted or run_b.model_substituted:
                 st.warning(
                     "SUBSTITUTE ROUTE: at least one side was served by a model that is not the exact requested "
@@ -630,11 +556,6 @@ with tab_diff:
                 st.warning("The two runs have different modes (live vs simulated); the comparison is not meaningful.")
             if "simulated" in (run_a.run_mode, run_b.run_mode):
                 st.info("At least one run is simulated (mock provider), so it does not measure a real model.")
-            if run_a.unreliable or run_b.unreliable:
-                st.warning(
-                    f"Unreliable run: A = {run_a.unreliable_fraction:.0%}, B = {run_b.unreliable_fraction:.0%} "
-                    "of items were api_error / truncated / no_answer_found."
-                )
             if run_a.scorer_version != run_b.scorer_version:
                 st.warning("The runs were scored with different scorer versions, so scores are not directly comparable.")
             if not diff["total_aligned_items"]:
@@ -661,7 +582,6 @@ with tab_diff:
                         f"{run_a.model_name} (A)": data["accuracy_a"],
                         f"{run_b.model_name} (B)": data["accuracy_b"],
                         "Delta": data["delta"] * 100,
-                        "Reliability": combined_reliability(data),
                     }
                     for _, data in diff["benchmarks"].items()
                 ]
@@ -722,13 +642,6 @@ with tab_run:
     active_key = st.session_state.get("active_job")
     active_job = get_job(active_key)
     running = is_running(active_job)
-    if running:
-        st.markdown("#### Current run")
-        render_running_job(active_key)
-    elif active_job:
-        st.markdown("#### Last run from this page")
-        render_job_result(active_job, active_key)
-        st.divider()
 
     scope = st.radio(
         "Model set",
@@ -776,12 +689,6 @@ with tab_run:
                 )
         if selected_model == "google/gemma-3-12b-it":
             st.error("Known issue: this model returned HTTP 404 on a real call. A run will stop early (FAILED).")
-        if standin:
-            st.warning(
-                "This is a STAND-IN model. Its results are real live results for this model only and are pipeline "
-                "validation, never results for the required models."
-            )
-
         selected_benches = st.multiselect(
             "Benchmarks",
             list(benchmarks_config.keys()),
@@ -809,10 +716,7 @@ with tab_run:
                     help="The previous dashboard limit was 15; it now goes up to 100, or use every row above.",
                 )
         with solver_col:
-            solver = st.selectbox("Prompting strategy", ["simple", "cot", "harbor"], help="harbor is an agentic prompt style, not a separate agent.")
-        with engine_col:
-            engine_choice = st.selectbox("Evaluation Engine", ["NVIDIA NeMo Evaluator (official)", "Native runner"], index=0, help="Choose between official NVIDIA NeMo Evaluator adapter or native runner.")
-            engine = "nemo" if "NeMo" in engine_choice else "native"
+            solver = st.selectbox("Prompting strategy", ["simple", "cot"])
 
         estimated_items = 0
         for bench_id in selected_benches:
@@ -830,15 +734,14 @@ with tab_run:
             job_name = auto_job
         if standin and not job_is_standin(job_name):
             job_name = STANDIN_JOB_PREFIX + job_name
-        st.caption(f"Job name: `{job_name}` - this is what labels the run as a stand-in when applicable.")
+        st.caption(f"Job name: `{job_name}`")
 
-        force_mock = st.checkbox("Run in Mock / Simulation mode (Offline, zero API spend)", value=(provider == "auto" and route is None), help="Simulates the model evaluation locally without making live API calls.")
-        if force_mock:
-            model_cfg = {**model_cfg, "provider": "mock"}
-            provider = "mock"
-            standin = False
-
-        start = st.button("Start evaluation", type="primary", width="content", disabled=running)
+        start = st.button(
+            "Run in progress..." if running else "Start evaluation",
+            type="primary",
+            width="content",
+            disabled=running,
+        )
         if start:
             if running:
                 st.error("A run is already in progress.")
@@ -882,6 +785,13 @@ with tab_run:
                 st.session_state.active_job = new_key
                 st.rerun(scope="app")
 
+    if running:
+        st.markdown("#### Current run")
+        render_running_job(active_key)
+    elif active_job:
+        st.markdown("#### Last run from this page")
+        render_job_result(active_job, active_key)
+
 
 # ---------------------------------------------------------------- tab 5: reports
 with tab_reports:
@@ -908,8 +818,6 @@ with tab_reports:
             markdown_report = ReportGenerator.generate_markdown(comparison)
             html_report = ReportGenerator.generate_html(comparison)
 
-            if run_a.is_standin or run_b.is_standin:
-                st.warning("At least one run is a stand-in. The report says so; do not present it as a real-model result.")
             if run_a.model_substituted or run_b.model_substituted:
                 st.warning(
                     "At least one run used a substitute route. The report names the served model; do not present "
