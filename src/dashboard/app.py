@@ -703,8 +703,8 @@ with tab_run:
             if bench_id in BENCH_WARNINGS:
                 st.warning(BENCH_WARNINGS[bench_id])
 
-        st.markdown("#### Run size")
-        cap_col, solver_col = st.columns(2)
+        st.markdown("#### Run size & Execution Engine")
+        cap_col, solver_col, engine_col = st.columns(3)
         with cap_col:
             use_all = st.checkbox("Use every row in each selected dataset", value=False)
             if use_all:
@@ -771,6 +771,7 @@ with tab_run:
                     solver_type=solver,
                     seed=42,
                     base_dir=BASE_DIR,
+                    engine=engine,
                 )
                 st.session_state.active_job = new_key
                 st.rerun(scope="app")

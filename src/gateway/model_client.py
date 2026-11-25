@@ -61,6 +61,7 @@ class UnifiedModelClient:
         self.requested_model_id = requested_id
         self.model_id = requested_id
         self.served_model_id = requested_id
+        self.model_name = model_config.get("name", requested_id)
         self.route_note = None
         self.route_substitute = False
         self.provider = model_config.get("provider", "mock")

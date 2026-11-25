@@ -2,7 +2,7 @@ import os
 import time
 import uuid
 import statistics
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Callable, Dict, Any, List, Optional
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
 
@@ -47,9 +47,11 @@ def incomplete_reason(done: List[str], planned: List[str]) -> str:
             f"Results for {', '.join(b for b in planned if b not in done)} are missing. It cannot be compared or gated.")
 
 
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+
 class EvaluationRunner:
     def __init__(self, base_dir: str = ""):
-        self.base_dir = base_dir
+        self.base_dir = base_dir if base_dir else REPO_ROOT
         self.interceptor = InterceptorProxy()
 
     def run_evaluation(
@@ -69,7 +71,7 @@ class EvaluationRunner:
         `checkpoint`, if given, is called with an INCOMPLETE artifact after every benchmark except the last, so a crashed
         run keeps its finished benchmarks. The artifact returned at the end has the same run_id and replaces it.
         """
-        run_id = f"run_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+        run_id = f"run_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
         client = UnifiedModelClient(model_config, self.interceptor, seed=seed)
         resolved_model_config = {**model_config, "provider": client.provider}
         solver = get_solver(solver_type)
@@ -93,7 +95,7 @@ class EvaluationRunner:
                 run_id=run_id,
                 job_name=job_name,
                 description=description,
-                timestamp=datetime.utcnow().isoformat() + "Z",
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 seed=seed,
                 model_id=model_config["id"],
                 served_model_id=client.served_model_id,
