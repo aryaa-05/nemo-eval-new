@@ -198,53 +198,48 @@ models:
     strengths: ["Reasoning", "Multilingual", "Math"]
 
   # ====================================================================================================
-  # STAND-IN ONLY. Free-tier models used to validate the pipeline (configs/standin_*.yaml).
-  # They are NOT the models under study. Never present their results as results for the real models.
-  # "Verified" below means one real call worked (October 2026). Listed on a provider does NOT mean callable:
-  # several models in the NIM list returned HTTP 404 for this account.
+  # LIVE free-tier models and SIMULATED unavailable models used for the role comparisons (configs/free_tier_pair*.yaml).
+  # They are NOT the required models. Their scores apply only to the exact served model, or to no model at all
+  # when provider is mock (SIMULATED). "Verified" means one real call worked (October 2026). Being listed on a
+  # provider does NOT mean callable.
   # ====================================================================================================
 
-  # STAND-IN ONLY. NOT CALLABLE: in the NIM list, but one real call returned HTTP 404 "Function ... Not found for
+  # SIMULATED. NOT CALLABLE: in the NIM list, but one real call returned HTTP 404 "Function ... Not found for
   # account ..." (October 2026). Two more 7B instruct models from the same list (zyphra/zamba2-7b-instruct and
-  # aisingapore/sea-lion-7b-instruct) returned the same 404. A run with this model stops after 5 items (early stop).
-  # Kept only until a replacement for pair 1 is approved.
+  # aisingapore/sea-lion-7b-instruct) returned the same 404.
   google/gemma-3-12b-it:
     id: "google/gemma-3-12b-it"
-    name: "Stand-in Gemma-3-12B-it"
-    provider: "nvidia_nim"
-    api_base: "https://integrate.api.nvidia.com/v1"
-    api_key_env: "NVIDIA_API_KEY"
+    name: "Simulated Gemma-3-12B-it"
+    provider: "mock"
     params:
       temperature: 0.1
       max_tokens: 1024
       top_p: 0.95
     cost_per_1m_input: 0.0
     cost_per_1m_output: 0.0
-    strengths: ["Stand-in: small instruct model"]
+    strengths: ["Simulated: unavailable model"]
 
-  # STAND-IN ONLY. VERIFIED: a 10-item mmlu_pro run completed. Some NIM calls were slow (up to 73 s, one over 120 s).
+  # SIMULATED. NOT CALLABLE: a later real call returned HTTP 410 (the NIM model was retired). An earlier 10-item
+  # run predates that failure; do not treat it as evidence that the model is currently available.
   meta/llama-3.2-11b-vision-instruct:
     id: "meta/llama-3.2-11b-vision-instruct"
-    name: "Stand-in Llama-3.2-11B-Vision-Instruct"
-    provider: "nvidia_nim"
-    api_base: "https://integrate.api.nvidia.com/v1"
-    api_key_env: "NVIDIA_API_KEY"
-    requests_per_minute: 15   # NVIDIA allows 40/min; two NIM models at 15 each stay at or below 30 even if run together
+    name: "Simulated Llama-3.2-11B-Vision-Instruct"
+    provider: "mock"
     params:
       temperature: 0.1
       max_tokens: 1024
       top_p: 0.95
     cost_per_1m_input: 0.0
     cost_per_1m_output: 0.0
-    strengths: ["Stand-in: nearest callable Llama (11B, vision-language model used text-only)"]
+    strengths: ["Simulated: unavailable model"]
 
-  # STAND-IN ONLY. VERIFIED: one call worked (371 tokens, 8.6 s); thinking comes back in message.reasoning_content.
-  # max_tokens 4096 = 4x the largest reply measured across the three reasoning stand-ins (790), rounded up to a
+  # LIVE free-tier NIM. VERIFIED: one call worked (371 tokens, 8.6 s); thinking comes back in message.reasoning_content.
+  # max_tokens 4096 = 4x the largest reply measured across the reasoning free-tier models (790), rounded up to a
   # multiple of 1024. timeout 240 s = 2.5x the time 4096 tokens would take at the measured ~43 tokens/s (95 s), because
   # NIM's free tier showed slow outliers. Both are provisional: the sample is one easy math question.
   nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:
     id: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
-    name: "Stand-in Nemotron-3-Nano-Omni-30B-A3B-Reasoning"
+    name: "Live free-tier Nemotron-3-Nano-Omni-30B-A3B-Reasoning"
     provider: "nvidia_nim"
     api_base: "https://integrate.api.nvidia.com/v1"
     api_key_env: "NVIDIA_API_KEY"
@@ -256,14 +251,14 @@ models:
       top_p: 0.95
     cost_per_1m_input: 0.0
     cost_per_1m_output: 0.0
-    strengths: ["Stand-in: reasoning model"]
+    strengths: ["Live free-tier reasoning model"]
 
-  # STAND-IN ONLY. VERIFIED: 10-item mmlu_pro run, no errors; thinking comes back in message.reasoning and its tokens
+  # LIVE free-tier Groq. VERIFIED: 10-item mmlu_pro run, no errors; thinking comes back in message.reasoning and its tokens
   # are inside completion_tokens (measured 42-472 per item, mean 132). Groq limit seen in headers: 8000 tokens per minute.
   # requests_per_minute 10: even at 600 tokens per request (about 2x the measured total) that is 6000 tokens a minute.
   openai/gpt-oss-20b:
     id: "openai/gpt-oss-20b"
-    name: "Stand-in gpt-oss-20b"
+    name: "Live free-tier gpt-oss-20b"
     provider: "groq"
     api_base: "https://api.groq.com/openai/v1"
     api_key_env: "GROQ_API_KEY"
@@ -276,15 +271,15 @@ models:
       top_p: 0.95
     cost_per_1m_input: 0.0
     cost_per_1m_output: 0.0
-    strengths: ["Stand-in: reasoning model (Groq lists it with supported_features: reasoning)"]
+    strengths: ["Live free-tier reasoning model (Groq lists it with supported_features: reasoning)"]
 
-  # STAND-IN ONLY. VERIFIED: one call worked (790 tokens, 1.9 s, finish_reason stop, answer scored correctly).
+  # LIVE free-tier Groq. VERIFIED: one call worked (790 tokens, 1.9 s, finish_reason stop, answer scored correctly).
   # No separate thinking field came back for this model. A request with max_tokens 4096 did not use up the
   # 8000-tokens-per-minute budget (remaining-tokens header read 7878 afterwards), so max_tokens is not reserved.
   # requests_per_minute 6: at about 1000 tokens per request (measured 818 on an easy question) that is 6000 a minute.
   qwen/qwen3.8-27b:
     id: "qwen/qwen3.8-27b"
-    name: "Stand-in Qwen3.8-27B"
+    name: "Live free-tier Qwen3.8-27B"
     provider: "groq"
     api_base: "https://api.groq.com/openai/v1"
     api_key_env: "GROQ_API_KEY"
@@ -297,4 +292,155 @@ models:
       top_p: 0.95
     cost_per_1m_input: 0.0
     cost_per_1m_output: 0.0
-    strengths: ["Stand-in: Qwen-family model (a different version and size from the Qwen3.5 in the brief)"]
+    strengths: ["Live free-tier Qwen-family model (a different version and size from the Qwen3.5 in the brief)"]
+
+  mistralai/mistral-large-4-1t-a52b:
+    id: "mistralai/mistral-large-4-1t-a52b"
+    name: "Mistral Large 4 1T A52B"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  nvidia/nemotron-3.5-lightning-30b-a3b:
+    id: "nvidia/nemotron-3.5-lightning-30b-a3b"
+    name: "Nemotron 3.5 Lightning 30B A3B"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  nvidia/nemotron-3.5-super-vl-120b-a12b:
+    id: "nvidia/nemotron-3.5-super-vl-120b-a12b"
+    name: "Nemotron 3.5 Super VL 120B A12B"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  nvidia/nemotron-3-ultra-550b-a55b:
+    id: "nvidia/nemotron-3-ultra-550b-a55b"
+    name: "Nemotron 3 Ultra 550B A55B"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  nvidia/nemotron-3.5-bolt-e4b:
+    id: "nvidia/nemotron-3.5-bolt-e4b"
+    name: "Nemotron 3.5 Bolt E4B"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  stepfun-ai/step-5-preview:
+    id: "stepfun-ai/step-5-preview"
+    name: "Step 5 Preview"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  z-ai/glm-5.3-flash:
+    id: "z-ai/glm-5.3-flash"
+    name: "GLM 5.3 Flash"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  poolside/laguna-xs-2.1:
+    id: "poolside/laguna-xs-2.1"
+    name: "Laguna XS 2.1"
+    provider: "nvidia_nim"
+    api_base: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    timeout_seconds: 240
+    requests_per_minute: 15
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  openai/gpt-oss-120b:
+    id: "openai/gpt-oss-120b"
+    name: "GPT-OSS-120B"
+    provider: "groq"
+    api_base: "https://api.groq.com/openai/v1"
+    api_key_env: "GROQ_API_KEY"
+    timeout_seconds: 120
+    requests_per_minute: 10
+    context_window: 131072
+    params:
+      temperature: 0.1
+      max_tokens: 4096
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0
+
+  allam-2-7b:
+    id: "allam-2-7b"
+    name: "Allam 2 7B"
+    provider: "groq"
+    api_base: "https://api.groq.com/openai/v1"
+    api_key_env: "GROQ_API_KEY"
+    timeout_seconds: 120
+    requests_per_minute: 20
+    params:
+      temperature: 0.1
+      max_tokens: 1024
+      top_p: 0.95
+    cost_per_1m_input: 0.0
+    cost_per_1m_output: 0.0

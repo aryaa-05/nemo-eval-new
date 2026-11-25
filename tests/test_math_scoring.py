@@ -78,7 +78,7 @@ class TestCuratedMathFixtures(unittest.TestCase):
 
 
 class TestLiveReplyFixtures(unittest.TestCase):
-    """Real replies from the pair 2 and pair 3 stand-in runs (pipeline validation, not findings about real models)."""
+    """Real replies from LIVE free-tier runs; results apply only to the exact served models."""
 
     def test_file_shape(self):
         self.assertEqual(len(LIVE), 118)

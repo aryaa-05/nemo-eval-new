@@ -1,0 +1,22 @@
+# Free-tier role pair 1. Mirrors the ROLE of pair 1 (small instruct model vs a Llama of about 8B). Not the required models.
+# Both configured models are SIMULATED (mock): Gemma-3-12B returned HTTP 404 and Llama-3.2-11B returned HTTP 410 on real calls.
+# No Mistral-family small instruct model was callable on the free providers, and no ~8B Llama is available there.
+job_name: "free_tier_pair1"
+description: "SIMULATED comparison of free-tier role models; not results for Ministral-3-8B-Instruct or Llama-3.1-8B-Instruct. Mock-provider runs are SIMULATED."
+seed: 42
+limit_per_benchmark: 15
+
+models:
+  - "google/gemma-3-12b-it"
+  - "meta/llama-3.2-11b-vision-instruct"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"

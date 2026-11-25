@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, computed_field, model_validator
 
-STANDIN_JOB_PREFIX = "standin_"  # a job name starting with this marks a stand-in (pipeline validation) run
 UNRELIABLE_THRESHOLD = 0.10      # a run is UNRELIABLE when MORE than this share of its items are api_error/truncated/no_answer
 UNRELIABLE_BENCHMARK_THRESHOLD = 0.20  # a benchmark is UNRELIABLE when MORE than this share of ITS items are flagged
 RUN_COMPLETED, RUN_FAILED, RUN_INCOMPLETE = "completed", "failed", "incomplete"
@@ -146,10 +145,6 @@ class RunArtifact(BaseModel):
         if isinstance(data, dict) and "run_mode" not in data:
             data = {**data, "run_mode": "simulated" if data.get("provider") == "mock" else "unknown"}
         return data
-
-    @property
-    def is_standin(self) -> bool:
-        return self.job_name.lower().startswith(STANDIN_JOB_PREFIX)
 
     def _unscorable_items(self) -> int:
         # every item has at most one of these three flags, so the counts can simply be added

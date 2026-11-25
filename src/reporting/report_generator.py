@@ -37,9 +37,6 @@ class ReportGenerator:
 {% if comparison.unreliable_a or comparison.unreliable_b %}
 > UNRELIABLE RUN: more than 10% of the items in at least one run were api_error, truncated or no_answer_found, so its accuracy is not a fair measure of the model. Find the cause (rate limits, a too-small max_tokens, a model that is not available) and rerun before drawing any conclusion.
 {% endif %}
-{% if comparison.standin_a or comparison.standin_b %}
-> STAND-IN RUN: at least one run used a stand-in model (its job name starts with `standin_`). This validates the pipeline only. It is NOT a result for the real models and must not be presented as one.
-{% endif %}
 {% if comparison.run_mode_a != comparison.run_mode_b %}
 > WARNING: these runs have different modes. A comparison between a simulated and a live run is not meaningful.
 {% endif %}

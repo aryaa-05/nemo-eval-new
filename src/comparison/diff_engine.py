@@ -92,8 +92,6 @@ class DiffEngine:
             "run_mode_b": run_b.run_mode,
             "job_name_a": run_a.job_name,
             "job_name_b": run_b.job_name,
-            "standin_a": run_a.is_standin,
-            "standin_b": run_b.is_standin,
             "truncated_a": run_a.truncated_count,
             "no_answer_a": run_a.no_answer_count,
             "api_error_a": run_a.api_error_count,

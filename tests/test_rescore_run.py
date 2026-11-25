@@ -25,7 +25,7 @@ MOCK = {"id": "meta/llama-3.1-8b-instruct", "name": "T", "provider": "mock"}
 PENCILS = "72 - 27 = 45.\n\n**Answer: 45 pencils left.**"   # right, but the original scorer read the wrong number
 
 
-def base_run(job="standin_t"):
+def base_run(job="test_job"):
     return EvaluationRunner(base_dir=REPO).run_evaluation(MOCK, ["mmlu_pro", "gsm8k"], job_name=job,
                                                          limit_per_benchmark=5, show_progress=False)
 
@@ -107,7 +107,6 @@ class TestRescoreArtifact(unittest.TestCase):
         for field in ("job_name", "timestamp", "run_mode", "model_id", "model_name", "provider", "seed", "status", "mean_latency", "total_tokens"):
             with self.subTest(field=field):
                 self.assertEqual(getattr(self.new, field), getattr(self.old, field))
-        self.assertTrue(self.new.is_standin)   # the stand-in label is kept
         self.assertEqual(self.new.run_mode, "simulated")
 
     def test_a_right_reply_scored_wrong_before_is_now_right(self):

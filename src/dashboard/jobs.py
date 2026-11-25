@@ -34,7 +34,6 @@ def start_job(
     limit_per_benchmark: int,
     solver_type: str,
     seed: int = 42,
-    standin: bool = False,
     base_dir: str = "",
 ) -> str:
     """Start a run in a daemon thread and return its job key."""
@@ -52,7 +51,6 @@ def start_job(
             "benchmark_ids": list(benchmark_ids),
             "limit_per_benchmark": limit_per_benchmark,
             "solver_type": solver_type,
-            "standin": bool(standin),
             "started_at": time.time(),
             "started_at_iso": _utc_iso(),
             "finished_at": None,

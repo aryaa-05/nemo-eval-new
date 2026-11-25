@@ -33,11 +33,11 @@ Other things a run can record:
   different model ID than the one requested. The run stores both: the requested
   `model_id` and the `served_model_id`. `model_substituted: true` means they differ.
   Scores are for the **served** model, not the exact requested variant.
-- **Stand-in job names.** Job names that start with `standin_` mark stand-in runs:
-  cheaper look-alike models used only to validate the pipeline. They are LIVE runs, but
-  their scores are results for the stand-in model only and must never be reported as
-  results for the models under study. The dashboard currently hides the stand-in banner
-  warnings, but the job name still carries the prefix and the run files still record it.
+- **Free-tier job names.** `configs/free_tier_pair*.yaml` uses job names starting with `free_tier_`.
+  A run is LIVE when its provider calls a model and SIMULATED when its provider is `mock`.
+  LIVE scores are results for the served free-tier model only and must never be reported as
+  results for the models under study. The dashboard shows run mode, job name and served model;
+  it has no special category banner.
 
 ## 3. Tabs
 
@@ -51,7 +51,6 @@ Top metrics: completed runs, live runs, simulated runs.
 Filters:
 
 - **Show run modes**: live, simulated.
-- **Include stand-in runs**: include or hide runs whose job name starts with `standin_`.
 
 Columns:
 
@@ -123,13 +122,13 @@ The comparison is refused unless both runs are `completed`.
 
 | Control | Meaning |
 |---|---|
-| Model set | **Live stand-ins** (the free-tier stand-in models) or **All configured models** (everything in `configs/models_config.yaml`). |
+| Model set | **Live free-tier models** (the zero-cost NIM/Groq models) or **All configured models** (everything in `configs/models_config.yaml`, including `mock` models). |
 | Model under test | The model block to run. The line below shows the provider, LIVE/SIMULATED, and whether the needed key is loaded. |
 | Benchmarks | Which datasets to run. Each selected benchmark contributes up to the sample cap. |
 | Use every row | Run every row of each selected dataset instead of a sample. |
 | Samples per benchmark | How many rows to take from each dataset (1 to 100). |
 | Prompting strategy | `simple` (question + options, answer directly) or `cot` (reason step by step, then `Answer: [OPTION]`). For HumanEval both use the same code instruction. |
-| Job name | Written into the run file; automatically prefixed for stand-in models. |
+| Job name | Written into the run file verbatim; free-tier jobs are not given a separate category label. |
 | Start evaluation | Starts the run in a background thread. While a run is active the button reads **Run in progress...**. |
 
 The status panel is rendered directly below the Start button. It polls every 2 seconds
@@ -143,7 +142,7 @@ Notes:
   the selected provider is loaded.
 - A model that is not callable can stop early after 5 identical 401/403/404/410 errors;
   the run is then marked FAILED.
-- HumanEval needs the code sandbox; each item has a 3-second execution timeout.
+- HumanEval runs generated code in a separate process with a 3-second timeout; this is not a security sandbox.
 
 ### 3.5 Reports
 
@@ -211,7 +210,7 @@ and are not directly comparable. The diff tab warns about this.
 | `gsm8k` | Free-answer math | 15 | Small sample. |
 | `math_500` | Free-answer math | 15 | Small sample. |
 | `gpqa` | 4-option multiple choice | 15 | Answer positions rebalanced; keys not independently verified. |
-| `humaneval` | Code | 15 | Executed against hidden tests with a 3-second timeout. |
+| `humaneval` | Code | 15 | Tests are hidden from the model; generated code runs with a 3-second timeout. |
 | `truthfulqa` | 4-option multiple choice | 15 | Answer positions rebalanced; keys not independently verified. |
 | `custom_byob` | 4-option multiple choice | 2 | Demo only. |
 | `kyc_india` | 4-option multiple choice | 100 | RBI-sourced; 22/100 rows human-checked. |
@@ -226,10 +225,11 @@ numbers.
 ## 6. Presenting results honestly
 
 - A SIMULATED run says nothing about a model; it only tests the software.
-- A LIVE stand-in run (job name starting with `standin_`) is a real measurement of the
-  **stand-in model**, not of the models the project is meant to compare.
+- A LIVE free-tier run (commonly with a `free_tier_` job name) is a real measurement of the
+  **exact served model**, not of the models the project is meant to compare. The job name is
+  a label, not a model category.
 - A substitute route measures the **served** model, not the exact requested variant.
-- Do not put simulated, stand-in or substitute numbers in the same table as real-model
+- Do not put SIMULATED, free-tier or substitute numbers in the same table as required-model
   results without labelling them.
 - Do not describe unchecked answer keys as verified.
 

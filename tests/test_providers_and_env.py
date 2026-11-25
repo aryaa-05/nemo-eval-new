@@ -249,7 +249,8 @@ class TestProviderKeyIsolation(unittest.TestCase):
                         self.assertIsInstance(route.get("substitute", False), bool)
                         if route.get("substitute"):
                             self.assertTrue(route.get("note"), "a substitute route must explain the substitution")
-                else:
+                elif cfg.get("provider") != "mock":
+
                     host = urlparse(cfg["api_base"]).hostname
                     self.assertEqual(cfg.get("api_key_env"), expected[host])
 

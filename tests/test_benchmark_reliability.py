@@ -46,7 +46,7 @@ def reply(status=200, content="Answer: A"):
     return r
 
 
-def simulated_run(benchmarks=("mmlu_pro", "gsm8k"), n=10, job="standin_t"):
+def simulated_run(benchmarks=("mmlu_pro", "gsm8k"), n=10, job="test_job"):
     return EvaluationRunner(base_dir=REPO).run_evaluation(MOCK, list(benchmarks), job_name=job, limit_per_benchmark=n, show_progress=False)
 
 

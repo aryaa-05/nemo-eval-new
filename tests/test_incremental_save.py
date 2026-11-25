@@ -52,7 +52,7 @@ def crash_on_call(n):
     return generate
 
 
-def run(benchmarks=BENCHES, limit=4, checkpoint=None, job="standin_t"):
+def run(benchmarks=BENCHES, limit=4, checkpoint=None, job="test_job"):
     return EvaluationRunner(base_dir=REPO).run_evaluation(
         MOCK, list(benchmarks), job_name=job, limit_per_benchmark=limit, show_progress=False, checkpoint=checkpoint)
 

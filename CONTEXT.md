@@ -4,15 +4,16 @@ This file is for anyone picking up the repository without the conversation that 
 working with their own AI tool. It was written from the code and from commands that were actually run.
 Where something was **not** verified, it says so. If this file and the code disagree, the code wins; please fix this file.
 
+**Terminology update (user instruction, November 2026):** in all reports, a model that answered through a provider is a **LIVE** model and its run is a live run for that exact served model. A model that could not be called is represented by `mock` and reported as **SIMULATED**. The user does not use a separate legacy label for a model category. Code, configs and tests now use LIVE free-tier and SIMULATED wording; historical run artifacts may still contain old job names or display names, which are legacy software labels only. Nothing in this file permits presenting a free-tier or substitute model run as a result for the required pair models.
+
 ## 0. Rules that must not be broken
 
-1. **Never present simulated or stand-in results as results for the real models.** Simulated runs come from a
-   built-in fake model. Stand-in runs come from cheaper look-alike models used only to test the pipeline.
-   Neither says anything about the models the project is meant to compare.
+1. **Never present a live free-tier or simulated run as a result for the required pair models.** Simulated runs
+   come from a built-in fake model (provider `mock`). Live free-tier runs make real API calls and their scores
+   are real results for the exact served model only. Neither is a result for the required pair models.
    Note the distinction, because it is easy to get wrong: **a run is only *simulated* when no API call is
-   made** (provider `mock`). A stand-in run **does** make real API calls, so it is a **live** run, and its
-   scores *are* real results - but for the **stand-in model only**. They are not results for the required
-   models, and must never be labelled or reported as such.
+   made** (provider `mock`). Any run that reaches a provider is **live**, including a free-tier model used
+   when a required model is unavailable. Its scores are results for that served model only.
    **A substitute route is a third case.** A `provider: "auto"` model can be served by a different model ID
    than the one requested (for example the exact Ministral variant is not hosted). The run records both IDs
    and `model_substituted: true`. Its scores are results for the **served** model; do not report them as
@@ -36,8 +37,8 @@ Where something was **not** verified, it says so. If this file and the code disa
   can be tested with no API calls. `provider: "auto"` resolves to the first configured route whose key is set.
 - Interfaces: a command-line tool (`python src/cli/nel.py`) and a Streamlit dashboard. The CLI is what this file
   documents in detail; the dashboard now runs evaluations in a background thread (the page stays responsive and
-  polls the job every 2 seconds), shows run mode, job name, served model, substitute-route and stand-in warnings,
-  and defaults to the live stand-ins. It launches one model at a time.
+  polls the job every 2 seconds), shows run mode, job name, served model and substitute-route warnings, and defaults
+  to the live free-tier models. It launches one model at a time.
 
 ## 1a. What was asked for
 
@@ -176,12 +177,12 @@ python src/cli/nel.py gate --baseline <RUN_ID_A> --candidate <RUN_ID_B>
 python src/tools/rescore_run.py <RUN_ID> [<RUN_ID> ...]      # offline, no model call: new run file <RUN_ID>_rescored_v<N>.json (section 9a)
 python -m pytest -q                                          # or: python -m unittest discover -s tests
 ```
-
+1
 `eval run` options: `--config`, `--model`, `--bench` (repeatable), `--limit`, `--solver simple|cot|harbor`,
 `--job-name`. Run IDs are printed after each run and shown by `list`.
 
 Careful: the three real pair job files now set `limit_per_benchmark: 100`, so a full run uses every row in each
-dataset (the older 15-row benchmarks still contribute only 15). The stand-in job files still set 15 for quick
+dataset (the older 15-row benchmarks still contribute only 15). The free-tier job files still set 15 for quick
 pipeline checks.
 
 A mistyped `--config` path is silently treated as an empty config (the run falls back to defaults). Check the
@@ -220,7 +221,7 @@ loader never prints values. You can set the variable in the shell instead: `$env
 | `mock` | none | nothing (offline) | the simulator |
 | `nvidia_nim` | `NVIDIA_API_KEY` | `https://integrate.api.nvidia.com/v1` | free tier |
 | `groq` | `GROQ_API_KEY` | `https://api.groq.com/openai/v1` | free tier |
-| `openrouter` | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` | paid per use; **never called for real yet** (section 3a) |
+| `openrouter` | `OPENROUTER_API_KEY` | `https://openrouter.ai/api/v1` | paid per use; six one-item LIVE probes on 20 November 2026 (section 3a) |
 | `openai` | `OPENAI_API_KEY` | `https://api.openai.com/v1` | paid; not used by the real pair routes |
 | `ollama` | none | `api_base`, default `http://localhost:11434` | local models |
 | `auto` | each route's own key | the chosen route's own host | picks a route by key presence, free first (section 3a) |
@@ -260,25 +261,27 @@ other host.
 
 ### Running a real pair
 
-The six real pair models are already configured with `provider: "auto"` and an OpenRouter route, so the only
-missing piece is a key:
+The six real pair models are configured with `provider: "auto"` and an OpenRouter route. On 20 November 2026,
+all six routes completed one-item LIVE probes with `job_name: openrouter_probe`; no API error, truncation or
+no-answer was recorded. Those probes verify routing only and their scores are not reported as results.
 
-1. Put `OPENROUTER_API_KEY` in `.env` (OpenRouter is paid; add credit).
+1. Keep `OPENROUTER_API_KEY` in `.env` (OpenRouter is paid; add credit).
 2. Try 10 items first: `python src/cli/nel.py eval run --config configs/eval_pairN_....yaml --limit 10`.
 3. Check the printed table says LIVE, shows the served model and does not show a substitute warning unless the
    route is marked substitute, then check the "Truncated / No answer / API error" column.
 4. Run with `--limit 0`, then `compare` the two run IDs.
 
 **None of the three real pairs can run live on NIM or Groq**: their model IDs are not on those providers
-(section 10). The OpenRouter route is configured but **no real OpenRouter call has been made**, because no
-`OPENROUTER_API_KEY` was available while this was written (section 3a).
+(section 10). Their OpenRouter routes were probed live on 20 November 2026; full benchmark runs are pending
+(section 3a).
 
 ## 3a. Running the real pairs through OpenRouter (with your own key)
 
 OpenRouter is a service that puts one OpenAI-style API in front of many hosted models and charges per use. The repo
 has an `openrouter` provider with the same safeguards as the others: it only talks to
 `https://openrouter.ai/api/v1`, only reads `OPENROUTER_API_KEY`, is https only, never follows redirects and never
-prints the key. It is covered by tests with made-up replies. **No real OpenRouter call has ever been made with it.**
+prints the key. It is covered by tests with made-up replies and was first used for real one-item probes on
+20 November 2026 (section 3a).
 
 1. **Account and key.** Create an OpenRouter account and an API key (add credit if the models you need are not free;
    the model list shows prices). The key is yours: do not share it, do not commit it. Put it in `.env`:
@@ -289,8 +292,8 @@ prints the key. It is covered by tests with made-up replies. **No real OpenRoute
    with an OpenRouter route. Auto tries NIM, then Groq, then OpenRouter, then OpenAI, and uses the first route whose
    key is set. Because the six models have no NIM or Groq route, the OpenRouter key is the one that makes them live.
 3. **Try 10 items first** (`--limit 10`), then run for real. In the output check: the run says LIVE, it shows the
-   served model and any substitute warning, there is no STAND-IN banner, the `api_error`, truncated and no-answer
-   counts are small, and the run is not marked UNRELIABLE.
+   served model and any substitute warning, the `api_error`, truncated and no-answer counts are small, and the run
+   is not marked UNRELIABLE.
 4. **Before calling anything a result:** all three new datasets pass `--final` with their source text, but human
    checks cover only 20/100 image rows and 22/100 rows in each of KYC and RBI, so most keys are not independently
    verified. `gpqa` and `truthfulqa` answer positions have been rebalanced, but their questions and keys remain
@@ -314,12 +317,25 @@ The configured substitutions, each flagged with `substitute: true` and a `note:`
 The route costs in `models_config.yaml` are OpenRouter's per-1M-token prices at the time of checking (Ministral 8B
 0.15/0.15; Ministral 14B 0.20/0.20; Llama 3.1 8B 0.05/0.08; Llama 4 Scout 0.10/0.30; Qwen3.5-9B 0.17/0.25).
 `max_tokens` is 4096 and `timeout_seconds` 240 for the reasoning routes; these settings have **not** been measured
-on the served models.
+under a full reasoning workload.
 
-**Things not verified:** whether each route can actually be called (the model list is not proof; section 10 shows
-that); whether the served Ministral model is instruct or reasoning; OpenRouter's upstream provider choice (it can
-route one model to different hosts with different precision, context length and limits); whether a separate
-`reasoning` field arrives as assumed; and the request-rate limits of the account.
+**One-item LIVE probes, 20 November 2026.** All six routes returned a normal reply with one HTTP attempt,
+`finish_reason: stop`, and no API error, truncation or no-answer. The scores are not reported because one item
+cannot measure model quality.
+
+| requested model | served model | substitute? | probe run id |
+|---|---|---|---|
+| `mistralai/ministral-3-8b-instruct-2512` | `mistralai/ministral-8b-2512` | yes | `run_20261120_092608_4ff09f` |
+| `meta/llama-3.1-8b-instruct` | `meta-llama/llama-3.1-8b-instruct` | no | `run_20261120_092612_a4bc41` |
+| `mistralai/ministral-3-14b-reasoning-2512` | `mistralai/ministral-14b-2512` | yes | `run_20261120_092615_0a9cec` |
+| `meta/llama-4-scout-17b-16e-instruct` | `meta-llama/llama-4-scout` | no | `run_20261120_092618_95805e` |
+| `mistralai/ministral-3-8b-reasoning-2512` | `mistralai/ministral-8b-2512` | yes | `run_20261120_092623_15c46a` |
+| `qwen/qwen3.5-8b` | `qwen/qwen3.5-9b` | yes | `run_20261120_092626_d393b6` |
+
+**Things not verified by the one-item probes:** whether the served Ministral model is instruct or reasoning;
+OpenRouter's upstream provider choice (it can route one model to different hosts with different precision,
+context length and limits); whether a separate `reasoning` field arrives on harder reasoning items; the
+request-rate limits of the account; and stability over a full benchmark run.
 
 ## 4. Datasets: layout and format
 
@@ -364,7 +380,7 @@ The rules for finding and comparing the final answer are in section 9.
 
 **`gsm_05` was ambiguous and has been reworded.** The original question ("Baker bakes 120 loaves, sells 3/4 by
 noon. Bakes 60 more, sells half. How many left?", key `60`) could mean half of everything the baker then has (45 left)
-or half of the 60 baked later (60 left). In the stand-in runs every model that read it the first way was marked wrong.
+or half of the 60 baked later (60 left). In the LIVE free-tier runs every model that read it the first way was marked wrong.
 It now reads "Baker bakes 120 loaves and sells 3/4 of them by noon. She bakes 60 more loaves and sells half of those
 60 new loaves. How many loaves are left?" with key `60`. Old run files keep their old verdicts; do not reuse them for
 GSM8K.
@@ -679,14 +695,14 @@ the benchmark breakdown). The `gate` panel shows the run-level mark only. The ru
 - `src/tools/rescore_run.py <RUN_ID> ...` re-scores the **stored replies** of a COMPLETED run with the current scorer. It
   makes **no model call** and **never modifies the original file**. It writes a new file `<RUN_ID>_rescored_v<N>.json`
   with `rescored_from` (the original id), `rescored_at` and the new `scorer_version`; the job name, mode, timestamp and
-  all latencies/tokens are kept (so a stand-in run stays labelled STAND-IN), and the description says it was re-scored.
+  all latencies/tokens are kept (so a LIVE free-tier run stays labelled LIVE), and the description says it was re-scored.
   The new file is JSON only: it is not in `nel list` or the leaderboard, but its id works with `compare` and `gate`, and
   the report header says RESCORED. Items that were `api_error`, `truncated` or `no_answer_found` go through the same code as
   in a live run, so their verdicts cannot change for those reasons; **HumanEval items are kept exactly as stored**
   (re-running code needs the original tests, which a run file does not hold). The tool refuses failed or incomplete runs
   and refuses to overwrite any file that is not itself a re-scored run. `--report-md` / `--report-json` write the
   before/after accuracy per benchmark and every item whose verdict or extracted answer changed.
-- Re-scored copies of the four stand-in runs (pairs 2 and 3) were made with scorer v2. They are pipeline validation like
+- Re-scored copies of the four LIVE free-tier runs (pairs 2 and 3) were made with scorer v2. They are pipeline validation like
   the originals. Their scores are deliberately not recorded in this file.
 
 ## 9b. Incremental saving and INCOMPLETE runs
@@ -783,7 +799,7 @@ Face-style IDs (section 1a), which are a different naming scheme from the NIM ID
 
 ### Being in a provider's model list does not mean the model can be called
 
-Checked with real calls (stand-in work, October 2026):
+Checked with real calls (free-tier work, October 2026):
 
 | provider | model | result |
 |---|---|---|
@@ -796,8 +812,8 @@ Checked with real calls (stand-in work, October 2026):
 | NIM | `zyphra/zamba2-7b-instruct` | in the list, same 404 |
 | NIM | `aisingapore/sea-lion-7b-instruct` | in the list, same 404 |
 | NIM | `meta/llama-3.2-90b-vision-instruct` | in the list; **one call timed out at 120 s**. Inconclusive: it is not a 404, but it was not shown to work |
-| NIM | `meta/llama-3.2-11b-vision-instruct` | worked (10 `mmlu_pro` items). One call hit the 120 s read timeout |
-| NIM | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | worked (1 math question: 371 completion tokens, 8.6 s) |
+| NIM | `meta/llama-3.2-11b-vision-instruct` | historically worked (10 `mmlu_pro` items; one 120 s read timeout), but later 410/timeout observations led to its current `mock`/SIMULATED config |
+| NIM | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | historically worked (1 math question: 371 completion tokens, 8.6 s) |
 | Groq | `openai/gpt-oss-20b` | worked (10 `mmlu_pro` items, no errors) |
 | Groq | `qwen/qwen3.8-27b` | worked (1 math question: 790 completion tokens, 1.9 s) |
 
@@ -827,119 +843,70 @@ the thinking came back in `message.reasoning_content` instead, again with the an
 `reasoning_tokens` count. **Groq `qwen/qwen3.8-27b`** returned only `content` (a worked solution, no
 separate thinking field and no `<think>` tags), even though the Groq list flags it as reasoning-capable.
 
-**Measured sizes used for the stand-in settings** (a very small sample, all easy questions; treat as provisional):
+**Measured sizes used for the free-tier settings** (a very small sample, all easy questions; treat as provisional):
 `gpt-oss-20b`: 42 to 472 completion tokens per item over 10 items (mean 132, thinking included, about 1,000 tokens/s);
 `nemotron-3-nano-omni`: 371 tokens in 8.6 s (about 43 tokens/s end to end); `qwen3.8-27b`: 790 tokens in 1.9 s (about
 416 tokens/s). Groq's token-per-minute limit is 8000 in the headers; a call with `max_tokens` 4096 left 7878 tokens in the
 bucket, so `max_tokens` is **not** reserved against it.
 
 **Live limits seen**: Groq's reply headers report limits of 1000 requests and 8000 tokens (the header does not say over
-which period, so treat the periods as unverified). Groq answered in about 1 to 2 seconds per call. NIM's free tier was
-slow and uneven: the 11B Llama took a median of about 20 s per successful call and up to about 115 s, and 9 of its 120
-items in one run timed out twice at 120 s (5 of them on GPQA); the Nemotron reasoning model took a median of about 4 s
-but got HTTP 503 on many calls. A full 120-item run took about 20 minutes for Nemotron and about 130 minutes for the
-Llama, so budget hours, not minutes, for NIM runs.
+which period, so treat the periods as unverified). Groq answered in about 1 to 2 seconds per call. Historical NIM
+free-tier observations: the 11B Llama took a median of about 20 s per successful call and up to about 115 s, and 9 of
+its 120 items in one run timed out twice at 120 s (5 of them on GPQA); the Nemotron reasoning model took a median of
+about 4 s but got HTTP 503 on many calls. A full 120-item run took about 20 minutes for Nemotron and about 130 minutes
+for the Llama. These are historical observations; the Llama is now `mock`/SIMULATED, so budget hours, not minutes, for
+NIM runs with currently callable models.
 
-## 11. Stand-in and simulated runs
+## 11. LIVE free-tier and SIMULATED runs
 
-**Live vs simulated - the one rule to remember.** A run is **simulated only when no API call is made**
-(`provider: mock`). Any run that reaches a provider over the network is a **live** run, including a stand-in
-run. So a stand-in's numbers are genuine live results **for the stand-in model**; they are simply not results
-for the required models the project is meant to compare. "Pipeline validation" describes *what the numbers are
-for*, not *how they were produced* - do not call a stand-in run "simulated".
+**Live vs simulated - the one rule to remember.** A run is **SIMULATED only when no API call is made**
+(`provider: mock`). Any run that reaches a provider over the network is a **LIVE** run for the exact served model.
+A live free-tier result is a real result for that free-tier model only; it is never a result for the required pair
+models.
 
 - **Simulated** (`provider: mock`): a fake model that answers correctly with a fixed per-benchmark probability. It
   exists only to test the software. Its scores are not findings about anything. Since the simulator was fixed it is
-  repeatable: the same seed and the same items give the same output in every process. Several models have
-  no simulator profile and the three newest benchmarks have no per-model accuracy setting (see section 12).
-- **Stand-in** runs use cheaper look-alike models, available on the provider, to test the live pipeline end to end
-  (real calls, real reply formats, real truncation behaviour) when the real models cannot be called. They are
-  **live** runs, and are **pipeline validation only**: they must **never** be described as results for the real
-  models (they are results for the stand-in models themselves).
-- **Current direction: free-tier stand-ins by default; a paid route only on request.** Stand-ins are free-tier
-  NVIDIA NIM and Groq models. The real pair configs (`configs/eval_pair*.yaml`) are unchanged in which models they
-  name, but those six models now use `provider: "auto"` with an OpenRouter route (section 3a); the route is paid and
-  does nothing until `OPENROUTER_API_KEY` is set. Stand-in pairs are meant to mirror the *roles* of the real pairs
-  (a small Mistral-family instruct model against a Llama of about 8B; a mid-size model against Llama 4 Scout or the
-  nearest Llama; a reasoning model against a Qwen model). Where a provider has no equivalent for a role, the
-  proposal says so and names the nearest model instead.
+  repeatable: the same seed and the same items give the same output in every process. The two unavailable role models,
+  `google/gemma-3-12b-it` and `meta/llama-3.2-11b-vision-instruct`, are now `mock`; their run files are SIMULATED.
+- **LIVE free-tier** runs use callable NVIDIA NIM and Groq models to exercise the live pipeline and to produce real
+  results for those exact served models. They are not results for the required pair models. The current live set is
+  in `configs/live_free_models.yaml`: 13 models were probed with one `mmlu_pro` item each, and all 13 completed LIVE.
+- **Current direction: live free-tier models where callable, `mock` where not, and a paid route only on request.**
+  The real pair configs (`configs/eval_pair*.yaml`) still name the six required models, which use `provider: "auto"`
+  with an OpenRouter route (section 3a); that route is paid and does nothing until `OPENROUTER_API_KEY` is set.
 - **Substitute route** (only `provider: "auto"`): a live route whose served model is not the exact requested model.
   The run records both IDs and `model_substituted: true`; its scores are for the served model, not the requested one.
   `nel list`, the run line, the `compare` panel, the report header and the dashboard all mark it `[SUBSTITUTE]` or
-  show the served model. It is a different case from a stand-in (a stand-in is a separate model block, not a
-  route) and from simulated (a substitute route makes real API calls).
-- **The three stand-in pairs** (configs `configs/standin_pair1.yaml`, `standin_pair2.yaml`, `standin_pair3.yaml`; each
-  runs the same 9 benchmarks as the real pairs, 15 items each). Their model blocks are in `models_config.yaml`,
-  marked stand-in only. **Pairs 2 and 3 have each been run once** (8 benchmarks, no HumanEval, as pipeline
-  validation); **pair 1 has not been and cannot be run** (below).
+  show the served model. This is different from a simulated run: a substitute route makes real API calls.
+- **The three free-tier role configs** are `configs/free_tier_pair1.yaml`, `free_tier_pair2.yaml` and
+  `free_tier_pair3.yaml`. Each runs the same nine benchmarks as the real pairs, 15 items each.
 
-  **Required models vs the stand-ins used now.** The required models (section 1a) cannot be called on the free
-  providers, so each pair runs a stand-in that mirrors its role. The mapping is:
-
-  | pair | required model A -> stand-in | required model B -> stand-in | why the real one is not used |
-  |---|---|---|---|
-  | 1 | `Ministral-3-8B-Instruct-2512` -> `google/gemma-3-12b-it` (NIM) | `Llama-3.1-8B-Instruct` -> `meta/llama-3.2-11b-vision-instruct` (NIM) | Ministral absent from NIM/Groq; Llama-3.1-8B retired (HTTP 410) |
-  | 2 | `Ministral-3-14B-Reasoning-2512` -> `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `Llama-4-Scout-17B-16E` -> `meta/llama-3.2-11b-vision-instruct` (NIM) | both absent from NIM/Groq |
-  | 3 | `Ministral-3-8B-Reasoning-2512` -> `openai/gpt-oss-20b` (Groq) | `Qwen3.5` (size unstated) -> `qwen/qwen3.8-27b` (Groq) | both absent from NIM/Groq; Qwen3.8 is a different version/size |
-
-  The stand-in pair table (what actually runs today):
-
-  | pair | role it mirrors | model A | model B | verification |
+  | pair | role mirrored | model A | model B | current status |
   |---|---|---|---|---|
-  | 1 | small instruct vs Llama ~8B | `google/gemma-3-12b-it` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) | **NOT RUNNABLE, skipped by decision**: A returns 404 |
-  | 2 | mid-size reasoning vs nearest Llama to Scout | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) | both worked |
-  | 3 | reasoning vs Qwen | `openai/gpt-oss-20b` (Groq) | `qwen/qwen3.8-27b` (Groq) | both worked |
+  | 1 | small instruct vs Llama ~8B | `google/gemma-3-12b-it` (mock) | `meta/llama-3.2-11b-vision-instruct` (mock) | SIMULATED: both real calls failed |
+  | 2 | mid-size reasoning vs nearest Llama to Scout | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `meta/llama-3.2-11b-vision-instruct` (mock) | LIVE + SIMULATED |
+  | 3 | reasoning vs Qwen | `openai/gpt-oss-20b` (Groq) | `qwen/qwen3.8-27b` (Groq) | LIVE |
 
-  **Pair 1 is not runnable and has been skipped on purpose.** There is **no callable small Mistral-family instruct
-  model on the free tiers**: the three Mistral-family ones in NVIDIA's list (`mistral-7b-instruct-v0.3`,
-  `mistral-nemo-12b-instruct`, `mistral-nemo-minitron-8b-8k-instruct`) all returned HTTP 404, Groq has no Mistral
-  model, and every substitute small instruct model tried on NIM (Granite 8B, Gemma 3 12B, Zamba2 7B, SEA-LION 7B)
-  returned 404 too. A Groq 7B model (`allam-2-7b`) was considered and **deliberately not added**.
-  `configs/standin_pair1.yaml` stays in the repo, marked in its header as not runnable; running it would stop after 5
-  items with a FAILED run (the early stop) and would not produce a comparison.
-
-  Other roles with **no equivalent** on the free providers: a Llama of about 8B, Llama 4 Scout (so pair 2 uses the same
-  11B Llama as pair 1 would have; the 90B Llama timed out once and the 70B Nemotron fallback returned 404), and Qwen3.5
-  (Qwen3.8 at 27B is a different version and size). The pairs that do run validate the pipeline; they do not reproduce
-  the real comparisons.
-- **Settings of the reasoning stand-ins**, from the measured sizes in section 10 (provisional, from one to ten easy
-  items each): `max_tokens` **4096** for all three (4 x the largest measured reply, 790, rounded up to a multiple of
-  1024). Timeouts: **240 s** for the NIM model (2.5 x the 95 s that 4096 tokens would take at 43 tokens/s, because
-  NIM showed slow outliers), **60 s** for the two Groq models (the same 4096 tokens take about 10 s). To stay under
-  Groq's 8000 tokens per minute: `requests_per_minute` **10** for `gpt-oss-20b` and **6** for `qwen3.8-27b` (about
-  600 and 1000 tokens per request).
-- Naming rules for stand-in runs:
-  - Config files are named `configs/standin_*.yaml`. A test fails if a `standin_*` file has a `job_name` that
-    does not start with `standin_`, or a `description` without the words "pipeline validation", or if a
-    `configs/eval_*.yaml` file uses a `standin_` job name.
-  - Template (format only):
-    ```yaml
-    job_name: "standin_<short_name>_pipeline_validation"
-    description: "PIPELINE VALIDATION ONLY. Stand-in models, not the models under study. Not results for <real models>."
-    seed: 42
-    limit_per_benchmark: 10
-    models:
-      - "<stand-in model id>"
-    benchmarks:
-      - "mmlu_pro"
-    ```
-  - Give stand-in models their own blocks in `models_config.yaml` and a display `name:` that does not look like
-    the real model.
-- **How a stand-in run is labelled.** The run file records the `job_name`. `nel list`, the line printed when a run
-  finishes, the `compare` panel and the report header all show it, and when a job name starts with `standin_` they
-  also show a **STAND-IN RUN: pipeline validation only** banner (the report banner says it is not a result for the
-  real models). `eval run` refuses to start if the config file is named `standin_*` but the job name does not start
-  with `standin_` (so `--job-name` cannot strip the label).
-- **Limits of that labelling:** it works from the job-name prefix alone. A stand-in run started from a config that
-  is not named `standin_*`, with an ordinary job name, is **not** marked. The run mode still reads **LIVE** for a
-  stand-in run made with real calls, because `run_mode` only distinguishes simulated from live. The dashboard now
-  shows the mode, job name and a stand-in warning on its leaderboard and comparison tabs. Anyone sharing such a
-  report must still describe it as pipeline validation in the text around it.
+  **Pair 1 has no callable free-tier equivalent.** The three Mistral-family models in NVIDIA's list
+  (`mistral-7b-instruct-v0.3`, `mistral-nemo-12b-instruct`, `mistral-nemo-minitron-8b-8k-instruct`) returned HTTP 404,
+  Groq has no Mistral chat model, and the small instruct substitutes tried on NIM (Granite 8B, Gemma 3 12B, Zamba2 7B,
+  SEA-LION 7B) also returned 404. `allam-2-7b` is now in the live probe set but is not a Mistral-family model.
+  Other roles with no exact equivalent are Llama 4 Scout and Qwen3.5; Qwen3.8-27B is a different version and size.
+- **Settings of the reasoning free-tier models**, from measured sizes in section 10 (provisional, from one to ten easy
+  items each): `max_tokens` **4096** for the three original reasoning role models, `timeout_seconds` **240** for the
+  NIM model and **60** for the two Groq models, with `requests_per_minute` **10** for `gpt-oss-20b` and **6** for
+  `qwen3.8-27b`.
+- **How runs are labelled.** The run file records `run_mode`, `job_name`, provider, served model and substitute
+  fields. `nel list`, the line printed when a run finishes, the `compare` panel and the report header show them.
+  There is no special category banner: a `mock` run says SIMULATED, a provider run says LIVE, and a substituted
+  route says SUBSTITUTE. `eval run` uses the job name from the config or `--job-name`; no config filename prefix
+  changes the label. Historical run files may still contain old job names or display names from before this cleanup;
+  read those as legacy software labels, not as a model category.
 
 ## 11a. Verified on live calls
 
 What real calls have shown so far (October 2026). "Seen" means a real reply was received and read by the pipeline.
-Only shapes and behaviours are listed; **scores are deliberately left out** (the stand-in runs are pipeline validation).
+Only shapes and behaviours are listed; **scores are deliberately left out** (the LIVE free-tier runs are pipeline validation).
 
 **Model lists**
 - NIM `GET /v1/models`: each entry has only `id`, `object`, `created`, `owned_by`. Being listed does not mean callable.
@@ -960,7 +927,8 @@ Only shapes and behaviours are listed; **scores are deliberately left out** (the
   none had thinking text inside the answer, and nothing needed stripping: the pipeline scored `content` only and kept
   the separate thinking field as `reasoning_text`.
 - **Not seen live:** `finish_reason` of `length` (nothing was truncated), inline `<think>` tags from a real model, any
-  401 or 403, and anything from OpenRouter, OpenAI or Ollama (the `openrouter` provider has never been called).
+  401 or 403, and anything from OpenAI or Ollama. OpenRouter replies were seen only in the six one-item probes
+  described in section 3a.
 
 **Error and failure shapes**
 - NIM 404: JSON `{"status":404,"title":"Not Found","detail":"Function '<id>': Not found for account '<id>'"}`.
@@ -982,13 +950,13 @@ Only shapes and behaviours are listed; **scores are deliberately left out** (the
 
 ## 12. Current status and known limitations
 
-**Works and is tested** (402 tests passed at the time of writing, with both `pytest` and `unittest`; everything below was
+**Works and is tested** (396 tests passed at the time of writing, with both `pytest` and `unittest`; everything below was
 tested with the simulator or mocked replies only; the newest parts are the math scorer v2 with its 54 curated fixtures and 118
 stored real replies, the scorer version stamp, the per-request `attempt_log`, the per-benchmark UNRELIABLE flag, incremental
 saving with INCOMPLETE runs refused by `compare` / `gate` (tested with a simulated crash), the offline re-score tool,
 `provider: "auto"` route resolution with substitute labels, and the dashboard's background job thread): the simulator
 is deterministic and honours the seed; live providers fail loudly without a key; run mode and job name are recorded
-and shown, with a stand-in banner; reasoning text is stripped and truncation/no-answer/api_error is flagged and
+and shown; reasoning text is stripped and truncation/no-answer/api_error is flagged and
 counted; the UNRELIABLE mark (more than 10% flagged items) and the FAILED state with its early stop (first 5 items all
 401/403/404/410); retries on 429/5xx with backoff and `Retry-After`, a single retry of a read timeout, and a per-model
 throttle (tested with mocked replies and a fake clock); HumanEval code extraction; math answer extraction (see the
@@ -1001,25 +969,27 @@ job is running. This was checked with Streamlit's `AppTest` and a 1-item simulat
 
 **Verified against the real services**: see section 11a for the response shapes and the client behaviours seen. In
 short: the NIM and Groq keys are accepted; both model lists work; the pipeline read replies from four different models
-(one with `reasoning_content`, one with `reasoning`, two with no thinking field); two complete 8-benchmark stand-in
-runs (pair 3 on Groq and pair 2 on NIM) finished end to end, each reporting LIVE, the job name and the STAND-IN banner.
-The `openrouter` provider has **never** been called, and the early stop has never fired on a real run.
+(one with `reasoning_content`, one with `reasoning`, two with no thinking field); a complete LIVE pair-3 run on Groq and
+a LIVE + SIMULATED pair-2 run on NIM/mock finished end to end, each reporting the job name and run-mode label. Thirteen
+callable free-tier models also completed one-item LIVE probes. The `openrouter` provider has **never** been called, and
+the early stop has never fired on a real run.
 
 **Not done / not verified:**
-- **No result for any real model exists.** The stand-in runs of pairs 2 and 3 exist as run files in `runs/` and are
-  pipeline validation only (their scores are deliberately not recorded in this file). All other saved runs are
-  simulated, and the ones from before the simulator fix also came from the old non-repeatable simulator.
-- **The math scorer used to under-score correct answers; scorer v2 fixes the causes that were found.** The stand-in runs
+- **No result for any required model exists.** The LIVE free-tier runs of pairs 2 and 3 exist as run files in `runs/` and
+  are real results for those exact served models only (their scores are deliberately not recorded in this file). All
+  other saved runs are simulated, and the ones from before the simulator fix also came from the old non-repeatable
+  simulator.
+- **The math scorer used to under-score correct answers; scorer v2 fixes the causes that were found.** The LIVE free-tier runs
   showed that most GSM8K / MATH-500 items scored wrong had a correct final answer that the old extractor misread (a unit
   after the number, currency with thousands separators, a final line that is only bold text after a "Conclusion",
   LaTeX forms such as `\frac{1}{6}` against the key `1/6`). The rules in section 9 replace the old ones. **Run files saved
   before that (scorer `unversioned`) still hold the old verdicts for GSM8K and MATH-500: do not use their math numbers.**
-  Re-score them (section 9a) or rerun. v2 was checked only on fixtures and on the stored stand-in replies, not on a new
+  Re-score them (section 9a) or rerun. v2 was checked only on fixtures and on the stored free-tier replies, not on a new
   live run, and other reply styles (other models, harder problems) may still be misread. After re-scoring, the math
-  items still marked wrong in the four stand-in runs were: `gsm_05` in four of them (the wording has since been fixed;
+  items still marked wrong in the four LIVE free-tier runs were: `gsm_05` in four of them (the wording has since been fixed;
   those old run files keep the old verdicts), one genuinely wrong answer, and two failed API calls (`api_error`, not
   model errors); these were read by hand.
-- **Failures cluster; the per-benchmark flag now shows it.** In one stand-in run a model timed out on a third of the
+- **Failures cluster; the per-benchmark flag now shows it.** In one LIVE free-tier run a model timed out on a third of the
   items of one benchmark while the run as a whole stayed under the 10% mark. A benchmark with more than 20% flagged items is
   now marked UNRELIABLE on its own (section 9), but only runs made after that change carry the flag in the run file;
   older files get it when loaded (it is computed from the stored counts).
@@ -1034,14 +1004,15 @@ The `openrouter` provider has **never** been called, and the early stop has neve
   to the numbers. `rbi_regulations` and `image_processing` are now balanced at 25 of each letter, so the old lopsided
   15-row note no longer applies to them.
 - **The real model pairs cannot run on NIM or Groq** because the models are not there (section 10). The six
-  models now have OpenRouter routes via `provider: "auto"` (section 3a); OpenRouter's model list has the served IDs,
-  but **no real call has been made**, so whether each route answers is unverified. Several routes are substitutes,
-  not the exact requested variants. Stand-in pairs 2 and 3 have each been run once as 8-benchmark pipeline
-  validation (their scores are deliberately not recorded here); pair 1 has not been run because its model A
-  (`google/gemma-3-12b-it`) returned HTTP 404. The 90B Llama that would suit pair 2 better timed out once.
+  models now have OpenRouter routes via `provider: "auto"` (section 3a); all six routes completed one-item LIVE
+  probes on 20 November 2026, so routing is verified but full-run stability is not (section 3a). Several routes
+  are substitutes, not the exact requested variants. Free-tier pairs 2 and 3 have each been run once as
+  8-benchmark pipeline validation (their scores are deliberately not recorded here). Current pair 1 is
+  SIMULATED: both historical real calls to `google/gemma-3-12b-it` returned HTTP 404 and the configured models
+  are now `mock`. The 90B Llama that would suit pair 2 better timed out once.
 - **Reasoning replies seen so far**: thinking in `message.reasoning` (Groq gpt-oss), in `message.reasoning_content`
   (NIM Nemotron), or no separate field at all (Groq Qwen3.8). The inline `<think>` form is covered only by tests with
-  made-up replies. The reasoning stand-ins' `max_tokens` (4096) and timeouts come from measurements on one to ten
+  made-up replies. The reasoning free-tier models' `max_tokens` (4096) and timeouts come from measurements on one to ten
   **easy** questions, so truncation or timeouts on harder items (competition math, code) are still possible. The real
   models' settings have not been measured at all.
 - **Dead models are stopped early, but only for 401/403/404/410 on the first 5 items** (section 3). A model that fails
@@ -1050,20 +1021,20 @@ The `openrouter` provider has **never** been called, and the early stop has neve
 - Read timeouts are retried **once**; other network errors are not. On NIM's free tier a slow call can take over a
   minute, so a few `api_error` items from timeouts are possible on any run; check the api_error count and the
   UNRELIABLE mark before trusting a score.
-- The simulator has profiles for six models only. Five newer models use the Llama-3.1-70B profile, and the three
+- The simulator has profiles for six models only. Every other model uses the Llama-3.1-70B profile, and the three
   newest benchmarks have no per-model accuracy setting (0.75 for everyone), so simulated comparisons on them are
-  noise.
-- Other limits: runs are sequential (no concurrency); text-only questions (no vision, despite the
-  "vision-ready" wording in some docs); the Streamlit dashboard shows mode, job name, served model, substitute and
-  stand-in warnings and the truncated/no-answer/api-error counts, and its sample cap can be set to any number up to
+  noise. The now-mock Gemma and Llama 11B also fall back to that profile.
+- Other limits: runs are sequential (no concurrency); text-only questions (no vision support); the
+  Streamlit dashboard shows mode, job name, served model, substitute
+  warnings and the truncated/no-answer/api-error counts, and its sample cap can be set to any number up to
   100 or to every row; a dashboard run continues in a background thread, and job status is held in that process only,
   so restarting Streamlit loses the live status panel (the saved run file remains). McNemar uses a continuity
   correction and there is no correction for many comparisons; with 10 to 15 items per benchmark the confidence
   intervals are very wide; the quality gate has only PASS/FAIL; `llm_judge.py` is unused; the HumanEval runner is a
   timeout, not a security sandbox; comparison pairs questions by `question_id` alone.
-- **The older documents under `docs/` and the README predate these changes** and still describe the simulator as
-  non-repeatable, say live providers silently fall back to the simulator, and quote results from the old simulator.
-  Do not quote their numbers.
+- The documents in this repository have been updated to the current LIVE/SIMULATED wording and current configs.
+  Historical review reports or run artefacts may still mention legacy job names or old display names; read those as
+  software labels only, not as a model category. Do not quote scores from old non-repeatable simulator runs.
 
 ## 13. Open decisions
 
@@ -1071,7 +1042,7 @@ The `openrouter` provider has **never** been called, and the early stop has neve
   whether a new provider has to be written and which model IDs apply.
 - Which models to compare, given that none of the three planned pairs is available on NIM; and which Qwen3.5 size
   is meant (the request does not say; the repo routes to `qwen/qwen3.5-9b`).
-- The stand-in pairs (section 11): a replacement for pair 1's model A (every small instruct model tried on NIM
+- The free-tier pairs (section 11): a replacement for pair 1's model A (every small instruct model tried on NIM
   returned 404), whether to retry `meta/llama-3.2-90b-vision-instruct` with a longer timeout for pair 2, and when
   pairs 1 and 2 may be run.
 - Whether to pay for OpenRouter and run the real pairs through the auto routes (section 3a), and whether the

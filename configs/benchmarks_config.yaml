@@ -63,7 +63,7 @@ benchmarks:
     id: "kyc_india"
     name: "KYC India"
     domain: "Compliance & Regulation"
-    description: "Indian KYC norms: PAN/Aadhaar, eKYC, V-CIP, PMLA, CKYC (text MCQ, vision-ready)"
+    description: "Indian KYC norms: PAN/Aadhaar, eKYC, V-CIP, PMLA, CKYC (text MCQ)"
     scorer: "mcq"
     sample_file: "datasets/kyc_india/sample.jsonl"
     num_options: 4

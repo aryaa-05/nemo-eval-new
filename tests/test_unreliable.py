@@ -28,7 +28,7 @@ KEY = "sentinel-nvidia-key-unreliable"
 LIVE_MODEL = {"id": "vendor/live-model", "name": "Live Model", "provider": "nvidia_nim"}
 
 
-def simulated_run(n=10, job="standin_t"):
+def simulated_run(n=10, job="test_job"):
     """A clean simulated run with n mmlu_pro items (mmlu_pro has 15 rows)."""
     return EvaluationRunner(base_dir=REPO).run_evaluation(
         {"id": "meta/llama-3.1-8b-instruct", "name": "T", "provider": "mock"}, ["mmlu_pro"],

@@ -1,17 +1,20 @@
-# Source documents for the `kyc_india` and `rbi_regulations` datasets
+# Source documents for the grounded datasets
 
-Kept **outside** the `nemo-evaluator` repo (CONTEXT.md §7 step 1). Every question in
-`datasets/kyc_india/sample.jsonl` and `datasets/rbi_regulations/sample.jsonl` must be traceable to one of
-the text files below (`--source-text` points at them).
+The source PDFs and extracted text copies are kept in this `_sources/` folder, outside the benchmark
+datasets themselves (CONTEXT.md §7 step 1). Every question in `datasets/kyc_india/sample.jsonl`,
+`datasets/rbi_regulations/sample.jsonl` and `datasets/image_processing/sample.jsonl` must be traceable
+to the relevant text file below (`--source-text` points at them).
 
-All three PDFs were downloaded from rbi.org.in on **20 October 2026** with a normal browser session
-(rbidocs.rbi.org.in serves an F5 bot challenge; a plain request returns HTML, not a PDF).
+The three RBI PDFs were downloaded from rbi.org.in on **20 October 2026** with a normal browser session
+(rbidocs.rbi.org.in serves an F5 bot challenge; a plain request returns HTML, not a PDF). The image-processing
+source is a local textbook copy.
 
 | # | file | document (title / number / date as printed on it) | URL of the PDF | used for |
 |---|---|---|---|---|
 | 1 | `kyc_master_direction.txt` (107 pp) | Master Direction - Know Your Customer (KYC) Direction, 2016, DBR.AML.BC.No.81/14.01.001/2015-16, February 25, 2016 **(Updated as on August 14, 2025)** | https://rbidocs.rbi.org.in/rdocs/notification/PDFs/MD18KYCF6E92C82E1E1419D87323E3869BC9F13.PDF (index page: https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566) | `kyc_india` |
 | 2 | `basel_iii_master_circular.txt` (328 pp) | Master Circular - Basel III Capital Regulations, RBI/2025-26/08, DOR.CAP.REC.2/21.06.201/2025-26, April 01, 2025 | http://rbidocs.rbi.org.in/rdocs/notification/PDFs/NT08F65FDFBB966942CAA08E0D766F2F6BD4.PDF (index page: https://www.rbi.org.in/Scripts/BS_ViewMasterCirculars.aspx) | `rbi_regulations` |
 | 3 | `irac_advances_master_circular.txt` (77 pp) | Master Circular - Prudential norms on Income Recognition, Asset Classification and Provisioning pertaining to Advances, RBI/2025-26/13, DOR.STR.REC.9/21.04.048/2025-26, April 01, 2025 (covers instructions issued up to March 31, 2025) | http://rbidocs.rbi.org.in/rdocs/notification/PDFs/13MC01042025792E33CF094B46F2B838E6409777438D.PDF (index page: https://www.rbi.org.in/Scripts/BS_ViewMasterCirculars.aspx) | `rbi_regulations` |
+| 4 | `young_fundamentals_image_processing.txt` | I.T. Young, J.J. Gerbrands and L.J. van Vliet, *Fundamentals of Image Processing*, Version 2.3, © 1995-2007 | Local copy in `_sources/`; derived from the PDF in this folder | `image_processing` |
 
 ## How the `.txt` files were made
 
@@ -31,8 +34,9 @@ that extraction, which anyone writing questions has to work around:
 ## Verification commands (from the repo root)
 
 ```powershell
-python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl --source-text ..\_sources\kyc_master_direction.txt
-python src/tools/validate_dataset.py datasets/rbi_regulations/sample.jsonl --source-text ..\_sources\basel_iii_master_circular.txt --source-text ..\_sources\irac_advances_master_circular.txt
+python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl --source-text _sources/kyc_master_direction.txt
+python src/tools/validate_dataset.py datasets/rbi_regulations/sample.jsonl --source-text _sources/basel_iii_master_circular.txt --source-text _sources/irac_advances_master_circular.txt
+python src/tools/validate_dataset.py datasets/image_processing/sample.jsonl --source-text _sources/young_fundamentals_image_processing.txt
 ```
 
 `answer_plan.json` holds the pre-decided correct letter for each question number (25 of each letter per

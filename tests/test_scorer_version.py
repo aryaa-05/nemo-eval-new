@@ -25,7 +25,7 @@ MOCK = {"id": "meta/llama-3.1-8b-instruct", "name": "T", "provider": "mock"}
 
 
 def simulated_run(**update):
-    run = EvaluationRunner(base_dir=REPO).run_evaluation(MOCK, ["mmlu_pro", "gsm8k"], job_name="standin_t",
+    run = EvaluationRunner(base_dir=REPO).run_evaluation(MOCK, ["mmlu_pro", "gsm8k"], job_name="test_job",
                                                          limit_per_benchmark=5, show_progress=False)
     return run.model_copy(update=update) if update else run
 
@@ -99,8 +99,7 @@ class TestReportHeader(unittest.TestCase):
     def test_the_existing_header_lines_are_unchanged(self):
         md = self.md(simulated_run(), simulated_run())
         self.assertIn("Run mode: A = SIMULATED, B = SIMULATED", md)
-        self.assertIn("Job: A = standin_t, B = standin_t", md)
-        self.assertIn("STAND-IN RUN", md)
+        self.assertIn("Job: A = test_job, B = test_job", md)
 
     def test_the_html_report_has_it_too(self):
         html = ReportGenerator.generate_html(DiffEngine.compare_runs(simulated_run(), simulated_run()))

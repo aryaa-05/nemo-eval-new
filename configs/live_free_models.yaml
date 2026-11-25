@@ -1,0 +1,22 @@
+job_name: "live_free_models"
+description: "LIVE free-tier models confirmed callable with the current API keys. Not results for the required pair models."
+seed: 42
+limit_per_benchmark: 1
+
+models:
+  - "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning"
+  - "openai/gpt-oss-20b"
+  - "qwen/qwen3.8-27b"
+  - "mistralai/mistral-large-4-1t-a52b"
+  - "nvidia/nemotron-3.5-lightning-30b-a3b"
+  - "nvidia/nemotron-3.5-super-vl-120b-a12b"
+  - "nvidia/nemotron-3-ultra-550b-a55b"
+  - "nvidia/nemotron-3.5-bolt-e4b"
+  - "stepfun-ai/step-5-preview"
+  - "z-ai/glm-5.3-flash"
+  - "poolside/laguna-xs-2.1"
+  - "openai/gpt-oss-120b"
+  - "allam-2-7b"
+
+benchmarks:
+  - "mmlu_pro"

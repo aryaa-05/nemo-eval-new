@@ -69,8 +69,11 @@ python src/cli/nel.py list
 # Quick simulated run
 python src/cli/nel.py eval run --config configs/eval_config_default.yaml --limit 10
 
-# Run a stand-in pair (real API calls; pipeline validation only)
-python src/cli/nel.py eval run --config configs/standin_pair3.yaml --limit 5 --job-name standin_pair3_quick_check
+# Run a LIVE free-tier pair (results are for the exact served models only)
+python src/cli/nel.py eval run --config configs/free_tier_pair3.yaml --limit 5 --job-name free_tier_pair3_quick_check
+
+# Run the 13-model one-item LIVE probe
+python src/cli/nel.py eval run --config configs/live_free_models.yaml --limit 1
 
 # Compare two completed runs
 python src/cli/nel.py compare --run-a <RUN_ID_A> --run-b <RUN_ID_B> --output-md comparison.md
@@ -110,19 +113,19 @@ Saved runs live in `runs/` and are git-ignored. A fresh clone starts with no sav
 
 ## Models
 
-The three required model pairs are configured with `provider: "auto"` and OpenRouter routes. Those exact models are not available on the free NIM/Groq tiers, and no real OpenRouter call has been verified yet. Several OpenRouter routes serve a substitute model; the run records both the requested and served IDs.
+The three required model pairs are configured with `provider: "auto"` and OpenRouter routes. Those exact models are not available on the free NIM/Groq tiers. On 20 November 2026, all six required-model routes completed one-item LIVE probes successfully; four served substitute models. A one-item probe verifies routing only; full benchmark runs and comparisons are still pending, and probe scores are not reported as results.
 
-The free-tier stand-in pairs are:
+`configs/live_free_models.yaml` contains 13 zero-cost NIM/Groq models. Each was probed LIVE with one `mmlu_pro` item and all 13 returned a real reply. These are results for those exact served models only, not for the required pair models.
 
-| Pair | Model A | Model B |
-|---|---|---|
-| 1 | `google/gemma-3-12b-it` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) |
-| 2 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `meta/llama-3.2-11b-vision-instruct` (NIM) |
-| 3 | `openai/gpt-oss-20b` (Groq) | `qwen/qwen3.8-27b` (Groq) |
+The free-tier pair configs are pipeline checks, not a fourth model category:
 
-Pair 1 cannot run: `google/gemma-3-12b-it` returns HTTP 404. Use pair 2 or pair 3 for pipeline checks.
+| Pair | Model A | Model B | Status |
+|---|---|---|---|
+| 1 | `google/gemma-3-12b-it` (`mock`) | `meta/llama-3.2-11b-vision-instruct` (`mock`) | SIMULATED; real calls previously returned HTTP 404 / timed out |
+| 2 | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` (NIM) | `meta/llama-3.2-11b-vision-instruct` (`mock`) | LIVE + SIMULATED |
+| 3 | `openai/gpt-oss-20b` (Groq) | `qwen/qwen3.8-27b` (Groq) | LIVE |
 
-A stand-in run makes real API calls and is therefore a **live** run, but its scores are results for the stand-in model only. They are **not** results for the required models. A simulated run uses `provider: "mock"` and makes no API call. A substitute route serves a different model ID than the one requested.
+A LIVE run makes a real provider call and is a result for the exact served model only. A SIMULATED run uses `provider: "mock"`, makes no API call, and says nothing about a real model. A substitute route is still LIVE and scores the served model, not the exact requested variant.
 
 ## Datasets
 
@@ -164,18 +167,20 @@ python src/tools/validate_dataset.py datasets/kyc_india/sample.jsonl --final --s
 python -m pytest -q
 ```
 
-The current suite has 402 tests.
+The current suite has 396 tests and passes with both `pytest` and `unittest`.
 
 ## Documentation
 
 - `CONTEXT.md`: full project context, rules, architecture, and known limitations.
-- `docs/PROJECT_HANDOVER.md`: current status, decisions, blockers, and handover notes.
-- `docs/PROJECT_DOCUMENTATION.md`, `docs/PRACTICAL_OVERVIEW.md`, and the review reports are older and may be out of date.
+- `DASHBOARD_GUIDE.md`: dashboard tabs, labels, reliability flags, and interpretation of results.
+- `PROJECT_HANDOVER.md`: current status, decisions, blockers, and handover notes.
+- `PROJECT_DOCUMENTATION.md`: current architecture, configuration, scoring, and limitations.
+- `PRACTICAL_OVERVIEW.md`, `USER_GUIDE.md`, `REVIEW_1_PROGRESS_REPORT.md`, `REVIEW_2_FINAL_REPORT.md`, and `PPT_RESULTS_ANALYSIS.md`: project summaries and reporting guidance.
 - `_sources/SOURCES.md`: source URLs and extraction notes.
 
 ## Reporting rules
 
-- Never present simulated or stand-in results as results for the required models.
+- Never present simulated or free-tier results as results for the required models.
 - Never present a substitute-model result as a result for the exact requested model.
 - Never hand-write or guess benchmark scores.
 - Never commit `.env`, API keys, or run files containing secrets.

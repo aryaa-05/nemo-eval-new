@@ -12,7 +12,6 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.insert(0, BASE_DIR)
 
 from src.storage.run_store import RunStore
-from src.storage.schema import STANDIN_JOB_PREFIX
 from src.comparison.diff_engine import DiffEngine
 from src.reporting.report_generator import ReportGenerator
 from src.dashboard.jobs import clear_job, get_job, is_running, start_job
@@ -64,12 +63,20 @@ PROVIDER_LABEL = {
     "openai": "OpenAI",
     "ollama": "Ollama (local)",
 }
-PREFERRED_STANDINS = [
+PREFERRED_FREE_TIER_MODELS = [
     "openai/gpt-oss-20b",
+    "openai/gpt-oss-120b",
     "qwen/qwen3.8-27b",
+    "allam-2-7b",
+    "mistralai/mistral-large-4-1t-a52b",
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
-    "meta/llama-3.2-11b-vision-instruct",
-    "google/gemma-3-12b-it",
+    "nvidia/nemotron-3.5-lightning-30b-a3b",
+    "nvidia/nemotron-3.5-super-vl-120b-a12b",
+    "nvidia/nemotron-3-ultra-550b-a55b",
+    "nvidia/nemotron-3.5-bolt-e4b",
+    "stepfun-ai/step-5-preview",
+    "z-ai/glm-5.3-flash",
+    "poolside/laguna-xs-2.1",
 ]
 PREFERRED_DOMAINS = [
     "General Knowledge",
@@ -96,12 +103,13 @@ def load_yaml(rel_path):
     return {}
 
 
-def model_is_standin(config):
-    return str(config.get("name", "")).lower().startswith("stand-in")
-
-
-def job_is_standin(job_name):
-    return str(job_name or "").lower().startswith(STANDIN_JOB_PREFIX)
+def model_is_free_tier(config):
+    if config.get("provider") not in ("nvidia_nim", "groq"):
+        return False
+    try:
+        return float(config.get("cost_per_1m_input") or 0) == 0 and float(config.get("cost_per_1m_output") or 0) == 0
+    except (TypeError, ValueError):
+        return False
 
 
 def mode_text(mode):
@@ -155,10 +163,9 @@ def provider_ready(config):
     return f"Live - MISSING {key_name} (the run will fail)"
 
 
-def auto_job_name(model_id, standin):
+def auto_job_name(model_id):
     short = model_id.split("/")[-1].replace("-", "_").replace(".", "_")[:32]
-    prefix = "standin_dashboard_" if standin else "dashboard_"
-    return (prefix + short).lower()
+    return ("dashboard_" + short).lower()
 
 
 @st.cache_data(show_spinner=False)
@@ -279,10 +286,13 @@ store = RunStore(os.path.join(BASE_DIR, "runs"))
 if "active_job" not in st.session_state:
     st.session_state.active_job = None
 
-standin_models = {k: v for k, v in models_config.items() if model_is_standin(v)}
-other_models = {k: v for k, v in models_config.items() if not model_is_standin(v)}
-standin_models = dict(
-    sorted(standin_models.items(), key=lambda item: (PREFERRED_STANDINS.index(item[0]) if item[0] in PREFERRED_STANDINS else 99, item[0]))
+free_tier_models = {k: v for k, v in models_config.items() if model_is_free_tier(v)}
+other_models = {k: v for k, v in models_config.items() if not model_is_free_tier(v)}
+free_tier_models = dict(
+    sorted(
+        free_tier_models.items(),
+        key=lambda item: (PREFERRED_FREE_TIER_MODELS.index(item[0]) if item[0] in PREFERRED_FREE_TIER_MODELS else 99, item[0]),
+    )
 )
 
 
@@ -313,15 +323,11 @@ with tab_leaderboard:
         c2.metric("Live runs", live_count)
         c3.metric("Simulated runs", simulated_count)
 
-        f1, f2 = st.columns([2, 1])
-        with f1:
-            selected_modes = st.multiselect(
-                "Show run modes",
-                ["live", "simulated"],
-                default=["live", "simulated"],
-            )
-        with f2:
-            include_standin = st.toggle("Include stand-in runs", value=True)
+        selected_modes = st.multiselect(
+            "Show run modes",
+            ["live", "simulated"],
+            default=["live", "simulated"],
+        )
 
         substitute_count = sum(1 for run in all_runs if run.get("model_substituted"))
         if substitute_count:
@@ -335,7 +341,6 @@ with tab_leaderboard:
             row
             for row in leaderboard
             if (row.get("run_mode") or "unknown") in selected_modes
-            and (include_standin or not job_is_standin(row.get("latest_job_name")))
         ]
 
         if not filtered:
@@ -634,9 +639,9 @@ with tab_run:
     st.subheader("Launch an evaluation")
     st.caption(
         "Runs execute in the background, so the page stays responsive while benchmarks run. "
-        "Live stand-ins are selected by default. The six real pair models use `provider: auto`: when "
+        "Live free-tier models are selected by default. The six real pair models use `provider: auto`: when "
         "OPENROUTER_API_KEY is loaded they call OpenRouter (paid), and the run records which model was served. "
-        "A route marked SUBSTITUTE is not the exact requested variant."
+        "A route marked SUBSTITUTE is not the exact requested variant. A mock-provider run is SIMULATED."
     )
 
     active_key = st.session_state.get("active_job")
@@ -645,11 +650,11 @@ with tab_run:
 
     scope = st.radio(
         "Model set",
-        ["Live stand-ins", "All configured models"],
+        ["Live free-tier models", "All configured models"],
         horizontal=True,
-        help="Live stand-ins are free-tier models used to validate the pipeline, not the models under study.",
+        help="Live free-tier models make real calls; their scores are results only for the exact served model.",
     )
-    model_pool = standin_models if scope == "Live stand-ins" else {**standin_models, **other_models}
+    model_pool = free_tier_models if scope == "Live free-tier models" else {**free_tier_models, **other_models}
 
     if not model_pool:
         st.error("No models are configured.")
@@ -661,7 +666,6 @@ with tab_run:
         )
         model_cfg = model_pool[selected_model]
         provider = model_cfg.get("provider", "mock")
-        standin = model_is_standin(model_cfg)
 
         info_1, info_2, info_3 = st.columns(3)
         info_1.metric("Provider", PROVIDER_LABEL.get(provider, provider))
@@ -726,14 +730,9 @@ with tab_run:
         if estimated_items > 100:
             st.warning("This is a large run. Consider a smaller sample cap or fewer benchmarks first.")
 
-        auto_job = auto_job_name(selected_model, standin)
+        auto_job = auto_job_name(selected_model)
         custom_job = st.checkbox("Customize job name", value=False)
-        if custom_job:
-            job_name = st.text_input("Job name", value=auto_job)
-        else:
-            job_name = auto_job
-        if standin and not job_is_standin(job_name):
-            job_name = STANDIN_JOB_PREFIX + job_name
+        job_name = st.text_input("Job name", value=auto_job) if custom_job else auto_job
         st.caption(f"Job name: `{job_name}`")
 
         start = st.button(
@@ -747,17 +746,10 @@ with tab_run:
                 st.error("A run is already in progress.")
             elif not selected_benches:
                 st.error("Select at least one benchmark.")
-            elif not standin and job_is_standin(job_name):
-                st.error("A simulated/non-stand-in model cannot use a `standin_` job name. Choose a different job name.")
             elif provider == "auto" and route is None:
                 st.error("No API key is loaded for this auto route. Add one to `.env` and reload the page.")
             else:
-                if standin:
-                    description = (
-                        "PIPELINE VALIDATION ONLY. Interactive dashboard run with a stand-in model. "
-                        "Not a result for the required models."
-                    )
-                elif provider == "auto":
+                if provider == "auto":
                     description = (
                         "Interactive dashboard run using the automatic live route. The served model and any "
                         "substitute note are recorded in the run artifact."
@@ -765,7 +757,7 @@ with tab_run:
                 elif provider == "mock":
                     description = "Interactive dashboard run using the built-in mock provider (simulated)."
                 else:
-                    description = f"Interactive dashboard run using live provider {provider}."
+                    description = f"Interactive dashboard run using live provider {provider}. Results are for the served model only."
 
                 if active_key:
                     clear_job(active_key)
@@ -778,7 +770,6 @@ with tab_run:
                     limit_per_benchmark=sample_limit,
                     solver_type=solver,
                     seed=42,
-                    standin=standin,
                     base_dir=BASE_DIR,
                 )
                 st.session_state.active_job = new_key

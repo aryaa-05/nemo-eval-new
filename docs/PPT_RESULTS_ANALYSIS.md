@@ -1,14 +1,18 @@
 # Results analysis for the presentation
 
 > **Framing that must appear on every results slide.**
-> These are **stand-in models on free API tiers**. They are LIVE runs, but their scores are
-> results for the stand-in models only, not for the models named in the brief. The largest
+> These are **free-tier models on free API tiers**. They are LIVE runs, but their scores are
+> results for the free-tier models only, not for the models named in the brief. The largest
 > run has 70 items and the spot checks have 2-3 items per benchmark, so the numbers show
 > that the pipeline works and where the hard cases are, not which model is better.
 > **No result for a real required model exists yet.**
+> The job names shown below are historical run labels. The current pipeline-check configs
+> are `configs/free_tier_pair1.yaml`, `free_tier_pair2.yaml` and `free_tier_pair3.yaml`;
+> `google/gemma-3-12b-it` and `meta/llama-3.2-11b-vision-instruct` are now `mock` and
+> produce SIMULATED runs.
 
 **Headline for the deck:** the evaluation pipeline is validated end to end; there is no
-statistically significant winner between the stand-ins; the compliance (KYC/RBI) domain is
+statistically significant winner between the free-tier models; the compliance (KYC/RBI) domain is
 the clear weak spot and the next full run must target it.
 
 All numbers below come from saved run files in `runs/`. Nothing here is hand-written.
@@ -19,27 +23,29 @@ All numbers below come from saved run files in `runs/`. Nothing here is hand-wri
 |---|---|
 | The pipeline runs end to end on real providers | Yes, verified |
 | Scores, flags and raw replies are stored and auditable | Yes, verified |
-| One stand-in model is better than another | No, not statistically significant in any run |
-| Anything about Ministral, Llama 3.1/4, Qwen3.5 | No, these models were never called |
-| KYC/RBI compliance ability of a model | No, too few items and stand-in models only |
+| One free-tier model is better than another | No, not statistically significant in any run |
+| Anything about Ministral, Llama 3.1/4, Qwen3.5 | No; only one-item route probes exist, not benchmark results |
+| KYC/RBI compliance ability of a model | No, too few items and free-tier models only |
 
 ## Slide 2 - Runs used in this analysis
 
-| Run ID | Model (stand-in) | Provider | Job | Benchmarks | Items |
+| Run ID | Model (free-tier) | Provider | Job | Benchmarks | Items |
 |---|---|---|---|---|---|
-| `run_20261020_203254_c4e21a` | `openai/gpt-oss-20b` | Groq | `standin_pair3_pipeline_validation` | 7 | 70 |
-| `run_20261020_204003_e6a177` | `qwen/qwen3.8-27b` | Groq | `standin_pair3_pipeline_validation` | 7 | 70 |
-| `run_20261026_084909_38826d` | `openai/gpt-oss-20b` | Groq | `standin_pair3_current_situation` | 9 | 27 |
-| `run_20261026_085214_f87b53` | `qwen/qwen3.8-27b` | Groq | `standin_pair3_current_situation` | 9 | 27 |
-| `run_20261026_085713_000c7c` | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | NVIDIA NIM | `standin_pair2_current_situation` | 9 | 18 |
-| `run_20261026_090913_9cdb1e` | `meta/llama-3.2-11b-vision-instruct` | NVIDIA NIM | `standin_pair2_current_situation` | 9 | 18 |
+| `run_20261020_203254_c4e21a` | `openai/gpt-oss-20b` | Groq | `free_tier_pair3` | 7 | 70 |
+| `run_20261020_204003_e6a177` | `qwen/qwen3.8-27b` | Groq | `free_tier_pair3` | 7 | 70 |
+| `run_20261026_084909_38826d` | `openai/gpt-oss-20b` | Groq | `free_tier_pair3_current_situation` | 9 | 27 |
+| `run_20261026_085214_f87b53` | `qwen/qwen3.8-27b` | Groq | `free_tier_pair3_current_situation` | 9 | 27 |
+| `run_20261026_085713_000c7c` | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | NVIDIA NIM | `free_tier_pair2_current_situation` | 9 | 18 |
+| `run_20261026_090913_9cdb1e` | `meta/llama-3.2-11b-vision-instruct` | NVIDIA NIM | `free_tier_pair2_current_situation` | 9 | 18 |
 
 The 70-item runs use 7 benchmarks x 10 items and **do not include KYC or RBI**.
 The 27-item and 18-item runs include all 9 benchmarks but only 2-3 items each.
+Separately, 13 free-tier models were each probed LIVE with one `mmlu_pro` item via
+`configs/live_free_models.yaml`; those one-item probes are not included in the tables below.
 
 ## Slide 3 - Overall results (copy this table)
 
-| Model (stand-in) | Run | Items | Accuracy | 95% Wilson CI | Mean latency | Tokens | Cost | API err | Trunc | No ans | Run UNRELIABLE |
+| Model (free-tier) | Run | Items | Accuracy | 95% Wilson CI | Mean latency | Tokens | Cost | API err | Trunc | No ans | Run UNRELIABLE |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | `openai/gpt-oss-20b` | pair 3 validation | 70 | **94.3%** | 86.2 - 97.8% | 2.37 s | 21,891 | $0.00 | 0 | 0 | 0 | No (0.0%) |
 | `qwen/qwen3.8-27b` | pair 3 validation | 70 | **95.7%** | 88.1 - 98.5% | 1.67 s | 11,627 | $0.00 | 0 | 0 | 0 | No (0.0%) |
@@ -104,14 +110,14 @@ must focus", not as a finding.
 |---|---|---|---|---|
 | 1 | Tiny samples | 10 items/benchmark in the largest run; 2-3 in spot checks | CIs of 59.6-98.2%; no significant result | run `--limit 0` on all 100-row datasets |
 | 2 | Main run omits KYC/RBI | 70-item runs cover 7 benchmarks, no KYC/RBI | The project's core domain is barely measured | rerun all 9 benchmarks |
-| 3 | Compliance accuracy is low | KYC+RBI 16.7-50% across stand-ins | General benchmarks do not predict compliance skill | full run, then read the wrong items |
+| 3 | Compliance accuracy is low | KYC+RBI 16.7-50% across free-tier models | General benchmarks do not predict compliance skill | full run, then read the wrong items |
 | 4 | Ceiling effect | 90-100% on general benchmarks | The set cannot rank these models | harder items or full datasets |
 | 5 | Truncation | gpt-oss: 2/3 RBI answers truncated | Truncated items are scored incorrect | raise `max_tokens` |
 | 6 | API timeouts | Nemotron: one RBI item failed after 4 attempts (2 read timeouts) and logged 491 s; benchmark mean 258 s | Inflates latency and lowers accuracy | retry, longer timeout, rerun |
 | 7 | No-answer extraction | Llama 11B: 1/2 GPQA produced no extractable answer (`max_tokens` is 1024) | Understates accuracy | raise `max_tokens`, inspect raw reply |
 | 8 | Run-level reliability hides local failure | Pair 2: Nemotron RBI 50% flagged, Llama GPQA 50% flagged, while both runs are 5.6% overall | A run can look "ok" while a benchmark is broken | use the per-benchmark flag; rerun flagged benchmarks |
 | 9 | Cost not measured | All runs cost $0.00 (free tiers) | No cost comparison yet | use tokens as proxy; use a paid provider later |
-| 10 | Stand-in only | No required model was called | Cannot answer the brief yet | fund OpenRouter or self-host |
+| 10 | Free-tier plus one-item route probes | No required-pair benchmark result exists | Cannot answer the brief yet | run full required pairs or self-host |
 | 11 | Small old datasets | 15 rows for MMLU/GSM8K/MATH/GPQA/HumanEval/TruthfulQA | Wide intervals, unverified keys | expand or drop from the headline |
 | 12 | Extraction risk | MCQ/math/code extraction is tested, but other reply styles may be misread | A scoring error looks like a model error | inspect flips; use the re-score tool |
 
@@ -137,18 +143,19 @@ must focus", not as a finding.
 ## Slide 10 - The run that turns this into a real result
 
 ```
-# preflight
-python src/cli/nel.py eval run --config configs/standin_pair3.yaml --limit 5
+# preflight (LIVE Groq)
+python src/cli/nel.py eval run --config configs/free_tier_pair3.yaml --limit 5
 
 # full run: 9 benchmarks, all rows (390 items per model)
-python src/cli/nel.py eval run --config configs/standin_pair3.yaml --limit 0
+python src/cli/nel.py eval run --config configs/free_tier_pair3.yaml --limit 0
 
 # compare + report
 python src/cli/nel.py compare --run-a <RUN_A> --run-b <RUN_B> --output-md report.md
 ```
 
-Expected duration: about 2-3 hours for pair 3 on Groq. Use pair 2 on NIM only if you have
-3-5 hours. Still stand-in models: label the output as pipeline validation.
+Expected duration: about 2-3 hours for pair 3 on Groq. Pair 1 is SIMULATED and pair 2 is
+LIVE NIM + SIMULATED mock in the current configs. All remain pipeline checks: label the
+output with the exact served models and never as a required-pair result.
 
 ## Appendix - definitions used on the slides
 
@@ -160,5 +167,5 @@ Expected duration: about 2-3 hours for pair 3 on Groq. Use pair 2 on NIM only if
 - **McNemar** = paired test on those flips; a continuity correction is applied.
 - **Run UNRELIABLE** = more than 10% of all items are API errors, truncated or no-answer.
 - **Benchmark UNRELIABLE** = more than 20% of that benchmark's items are flagged.
-- **Cost** = estimate from configured per-1M-token prices; $0.00 here because the stand-in
+- **Cost** = estimate from configured per-1M-token prices; $0.00 here because the free-tier
   tiers are free.

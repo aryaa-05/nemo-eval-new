@@ -1,0 +1,21 @@
+# Free-tier role pair 3. Mirrors the ROLE of pair 3 (reasoning model vs a Qwen model). Not the required models.
+# Both models are LIVE on Groq. Qwen3.8-27B is a different version and size from the Qwen3.5 named in the brief.
+job_name: "free_tier_pair3"
+description: "LIVE comparison of free-tier role models on Groq; not results for Ministral-3-8B-Reasoning or Qwen3.5. Results apply only to the exact served models."
+seed: 42
+limit_per_benchmark: 15
+
+models:
+  - "openai/gpt-oss-20b"
+  - "qwen/qwen3.8-27b"
+
+benchmarks:
+  - "kyc_india"
+  - "rbi_regulations"
+  - "image_processing"
+  - "mmlu_pro"
+  - "gsm8k"
+  - "math_500"
+  - "gpqa"
+  - "humaneval"
+  - "truthfulqa"

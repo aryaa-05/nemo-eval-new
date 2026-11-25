@@ -1,8 +1,9 @@
 # Form FF No. 180: Progress Review Report 2
-**Vishwakarma Institute of Technology, Pune**
-**Department of Computer Engineering | Academic Year 2026?27 | Semester VII**
 
-- **Project Title**: NEMO Evaluator Use Case: Benchmarking and Comparing the Performance of Various Models
+**Vishwakarma Institute of Technology, Pune**
+**Department of Computer Engineering | Academic Year 2026-27 | Semester VII**
+
+- **Project Title**: NeMo Evaluator: Benchmarking and Comparing the Performance of Various Models
 - **Industry Partner**: Tata Consultancy Services (TCS)
 - **Group No.**: 16
 - **Review Schedule**: End of Semester (Review 2 - Final Project Review)
@@ -13,18 +14,39 @@
 
 ---
 
-## 1. Final Deliverables Accomplished
-1. **Full-Stack Benchmarking System Implemented**:
-   - Complete Python package with CLI tool `nel` and Streamlit web application.
-   - Support for 6 flagship models: Llama-3.1-70B, Llama-3.1-8B, Qwen-2.5-72B, Mixtral-8x7B, DeepSeek-R1-Distill-70B, and GPT-4o-Mini.
-2. **Experimental Evaluation Results**:
-   - **Top Overall Accuracy**: Qwen-2.5-72B-Instruct (86.7%) and DeepSeek-R1-Distill-70B (81.7%).
-   - **Math & Reasoning Leader**: DeepSeek-R1 achieved 100% on GSM8K and highest accuracy on GPQA (80.0%) via deep Chain-of-Thought reasoning.
-   - **Code Generation Leader**: Qwen-2.5-72B and Llama-3.1-70B achieved 100% pass@1 on evaluated HumanEval problems.
-   - **Efficiency Leader**: Llama-3.1-8B achieved lowest mean inference latency (0.28s) and lowest token cost ($0.0019/run).
-3. **Statistical Significance & Flip Analysis (`nel compare`)**:
-   - Paired McNemar tests demonstrated statistically significant accuracy gains for Llama-3.1-70B over Llama-3.1-8B (`p = 0.00052`, Chi2 = 12.04).
-   - Flip Inspector revealed 21 items where 70B corrected 8B errors, primarily in multi-step math and coding.
-4. **Sustainability & Resource Optimization (SDG 9 & SDG 12)**:
-   - Evaluated models on Pareto accuracy-vs-latency frontier.
-   - Created turnkey Google Colab notebook (`nemo_evaluator_colab.ipynb`) allowing zero-cost cloud GPU execution, eliminating the need for expensive dedicated on-premise infrastructure.
+## 1. Final deliverables accomplished
+
+1. **Full benchmarking system**
+   - Python package with `nel` CLI and Streamlit dashboard.
+   - Benchmarks for MMLU-Pro, GSM8K, MATH-500, GPQA, HumanEval, TruthfulQA, BYOB, KYC India, RBI regulations and image-processing theory.
+   - Three 100-row sourced datasets with `source`, `source_excerpt`, balanced answer positions and validator checks.
+
+2. **Model gateway and run artefacts**
+   - `mock`, NVIDIA NIM, Groq, OpenRouter, OpenAI, Ollama and `auto` route support.
+   - LIVE/SIMULATED run mode, served-model and substitute-route recording.
+   - Retries, throttling, early stop for dead models, incremental checkpoints, scorer version stamping and offline re-scoring.
+
+3. **Scoring and comparison**
+   - Wilson 95% confidence intervals, paired McNemar test, item-level flips, reliability flags and PASS/FAIL gate.
+   - Markdown/HTML reports with mode, provider, job name, served model, substitute warnings, reliability and scorer version.
+
+4. **Verification completed**
+   - 396 tests pass with `pytest` and `unittest`.
+   - 13 zero-cost NIM/Groq models completed one-item LIVE `mmlu_pro` probes.
+   - LIVE free-tier pair jobs exercised the pipeline end to end; scores belong only to the exact served models.
+
+## 2. Results that must not be claimed
+
+- No result exists for any of the six required pair models.
+- All six OpenRouter routes completed one-item LIVE probes on 20 November 2026, but full benchmark runs and comparisons are pending; probe scores are not results.
+- SIMULATED runs only test software and say nothing about model capability.
+- LIVE free-tier scores are results for those free-tier models only.
+- SUBSTITUTE routes measure served models, not the exact requested variants.
+
+## 3. Remaining work and blockers
+
+- `OPENROUTER_API_KEY` is present; one-item route probes are complete and full required-pair runs are pending.
+- The Qwen3.5 size and the vision-model part of the request are still unspecified.
+- Most answer keys in the three new datasets were written from source text but were not independently human-checked.
+- The older 15-row datasets have wide confidence intervals and unverified keys.
+- Full runs and comparison reports for the required pairs are pending.

@@ -146,7 +146,7 @@ class TestRunnerStoresTheLog(LiveTestCase):
     def test_simulated_items_have_an_empty_log(self):
         run = EvaluationRunner(base_dir=REPO).run_evaluation(
             {"id": "meta/llama-3.1-8b-instruct", "name": "T", "provider": "mock"}, ["gpqa"],
-            job_name="standin_t", limit_per_benchmark=3, show_progress=False)
+            job_name="test_job", limit_per_benchmark=3, show_progress=False)
         self.assertEqual([i.attempt_log for i in run.item_results], [[], [], []])
 
 

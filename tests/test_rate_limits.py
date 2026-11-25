@@ -337,7 +337,7 @@ class TestApiErrorAccounting(KeyedTestCase):
         model = {"id": "vendor/model", "name": "Live Model", "provider": "nvidia_nim"}
         with mock.patch("src.gateway.model_client.requests.post", side_effect=responses) as post, \
                 mock.patch.object(UnifiedModelClient, "_sleep"):
-            run = EvaluationRunner(base_dir=REPO).run_evaluation(model, ["gpqa"], job_name="standin_t",
+            run = EvaluationRunner(base_dir=REPO).run_evaluation(model, ["gpqa"], job_name="test_job",
                                                                  limit_per_benchmark=4, show_progress=False)
         return run, post
 

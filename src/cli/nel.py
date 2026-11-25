@@ -12,7 +12,7 @@ from src.storage.run_store import RunStore
 from src.engine.runner import EvaluationRunner
 from src.gateway.model_client import ProviderConfigError
 from src.gateway.env_loader import load_env_file
-from src.storage.schema import STANDIN_JOB_PREFIX, UNRELIABLE_THRESHOLD, UNRELIABLE_BENCHMARK_THRESHOLD
+from src.storage.schema import UNRELIABLE_THRESHOLD, UNRELIABLE_BENCHMARK_THRESHOLD
 from src.comparison.diff_engine import DiffEngine
 from src.reporting.report_generator import ReportGenerator
 from src.scoring.statistics import StatisticsEngine
@@ -129,12 +129,6 @@ def run_cmd(config, model, bench, limit, solver, job_name):
     sample_limit = limit if limit is not None else cfg.get("limit_per_benchmark", 10)
     current_job = job_name or cfg.get("job_name", "benchmark_run")
 
-    # A stand-in config must keep its stand-in job name (even if --job-name is passed), otherwise the label is lost.
-    if os.path.basename(config).lower().startswith("standin_") and not current_job.lower().startswith(STANDIN_JOB_PREFIX):
-        console.print(f"[bold red]Configuration error:[/bold red] {config} is a stand-in config, so the job name must start with "
-                      f"'{STANDIN_JOB_PREFIX}' (got '{current_job}'). Stand-in runs must stay labelled as pipeline validation.")
-        sys.exit(1)
-
     console.print(Panel(f"[bold green]Starting NeMo Evaluator Job:[/bold green] {current_job}\n"
                         f"Models: {', '.join(selected_models)}\n"
                         f"Benchmarks: {', '.join(selected_benches)}\n"
@@ -192,9 +186,6 @@ def run_cmd(config, model, bench, limit, solver, job_name):
         if artifact.model_substituted:
             console.print(f"[bold yellow]SUBSTITUTE ROUTE:[/bold yellow] {artifact.route_note or 'the served model is not the exact requested variant'} "
                           f"Results are for {artifact.served_model_id}, not the exact requested model.")
-        if artifact.is_standin:
-            console.print("[bold yellow]STAND-IN RUN:[/bold yellow] pipeline validation only, not a result for the real models.")
-
         # Display Summary Table
         t = Table(title=f"Results for {artifact.model_name} - {artifact.run_mode.upper()} (Overall: {artifact.overall_accuracy*100:.1f}%)")
         t.add_column("Benchmark", style="bold")
@@ -256,7 +247,7 @@ def compare_cmd(run_a, run_b, output_md, output_html):
 
     console.print(Panel(f"[bold cyan]Comparing Run A:[/bold cyan] {ra.model_name} vs [bold cyan]Run B:[/bold cyan] {rb.model_name}\n"
                         f"Run mode: A={ra.run_mode.upper()}, B={rb.run_mode.upper()}\n"
-                        f"Job: A={ra.job_name}, B={rb.job_name}" + ("  [bold yellow]STAND-IN: pipeline validation only[/bold yellow]" if ra.is_standin or rb.is_standin else "") + "\n"
+                        f"Job: A={ra.job_name}, B={rb.job_name}\n"
                         f"Served model: A={comp['served_model_id_a']} ({'SUBSTITUTE' if ra.model_substituted else 'exact'}), "
                         f"B={comp['served_model_id_b']} ({'SUBSTITUTE' if rb.model_substituted else 'exact'})\n"
                         + (f"[bold yellow]SUBSTITUTE ROUTE (A):[/bold yellow] {ra.route_note}\n" if ra.model_substituted and ra.route_note else "")

@@ -1,5 +1,5 @@
 {
- "_comment": "Real replies from the stand-in runs of pairs 2 and 3 (stand-in models, pipeline validation only). 'expect.correct' is the hand-verified verdict; 'expect.extracted' is what the current scorer extracts.",
+ "_comment": "Real replies from the LIVE free-tier runs of pairs 2 and 3 (free-tier models, pipeline validation only). 'expect.correct' is the hand-verified verdict; 'expect.extracted' is what the current scorer extracts.",
  "replies": [
   {
    "model": "gpt-oss-20b",
